@@ -1,21 +1,18 @@
+@use 'variables' as v;
+
 
 .sample-tray-container {
-  height: 100vh !important;
-  // background-color: red;
+  height: v.$sample-tray-height !important;
   position: absolute;
   bottom: 0;
   width: 100vw; 
-  // background-blend-mode: blur 10px;
-  // background-color: white;
-  // border-top: 5px solid yellow;
-  // transition: bottom .1s ease-in;
   z-index: 10;
 
 }
 
 .sample-tray-hidden{
     bottom: -100vh;
-    // transition: bottom .1s ease-in;
+    // transition: bottom .1s ease-in;f
 }
 
 .sample-tray-innter-container{

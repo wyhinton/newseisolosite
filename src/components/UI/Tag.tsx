@@ -92,6 +92,15 @@ const tagToFull = (tag: string): string => {
     case "C":
       fullName = "Chord"
       break; 
+    case "TRL":
+      fullName = "Trill"
+      break; 
+    case "SLD":
+      fullName = "SLIDE"
+      break; 
+    case "T":
+      fullName = "TONAL"
+      break; 
     default:
       fullName = tag;
   }

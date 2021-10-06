@@ -11,6 +11,7 @@ import { mapRange } from "@utils";
 
 interface SampleProperties{
   sampleData: SampleData
+  loaded: boolean
   url?: string
   label?: string
 }
@@ -43,21 +44,40 @@ const [playing, setPlaying] = useState(false)
       onProgress = {({played, playedSeconds, loaded, loadedSeconds})=>{
       setSampleProgress(played)
     }}
+    
       url={sampleData.src} />
       {/* HELLO */}
-      <Waveform sampleData= {sampleData} sampleProgress = {sampleProgress}></Waveform>
+      <Waveform sampleData= {sampleData} sampleProgress = {sampleProgress} isPlaying= {playing}></Waveform>
+      {playing?<Circle/>:<></>}
     </div>
   )
 }
 
+const Circle = (): JSX.Element =>{
+  const circleStyle = {
+      position: "absolute",
+      width: 200,
+      height: 200,
+      borderRadius: "100%",
+      backgroundColor: "green",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      zIndex: -1,
+      
 
+  } as React.CSSProperties
+  return(
+    <div style = {circleStyle} >hello</div>
+  )
+}
 const SampleDebug = ({sampleData}:{sampleData: SampleData}): JSX.Element =>{
   const debugStyle = {
       position: "absolute",
       top: 0, 
       left: 0,
       display: "flex",
-      
+      // asdfasdfa
   } as React.CSSProperties
   const {length, id, tags, filename, composition} = sampleData
   

@@ -1,20 +1,32 @@
-import React, { useEffect, useState, useMemo, useRef } from "react";
-import GridLayout, {
-  WidthProvider,
-  Responsive,
-  Layout,
-  Layouts,
-} from "react-grid-layout";
-// import "../css/cardLayout.css";
-import ViewCard from "./ViewCard/ViewCard";
-import { useStoreState, useStoreActions } from "@hooks";
-import CardData from "@classes/CardData";
-import { AppMode, DropCategory, DragSource } from "@enums";
-import IXDrop from "@components/IXDrop";
-import type { GridPosition } from "@interfaces/GridPosition";
-import defaultLayouts from "@static/defaultLayouts";
 import "@css/Knob.scss";
 import "@css/WidgetGrid.scss";
+
+import { AppMode, DragSource, DropCategory } from "@enums";
+import GridLayout, {
+  Layout,
+  Layouts,
+  Responsive,
+  WidthProvider,
+} from "react-grid-layout";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useStoreActions, useStoreState } from "@hooks";
+
+import CardData from "@classes/CardData";
+import type { GridPosition } from "@interfaces/GridPosition";
+import IXDrop from "@components/IXDrop";
+import ViewCard from "./ViewCard/ViewCard";
+import defaultLayouts from "@static/defaultLayouts";
+
+// import "../css/cardLayout.css";
+
+
+
+
+
+
+
+
+
 /**
  * Responsible for managing the layout of card components. Accesses a list of available card data from the store, then maps them into Card Components
  * @component
@@ -151,6 +163,7 @@ export const WidgetGrid = ({
                   key={index}
                   droppableId={card.sourceId}
                   dropCategory={DropCategory.IFRAME}
+                  isDropDisabled={false}
                 >
                   <ViewCard width={width / 4} height={height}>
                     <div>{card.title}</div>

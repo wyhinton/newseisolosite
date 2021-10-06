@@ -9,10 +9,18 @@ import SampleData from "@classes/SampleData";
 import XDrag from "@components/XDrag";
 import classNames from "classnames";
 
+// 
+
+
+
+
+
+
+
 const DraggableSample = ({sampleData, droppableId, draggableId, index}: {sampleData: SampleData, droppableId: string, draggableId: string, index: number}): JSX.Element =>{
   return(
     <XDrag index= {index} draggableId = {draggableId} dndType= {DropCategory.SampleTraySample}>
-      <Sample sampleData = {sampleData} label= {draggableId}/>
+      <Sample loaded = {true} sampleData = {sampleData} label= {draggableId}/>
     </XDrag>
   )
 }

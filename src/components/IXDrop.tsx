@@ -25,8 +25,8 @@ const IXDrop: FC<IXDrop> = ({
   return (
     // <Droppable {...properties} type={"some"}>
     // <Droppable isDropDisabled={true} droppableId = "sample tray">
-    <Droppable isDropDisabled={false} droppableId = "sample tray">
-    {/* <Droppable {...properties} type={"DEFAULT"}> */}
+    <Droppable {...properties} droppableId="sample tray">
+      {/* <Droppable {...properties} type={"DEFAULT"}> */}
       {(provided, snapshot) => {
         return (
           <div

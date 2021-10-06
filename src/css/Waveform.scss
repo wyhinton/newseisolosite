@@ -18,3 +18,29 @@
     transition: .1s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
+// .playing {
+//     fill: white;
+//     fill-opacity: 0;
+//     // transform-origin: 50% 50%;
+//     stroke-width: 10;
+//     stroke-color: red;
+//     animation-duration: 2s;
+//     // animation-name: pulse;
+// //     animation-iteration-count: infinite;
+// }
+// :host::ng-deep svg path:nth-of-type(1){
+//     fill:red;
+// }
+
+@keyframes pulse {
+    from {
+      stroke-width: 3px;
+      stroke-opacity: 1;
+      transform: scale(0.3);
+    }
+    to {
+      stroke-width: 0;
+      stroke-opacity: 0;
+      transform: scale(2);
+    }
+  }

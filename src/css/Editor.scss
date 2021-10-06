@@ -1,0 +1,26 @@
+
+@use 'variables' as v;
+
+.editor-container{
+    width: 100vw;
+    height: 100vh !important;
+    
+}
+
+.widget-grid-container{
+    border: 1px solid red;
+    
+}
+
+
+.editor-sample-view{
+    height: calc(100vh - v.$sample-tray-height)
+}
+
+.editor-container-sample-mode{
+    position: absolute;
+    height: calc(100vh - v.$sample-tray-height) !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+}

@@ -1,15 +1,22 @@
-import React, { useState, useEffect, useRef} from "react";
-import {useStoreActions, useStoreState} from "@hooks";
-import classNames from "classnames";
-import IXDrop from "@components/IXDrop";
-import { DropCategory } from "@enums";
-import Section from "@components/UI/Section";
-import "./Editor.scss";
-import WidgetGrid from "./WidgetGrid";
-import TrackContainer from "./TrackContainer";
-import Knob from "./Knob";
+import "@css/Editor.scss";
 
-const Editor = (): JSX.Element =>{
+import React, { useEffect, useRef, useState } from "react";
+import {useStoreActions, useStoreState} from "@hooks";
+
+import { DropCategory } from "@enums";
+import IXDrop from "@components/IXDrop";
+import Knob from "./Knob";
+import Section from "@components/UI/Section";
+import TrackContainer from "./TrackContainer";
+import WidgetGrid from "./WidgetGrid";
+import classNames from "classnames";
+
+const Editor = ({isSampleTrayActive}:{isSampleTrayActive: boolean}): JSX.Element =>{
+
+  const editorContainerClass = classNames("editor-container", {
+    "editor-container-sample-mode": !isSampleTrayActive,
+  })
+  
   const WidgetGridSectionRef= useRef<HTMLDivElement|undefined>();
   const trackWidth = 1500;
   const [trackHeight, setTrackHeight] = useState(200)
@@ -17,8 +24,7 @@ const Editor = (): JSX.Element =>{
   }, []);
 
   return(
-
-      <Section height= {"100vh"} className="editor-container">
+      <Section className={editorContainerClass}>
         <TrackContainer height = {trackHeight}>
             <WidgetGrid height = {trackHeight} width = {trackWidth}/>
         </TrackContainer>

@@ -29,29 +29,32 @@ const XDrag: FC<IXDrag> = ({
   if (!React.isValidElement(children)) return <div />;
   // const child = React.memo(children, []);
   return (
-    <Draggable {...properties} disableInteractiveElementBlocking = {true} shouldRespectForcePress ={true}>
-    {/* <Draggable {...properties} disableInteractiveElementBlocking = {true} shouldRespectForcePress ={true}> */}
+    <Draggable {...properties} disableInteractiveElementBlocking={true}>
+      {/* <Draggable {...properties} disableInteractiveElementBlocking = {true} shouldRespectForcePress ={true}> */}
       {(provided, snapshot) => {
         const dragHandleProperties = dragAll ? provided.dragHandleProps : {};
         if (snapshot.isDragging) {
-          return ReactDOM.createPortal(          <>
-            <div
-              className={className}
-              ref={provided.innerRef}
-              {...provided.draggableProps}
-              {...dragHandleProperties}
-            >
-              {React.cloneElement(children, { provided })}
-            </div>
-            <div
-              style={{
-                display: snapshot.isDragging ? "block" : "none",
-                backgroundColor: snapshot.isDragging ? "green" : "none",
-              }}
-            >
-              {React.cloneElement(children, { provided })}
-            </div>
-          </>, document.body);
+          return ReactDOM.createPortal(
+            <>
+              <div
+                className={className}
+                ref={provided.innerRef}
+                {...provided.draggableProps}
+                {...dragHandleProperties}
+              >
+                {React.cloneElement(children, { provided })}
+              </div>
+              <div
+                style={{
+                  display: snapshot.isDragging ? "block" : "none",
+                  backgroundColor: snapshot.isDragging ? "green" : "none",
+                }}
+              >
+                {React.cloneElement(children, { provided })}
+              </div>
+            </>,
+            document.body
+          );
         }
         return (
           <>

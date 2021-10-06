@@ -2,7 +2,7 @@ import '@css/App.css';
 
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import React, {useEffect, useState} from 'react';
-import {useStoreActions, useStoreState} from "@hooks";
+import {useStoreActions, useStoreState, useToggle} from "@hooks";
 
 import { DragSource } from '@enums';
 import Editor from '@components/Editor/Editor';
@@ -17,6 +17,14 @@ const App = (): JSX.Element =>{
   const processCompositions = useStoreActions((actions)=>actions.compositionsModel.processCompositions)
   const fetchCompositionSheet = useStoreActions((actions)=>actions.googleSheetsModel.fetchCompositionsSheet)
   const fetchSamples = useStoreActions((actions)=>actions.googleSheetsModel.fetchSamplesSheet)
+  const [isSampleTrayActive, toggleSampleTrayIsActive] = useToggle(false)
+
+  useKeyboardShortcut({
+    keyCode: 70, //f
+    action: ()=>{toggleSampleTrayIsActive()},
+    disabled: false // This key is not required
+  })
+
 
   useEffect(() => {
     fetchCardDataGoogleSheetThunk();
@@ -28,14 +36,13 @@ const App = (): JSX.Element =>{
   return (
     <DragDropContext
     onBeforeDragStart={(e) => {
-      console.log(e);
       const { source } = e;
     }}
     onDragEnd={onDragEnd}
   >
     <div className="App">
-        <Editor/>
-        <SampleTray/>
+        <Editor isSampleTrayActive ={isSampleTrayActive}/>
+        <SampleTray active ={isSampleTrayActive}/>
     </div>
     </DragDropContext>
   );

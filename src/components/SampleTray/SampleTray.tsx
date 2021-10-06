@@ -30,9 +30,7 @@ export interface SampleTrayModel{
 
 
 
-const SampleTray = (): JSX.Element => {
-  const [value, toggleValue] = useToggle(false)
-  
+const SampleTray = ({active}:{active:boolean}): JSX.Element => {
   const [state, actions] = useLocalStore<SampleTrayModel>(() => ({
     tags: [] as string[],
     addTag: action((_state, tag) => {
@@ -43,15 +41,11 @@ const SampleTray = (): JSX.Element => {
     }),
   }));
 
-  
-  const submit = () =>{
-    console.log("doing submit");
-    toggleValue()
-  }
-  const osComponentRef1 = React.createRef<OverlayScrollbarsComponent>();
+
+  // const osComponentRef1 = React.createRef<OverlayScrollbarsComponent>();
   
   const sampleTrayClass = classNames("sample-tray-container", {
-    "sample-tray-hidden": value,
+    "sample-tray-hidden": active,
   });
 
   const containerRef= useRef<HTMLDivElement|undefined>();
@@ -62,16 +56,10 @@ const SampleTray = (): JSX.Element => {
     // console.log(tagFilter);
   },[tagFilter]);
 
-  const {enable, disable} = useKeyboardShortcut({
-    keyCode: 70, //f
-    action: submit,
-    disabled: false // This key is not required
-  })
-
   return (
       <Section
       className={sampleTrayClass}>
-        <CloseButton onMouseUp= {toggleValue}/>
+        {/* <CloseButton onMouseUp= {toggleValue}/> */}
           <Section column = {true} backgroundColor = "white" className = {"sample-tray-inner-container"}>
             <Heading>
               <TagBar tagsState = {state.tags} actions = {actions} onTagClick= {(id: string)=>{setTagFilter(id)}}/>

@@ -39,12 +39,10 @@ console.log(pathRef);
   return(
     <div className ={containerClass} onMouseEnter = {(e)=>{setHovered(true)}} onMouseLeave = {(e)=>{setHovered(false)}}>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox={createViewBox(length)} style = {{width: "fit-content", height: 90}}>
-      {/* <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400.0 100.0" style = {{width: "fit-content", height: 90}}> */}
       <defs>
         <linearGradient   x1='.258%' y1='49.75%' x2='101.258%' y2='49.75%' id='bgGradient' > 
               <stop offset='20.525%'  stop-color='#3023AE'  />
               <stop offset='47.525%' stop-color='#53A0FD'  /> 
-              {/* <stop offset='100%' stop-color='#B4EC51'  />  */}
         </linearGradient>
         <clipPath id={maskId}>
            <path d={svgPath}/>
@@ -55,7 +53,8 @@ console.log(pathRef);
       </defs>
         <g transform={"translate(0 50)"}>  
           <path d={svgPath} stroke = {"red"} fill = {"url(#bgGradient)"} strokeWidth ={strokeWidth}/>
-          <rect filter = "url(#blur)" x = {playheadPosition-playHeadWidth} y ={-100} id = "playhead" width ={playHeadWidth} fill = {"white"} height={400} clipPath={pathRef}></rect> 
+          <rect x = {playheadPosition-playHeadWidth} y ={-100} id = "playhead" width ={playHeadWidth} fill = {"white"} height={400} clipPath={pathRef}></rect> 
+          {/* <rect filter = "url(#blur)" x = {playheadPosition-playHeadWidth} y ={-100} id = "playhead" width ={playHeadWidth} fill = {"white"} height={400} clipPath={pathRef}></rect>  */}
         </g>
       </svg>
 
@@ -64,5 +63,5 @@ console.log(pathRef);
   )
 }
 
-export default Waveform
+export default React.memo(Waveform)
 

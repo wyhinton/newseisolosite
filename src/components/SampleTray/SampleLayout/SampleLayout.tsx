@@ -154,7 +154,7 @@ const SampleLayout = ({ activeTags }: SampleLayoutProperties): JSX.Element => {
   );
 };
 
-export default SampleLayout;
+export default React.memo(SampleLayout);
 
 
 const hasActiveTags = (tags: string[], sample: SampleData): boolean =>{

@@ -32,10 +32,10 @@ const [playing, setPlaying] = useState(false)
   return(
     <div onClick = {(e)=>{setPlaying(!playing)}} className = {"sample-container"}>
       {/* <SampleDebug sampleData= {sampleData}/> */}
-      {/* {label} */}
       {/* <NewPlayHead sampleData= {sampleData} distance={sampleProgress}/> */}
-      <PlayHead distance={sampleProgress}/>
+      {/* <PlayHead distance={sampleProgress}/> */}
       <ReactPlayer
+      loop= {true}
       playing= {playing}
       width = {10}
       height = {10}
@@ -44,7 +44,7 @@ const [playing, setPlaying] = useState(false)
       setSampleProgress(played)
     }}
       url={sampleData.src} />
-      
+      {/* HELLO */}
       <Waveform sampleData= {sampleData} sampleProgress = {sampleProgress}></Waveform>
     </div>
   )

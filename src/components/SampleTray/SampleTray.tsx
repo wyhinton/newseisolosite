@@ -76,7 +76,7 @@ const SampleTray = (): JSX.Element => {
             <Heading>
               <TagBar tagsState = {state.tags} actions = {actions} onTagClick= {(id: string)=>{setTagFilter(id)}}/>
             </Heading>
-            <Scrollbars style={{ width: "100%", height: 400 }}>
+            <Scrollbars style={{ width: "100%", height: "100vh" }}>
             <SampleLayout activeTags = {state.tags}/>
             </Scrollbars>
         </Section>

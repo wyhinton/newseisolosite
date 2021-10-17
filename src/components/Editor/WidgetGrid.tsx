@@ -19,14 +19,6 @@ import defaultLayouts from "@static/defaultLayouts";
 
 // import "../css/cardLayout.css";
 
-
-
-
-
-
-
-
-
 /**
  * Responsible for managing the layout of card components. Accesses a list of available card data from the store, then maps them into Card Components
  * @component

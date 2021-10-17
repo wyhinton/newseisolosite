@@ -44,14 +44,14 @@ const XDrag: FC<IXDrag> = ({
               >
                 {React.cloneElement(children, { provided })}
               </div>
-              <div
+              {/* <div
                 style={{
                   display: snapshot.isDragging ? "block" : "none",
                   backgroundColor: snapshot.isDragging ? "green" : "none",
                 }}
               >
                 {React.cloneElement(children, { provided })}
-              </div>
+              </div> */}
             </>,
             document.body
           );

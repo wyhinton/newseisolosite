@@ -14,46 +14,46 @@ interface ViewCardProperties {
   children?: JSX.Element | JSX.Element[];
 }
 
-const ViewCard = ({ children, width, height }: ViewCardProperties): JSX.Element => {
+const ViewCard = ({
+  children,
+  width,
+  height,
+}: ViewCardProperties): JSX.Element => {
   const cardStyle = {
-      width: width??"100%",
-      height: height??"100%",
-      
-  } as React.CSSProperties
+    width: width ?? "100%",
+    height: height ?? "100%",
+  } as React.CSSProperties;
 
   const viewCardContainerStyle = {
-      width: "100%",
-      border: "1px solid blue",
-      height: "100%"
-  } as React.CSSProperties
+    width: "100%",
+    border: "1px solid blue",
+    height: "100%",
+  } as React.CSSProperties;
 
   return (
-  <div style= {viewCardContainerStyle}>
-  <div >
-      <div >
-        {children}
+    <div style={viewCardContainerStyle}>
+      <div>
+        <div>{children}</div>
       </div>
-  </div>
-  </div>
-  )
-
+    </div>
+  );
 };
-// const ViewCard = ({ children, width, height }: ViewCardProperties): JSX.Element => {
+// const ViewCard = ({
+//   children,
+//   width,
+//   height,
+// }: ViewCardProperties): JSX.Element => {
 //   const cardStyle = {
-//       width: width??"100%",
-//       height: height??"100%",
-      
-//   } as React.CSSProperties
+//     width: width ?? "100%",
+//     height: height ?? "100%",
+//   } as React.CSSProperties;
 //   return (
-//   <div className="dimmer-container" style= {cardStyle}>
-//   <div className="dimmer">
-//       <div className="dimmer-inner">
-//         {children}
+//     <div className="dimmer-container" style={cardStyle}>
+//       <div className="dimmer">
+//         <div className="dimmer-inner">{children}</div>
 //       </div>
-//   </div>
-//   </div>
-//   )
-
+//     </div>
+//   );
 // };
 
 export default ViewCard;

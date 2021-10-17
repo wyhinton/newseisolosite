@@ -70,9 +70,8 @@ const SampleLayout = ({ activeTags }: SampleLayoutProperties): JSX.Element => {
     isDropDisable: true,
     dropCategory: DropCategory.SampleTraySample,
     droppableId: "Sample Tray",
-    // isCombineEnabled: false,
     direction: "horizontal" as Direction,
-    isCombineOnly: true,
+    // isCombineOnly: true,
     disabled: true,
   };
 

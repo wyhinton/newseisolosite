@@ -28,11 +28,11 @@ const Waveform = ({
     return `0 0 ${mapRange(length, 0, 3, 0, 400)} 100.0`;
   };
 
-  const containerClass = classNames("waveform-container", {
-    "popup-3d": hovered,
-    // "playing": isPlaying,
-    // "popdown-3d": !hovered,
-  });
+  // const containerClass = classNames("waveform-container", {
+  //   "popup-3d": hovered,
+  //   // "playing": isPlaying,
+  //   // "popdown-3d": !hovered,
+  // });
   const svgClass = classNames("waveform-svg", {
     playing: isPlaying,
   });
@@ -60,13 +60,13 @@ const Waveform = ({
 
   return (
     <div
-      className={containerClass}
-      onMouseEnter={(e) => {
-        setHovered(true);
-      }}
-      onMouseLeave={(e) => {
-        setHovered(false);
-      }}
+      className={"waveform-container"}
+      // onMouseEnter={(e) => {
+      //   setHovered(true);
+      // }}
+      // onMouseLeave={(e) => {
+      //   setHovered(false);
+      // }}
     >
       <svg
         className={svgClass}
@@ -101,16 +101,6 @@ const Waveform = ({
         </filter> */}
         </defs>
         <g transform={"translate(0 50)"}>
-          {/* <g transform={"translate(0 50)"} filter = "url(#demo1)"> */}
-          {/* {
-            isPlaying?<path
-            // className = "pulse"
-            d={svgPath}
-            stroke={"red"}
-            // fill={gradientRef}
-            // strokeWidth={strokeWidth}
-          />:<></>
-          } */}
           <path
             d={svgPath}
             stroke={"red"}

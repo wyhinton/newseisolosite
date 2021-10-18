@@ -16,7 +16,7 @@ import { Direction } from "react-beautiful-dnd";
 import DraggableSample from "../Sample/DraggableSample";
 import { DropCategory } from "@enums";
 import Grid from "./Grid";
-import IXDrop from "@components/IXDrop";
+// import IXDrop from "@components/IXDrop";
 import Sample from "../Sample/Sample";
 import SampleData from "@classes/SampleData";
 import { cubicOut } from "./easings";
@@ -111,41 +111,41 @@ const SampleLayout = ({ activeTags }: SampleLayoutProperties): JSX.Element => {
   }, [samples]);
 
   return (
-    <IXDrop {...droppableProps}>
-      <Grid {...gridProps} itemHeight={itemHeight} measured={true}>
-        {activeSamples.map(function (sD, index) {
-          const { filename, id } = sD;
-          // const widthRatio = 2;
-          // const widthRatio = getSampleWidth(sD)
-          const widthRatio = getSampleWidth2(sD);
-          // console.log();
-          return (
-            <li
-              className="grid-item"
-              key={index}
-              //allow for custom prop on li
-              //@ts-ignore
-              dataRatio={widthRatio}
-              style={{
-                width: widthRatio * columnWidth + gutters * (widthRatio - 1),
-                height: itemHeight,
-                // backgroundColor: "blue"
-              }}
-            >
-              <div key={sD.id} className={"layout-grid-item"}>
-                <DraggableSample
-                  key={sD.id}
-                  sampleData={sD}
-                  index={index}
-                  droppableId={index + "_drop"}
-                  draggableId={filename}
-                />
-              </div>
-            </li>
-          );
-        })}
-      </Grid>
-    </IXDrop>
+    // <IXDrop {...droppableProps}>
+    <Grid {...gridProps} itemHeight={itemHeight} measured={true}>
+      {activeSamples.map(function (sD, index) {
+        const { filename, id } = sD;
+        // const widthRatio = 2;
+        // const widthRatio = getSampleWidth(sD)
+        const widthRatio = getSampleWidth2(sD);
+        // console.log();
+        return (
+          <li
+            className="grid-item"
+            key={index}
+            //allow for custom prop on li
+            //@ts-ignore
+            dataRatio={widthRatio}
+            style={{
+              width: widthRatio * columnWidth + gutters * (widthRatio - 1),
+              height: itemHeight,
+              // backgroundColor: "blue"
+            }}
+          >
+            <div key={sD.id} className={"layout-grid-item"}>
+              <DraggableSample
+                key={sD.id}
+                sampleData={sD}
+                index={index}
+                droppableId={index + "_drop"}
+                draggableId={filename}
+              />
+            </div>
+          </li>
+        );
+      })}
+    </Grid>
+    // </IXDrop>
   );
 };
 

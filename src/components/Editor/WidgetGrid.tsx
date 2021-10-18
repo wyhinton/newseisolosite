@@ -13,7 +13,7 @@ import { useStoreActions, useStoreState } from "@hooks";
 
 import CardData from "@classes/CardData";
 import type { GridPosition } from "@interfaces/GridPosition";
-import IXDrop from "@components/IXDrop";
+// import IXDrop from "@components/IXDrop";
 import ViewCard from "./ViewCard/ViewCard";
 import defaultLayouts from "@static/defaultLayouts";
 
@@ -151,16 +151,16 @@ export const WidgetGrid = ({
                 // className = {"dimmer-container"}
                 // className = {cardContainerClass(card, viewModeState)}
               >
-                <IXDrop
+                {/* <IXDrop
                   key={index}
                   droppableId={card.sourceId}
                   dropCategory={DropCategory.IFRAME}
                   isDropDisabled={false}
-                >
-                  <ViewCard width={width / 4} height={height}>
-                    <div>{card.title}</div>
-                  </ViewCard>
-                </IXDrop>
+                > */}
+                <ViewCard width={width / 4} height={height}>
+                  <div>{card.title}</div>
+                </ViewCard>
+                {/* </IXDrop> */}
               </div>
             );
           })}

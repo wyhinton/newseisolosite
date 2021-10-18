@@ -1,18 +1,22 @@
-export interface Block {
-  [x: string]: any;
-  w: number;
-  h: number;
-  fit?: Node;
-}
+// export interface Block {
+//   [x: string]: any;
+//   w: number;
+//   h: number;
+//   fit?: PackNode;
+//   // id: string;
+// }
 
-export interface Node {
+import SampleData from "@classes/SampleData";
+
+export interface PackNode {
   x: number;
   y: number;
   w: number;
   h: number;
+  // id: string;
   used?: boolean;
-  down?: Node;
-  right?: Node;
+  down?: PackNode;
+  right?: PackNode;
 }
 
 export interface Piece {
@@ -30,47 +34,51 @@ export interface Fit {
 export class Packer {
   readonly w: number;
   readonly h: number;
-  readonly root: Node;
+  readonly root: PackNode;
   readonly gutter: number;
 
   constructor(w: number, h: number, gutter?: number) {
+    const margin = 40;
     this.w = w;
     this.h = h;
     this.gutter = gutter ?? 5;
-    this.root = { x: 0, y: 0, w: w, h: h, used: false };
+    this.root = { x: margin, y: 0, w: w, h: h, used: false };
   }
-  fit(blocks: Block[]): void {
+  fit(blocks: SampleData[]): void {
     let n, node, block;
     for (n = 0; n < blocks.length; n++) {
       block = blocks[n];
-      block.w += this.gutter;
-      block.h += this.gutter;
-      if ((node = this.findNode(this.root, block.w, block.h)))
-        block.fit = this.splitNode(node, block.w, block.h);
+      // block.w += this.gutter;
+      // block.h += this.gutter;
+      if ((node = this.findNode(this.root, block.w, block.h))) {
+        const fit = this.splitNode(node, block.w, block.h, block.id);
+        block.fit = this.splitNode(node, block.w, block.h, block.id);
+        console.log(fit);
+      }
+
+      // console.log(this.splitNode(node, block.w, block.h, block.id));
     }
   }
-  findNode(root: Node, w: number, h: number): Node | null {
+  findNode(root: PackNode, w: number, h: number): PackNode | null {
     if (root.used && root.right && root.down)
       return this.findNode(root.right, w, h) || this.findNode(root.down, w, h);
     else if (w <= root.w && h <= root.h) return root;
     else return null;
   }
-  splitNode(node: Node, w: number, h: number): Node {
+  splitNode(node: PackNode, w: number, h: number, id: string): PackNode {
     node.used = true;
-    // node.down = {
-    //   x: node.x,
-    //   y: node.y + h + this.gutter,
-    //   w: node.w,
-    //   h: node.h - h,
-    // };
-    // node.right = {
-    //   x: node.x + w + this.gutter,
-    //   y: node.y,
-    //   w: node.w - w,
-    //   h: h,
-    // };
-    node.down = { x: node.x, y: node.y + h, w: node.w, h: node.h - h };
-    node.right = { x: node.x + w, y: node.y, w: node.w - w, h: h };
+    node.down = {
+      x: node.x,
+      y: node.y + h,
+      w: node.w,
+      h: node.h - h,
+    };
+    node.right = {
+      x: node.x + w,
+      y: node.y,
+      w: node.w - w,
+      h: h,
+    };
     return node;
   }
 }

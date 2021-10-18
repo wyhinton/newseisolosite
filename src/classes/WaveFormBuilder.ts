@@ -9,7 +9,8 @@ export default class WaveFormBuilder {
     return this.getAudio(original.src)
       .then((a) => {
         // console.log(a);
-        const pathData = this.collectSamplePoints(a);
+        // original.calculateDimensions(document.window.innerWidth)
+        const pathData = this.collectSamplePoints(a, original);
         original.setPath(pathData);
         // console.log(original.path);
         return original;
@@ -18,7 +19,7 @@ export default class WaveFormBuilder {
         return original;
       });
   }
-  collectSamplePoints = (data: WaveformData) => {
+  collectSamplePoints = (data: WaveformData, sample: SampleData) => {
     const numberOfPoints = 10;
     const duration = data.duration;
     const trueWidth = 0;
@@ -36,6 +37,7 @@ export default class WaveFormBuilder {
       maxSampleLengthSeconds,
       minSvgViewBoxWidth,
       maxSvgViewBoxWidth
+      // maxSvgViewBoxWidth
     );
     console.log(sampleDuration);
 

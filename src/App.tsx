@@ -10,6 +10,7 @@ import SampleTray from "./components/SampleTray/SampleTray";
 import { actions } from "react-table";
 import { useKeyboardShortcut } from "crooks";
 import { DragEndEvent, DragStartEvent } from "@dnd-kit/core/dist/types";
+import { DndContext, closestCorners } from "@dnd-kit/core";
 
 const App = (): JSX.Element => {
   const fetchCardDataGoogleSheetThunk = useStoreActions(
@@ -42,19 +43,6 @@ const App = (): JSX.Element => {
   }, [fetchCardDataGoogleSheetThunk]);
 
   const [dragComplete, setDragComplete] = useState(false);
-  // const [state, actions] = useLocalStore<CardModel>(
-  //     () => ({
-  //       dragging: "none",
-  //       setDragging: action((state, id) => {
-  //         state.dragging = id;
-  //       }),
-  //       rects: rects,
-  //     }),
-  //     [],
-  //     () => ({
-  //       devTools: false,
-  //     })
-  //   );
 
   const onDragStart = (e: DragStartEvent): void => {
     console.log("GOT DRAG START");
@@ -82,17 +70,16 @@ const App = (): JSX.Element => {
   // };
 
   return (
-    <DragDropContext
-      onBeforeDragStart={(e) => {
-        const { source } = e;
-      }}
+    <DndContext
+      onDragStart={onDragStart}
+      collisionDetection={closestCorners}
       onDragEnd={onDragEnd}
     >
       <div className="App">
         <Editor isSampleTrayActive={isSampleTrayActive} />
         <SampleTray active={isSampleTrayActive} />
       </div>
-    </DragDropContext>
+    </DndContext>
   );
 };
 

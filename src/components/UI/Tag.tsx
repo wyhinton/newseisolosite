@@ -11,47 +11,46 @@ interface TagProperties {
   tag: string;
   onMouseUp: (id: string) => void;
   active: boolean;
-  
 }
 
 const Tag = ({ tag, onMouseUp, active }: TagProperties): JSX.Element => {
   const fullTagName = tagToFull(tag);
-  console.log(tag);
-  console.log(fullTagName);
+  // console.log(tag);
+  // console.log(fullTagName);
 
   const buttonStyle = {
-      height: 20,
-      width: "fit-content",
-      // backgroundColor: active?"orange":tagToColor(tag),
-      backgroundColor: active?"orange":"grey",
-      borderRadius: 4,
-      lineHeight: 1.2,
-      fontWeight: 400,
-      paddingLeft: 5,
-      paddingRight: 5,
-  } as React.CSSProperties
+    height: 20,
+    width: "fit-content",
+    // backgroundColor: active?"orange":tagToColor(tag),
+    backgroundColor: active ? "orange" : "grey",
+    borderRadius: 4,
+    lineHeight: 1.2,
+    fontWeight: 400,
+    paddingLeft: 5,
+    paddingRight: 5,
+  } as React.CSSProperties;
 
-  
   return (
     <div
-    onMouseUp={(e) => {
-      console.log("got mouseup");
-      onMouseUp(tag);
-    }}
-    style={{ paddingRight: ".5em",
-    // backgroundColor: tagToColor(tag)dff
-  }}
-  >
-    <Popup
-      trigger={(open) => (
-        <button style = {buttonStyle}>{tagToFull(tag)}</button>
-      )}
-      on="hover"
-      position="top center"
-      closeOnDocumentClick
+      onMouseUp={(e) => {
+        console.log("got mouseup");
+        onMouseUp(tag);
+      }}
+      style={{
+        paddingRight: ".5em",
+        // backgroundColor: tagToColor(tag)dff
+      }}
     >
-      <PopupWindow tag={tag} />
-    </Popup>
+      <Popup
+        trigger={(open) => (
+          <button style={buttonStyle}>{tagToFull(tag)}</button>
+        )}
+        on="hover"
+        position="top center"
+        closeOnDocumentClick
+      >
+        <PopupWindow tag={tag} />
+      </Popup>
     </div>
   );
 };
@@ -90,17 +89,17 @@ const tagToFull = (tag: string): string => {
       fullName = "Mixed Tone";
       break;
     case "C":
-      fullName = "Chord"
-      break; 
+      fullName = "Chord";
+      break;
     case "TRL":
-      fullName = "Trill"
-      break; 
+      fullName = "Trill";
+      break;
     case "SLD":
-      fullName = "SLIDE"
-      break; 
+      fullName = "SLIDE";
+      break;
     case "T":
-      fullName = "TONAL"
-      break; 
+      fullName = "TONAL";
+      break;
     default:
       fullName = tag;
   }
@@ -140,8 +139,8 @@ const tagToColor = (tag: string): string => {
       color = "rgb(113,153,155)";
       break;
     case "C":
-      color = "rgb(113,153,155)"
-      break; 
+      color = "rgb(113,153,155)";
+      break;
     default:
       color = tag;
   }
@@ -158,10 +157,10 @@ const PopupWindow = ({ tag }: { tag: string }): JSX.Element => {
   };
   return (
     <div style={popupStyle}>
-      <Section column={true} padding={"2em"} backgroundColor ="red">
+      <Section column={true} padding={"2em"} backgroundColor="red">
         <Heading size={500}>{tagToFull(tag)}</Heading>
         <Text>
-        Lorem Ipsum is simply dummy text of the printing and typesetting
+          Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industry's standard dummy text ever
           since the 1500s, when an unknown printer took a galley of type and
           scrambled it to make a type specimen book.
@@ -172,5 +171,3 @@ const PopupWindow = ({ tag }: { tag: string }): JSX.Element => {
 };
 
 export default Tag;
-
-

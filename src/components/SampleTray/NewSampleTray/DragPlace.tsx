@@ -14,6 +14,7 @@ const DragPlace = ({
   currentSample,
   posRef,
   sampleRef,
+  transform,
 }: // transform,
 // setId,
 // rectRef,
@@ -30,9 +31,10 @@ const DragPlace = ({
   draggableId: string;
   currentSample: Konva.Path | null;
   sampleRef?: React.RefObject<Konva.Path>;
+  transform: { x: number; y: number };
 }): JSX.Element => {
   const [transformState, setTransform] = useState(`translate(0px, 0px)`);
-
+  const [position, setPosition] = useState({ top: 0, left: 0 });
   const getTranslate = (transform: Transform | undefined): string => {
     if (transform) {
       return `translate(${transform?.x}px, ${transform?.y}px)`;
@@ -42,16 +44,31 @@ const DragPlace = ({
   };
   // console.log(sampleRef.current ?? "no urrent");
 
-  useEffect(() => {
-    console.log(currentSample);
-  }, [currentSample]);
+  // useEffect(() => {
+  //   console.log(
+  //     `SETTING CURRENT SAMPLE AT DRAG PLACE TO ${currentSample?.attrs.id}`
+  //   );
+  //   console.log(
+  //     `CURRENT POSITION IS X: ${posRef.current.x}, Y: ${posRef.current.x}`
+  //   );
+  //   console.log(currentSample);
+  //   console.log(posRef.current);
+  //   setPosition({ top: posRef.current.y, left: posRef.current.x });
+  // }, [currentSample, posRef.current, transform]);
+  // useEffect(() => {
+  //   console.log(posRef.current);
+  // }, [posRef]);
   const containerStyle = {
     width: 200,
     height: 300,
     backgroundColor: "red",
     position: "absolute",
-    top: posRef.current.y,
-    left: posRef.current.x,
+    top: transform.y,
+    left: transform.x,
+    // top: position.top,
+    // left: position.left,
+    // top: posRef.current.y,
+    // left: posRef.current.x,
     zIndex: 10,
     transform: transformState,
     display: isDragging ? "block" : "none",

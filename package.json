@@ -27,6 +27,7 @@
     "evergreen-ui": "^6.4.0",
     "file-saver": "^2.0.5",
     "google-spreadsheet": "^3.1.15",
+    "interpolate-range": "^2.1.0",
     "konva": "^8.2.2",
     "lodash": "^4.17.21",
     "lodash.isequalwith": "^4.4.0",

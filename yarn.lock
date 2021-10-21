@@ -7318,6 +7318,11 @@ internal-slot@^1.0.3:
     has "^1.0.3"
     side-channel "^1.0.4"
 
+interpolate-range@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/interpolate-range/-/interpolate-range-2.1.0.tgz#fec3f907a3a075476feb478439ae8d166bc826a5"
+  integrity sha512-LCGI6Gr24kAsdY/avfo2dp0f1QcUjeqk+ZYOkq8Q6c0WKYPIi9BH91uVzFhnXnOwO0BurYWm6B35GR/nGuT8hQ==
+
 ip-regex@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/ip-regex/-/ip-regex-2.1.0.tgz#fa78bf5d2e6913c911ce9f819ee5146bb6d844e9"

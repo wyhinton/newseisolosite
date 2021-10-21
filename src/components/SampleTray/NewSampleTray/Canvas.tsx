@@ -193,6 +193,7 @@ const Canvas = ({ activeTags }: { activeTags: string[] }): JSX.Element => {
   const refForDragOverlay = useRef<HTMLDivElement>(null);
 
   const onRectMouseDown = (e: KonvaEventObject<MouseEvent>): void => {
+    console.log("DOING ON RECT MOUSE DOWN");
     const { pageX, pageY } = e.evt;
     setDragPos({ x: pageX, y: pageY });
     actions.setIsDragging(true);
@@ -219,7 +220,9 @@ const Canvas = ({ activeTags }: { activeTags: string[] }): JSX.Element => {
       const onMouseEnter = (e: KonvaEventObject<MouseEvent>) =>
         actions.setHoveredId(e.target.attrs.id);
       const onDragMove = (e: KonvaEventObject<DragEvent>) => {
-        posRef.current = { x: e.evt.pageX, y: e.evt.pageY };
+        // console.log(e.evt.pageX);
+        setDragPos({ x: e.evt.pageX, y: e.evt.pageY });
+        // posRef.current = { x: e.evt.pageX, y: e.evt.pageY };
       };
       const onMouseUp = onRectMouseUp;
 
@@ -284,7 +287,7 @@ const Canvas = ({ activeTags }: { activeTags: string[] }): JSX.Element => {
           <Layer
             drawHit={(e) => {}}
             // hitGraphEnabled={true}
-            hit
+            // hit
             dragBoundFunc={(e) => {
               console.log(e);
               return { x: 0, y: 0 };
@@ -312,6 +315,7 @@ const Canvas = ({ activeTags }: { activeTags: string[] }): JSX.Element => {
       </div>
       <DragPlace
         // sampleRef={sampleRef}
+        transform={dragPos}
         id={"drag-container"}
         isDragging={state.isDragging}
         posRef={posRef}
@@ -387,13 +391,13 @@ const SamplePath = React.memo(
           // hitFunc={(context) => {
           //   // context.setAttr() = "red"
           //   return context.fillRect(0, 0, 100, 100);
+          // // }}
+          // onClick={(e) => {
+          //   // setRef(sampleRef);
+          //   // setRef()
+          //   // ref.current = sampleRef.current;
+          //   // onMouseDown(e);
           // }}
-          onClick={(e) => {
-            // setRef(sampleRef);
-            // setRef()
-            // ref.current = sampleRef.current;
-            // onMouseDown(e);
-          }}
           onMouseUp={onMouseUp}
           onMouseDown={(e) => {
             console.log(e.target.absolutePosition());
@@ -417,17 +421,16 @@ const SamplePath = React.memo(
             return absolutePosition;
             // return { x: 0, y: 0 };
           }}
-          shadowColor={"black"}
-          shadowBlur={15}
-          shadowOffsetX={0}
-          shadowOffsetY={0}
-          shadowOpacity={0.2}
+          // shadowColor={"black"}
+          // shadowBlur={15}
+          // shadowOffsetX={0}
+          // shadowOffsetY={0}
+          // shadowOpacity={0.2}
           fillLinearGradientStartPoint={{ x: 0, y: 0 }}
           fillLinearGradientEndPoint={{ x: w, y: h }}
           fillLinearGradientColorStops={gradient}
           onDragMove={(e) => {
             onDragMove(e);
-            console.log(e);
           }}
           draggable={draggable}
           stroke={isHovered ? "white" : "black"}

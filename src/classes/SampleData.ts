@@ -55,13 +55,7 @@ class SampleData {
   };
   calculateDimensions(containerWidth: number, rowHeight: number): void {
     const margin = 0;
-    this.w = mapRange(
-      this.length,
-      0,
-      10.5,
-      0 + margin,
-      containerWidth - margin
-    );
+    this.w = mapRange(this.length, 0, 6.5, 0 + margin, containerWidth - margin);
     this.h = rowHeight;
   }
   // createKonvaObject() {

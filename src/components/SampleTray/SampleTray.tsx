@@ -17,15 +17,9 @@ import IconButton from "@components/UI/IconButton";
 import OverlayScrollbars from "overlayscrollbars";
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react";
 import { Pane } from "evergreen-ui";
-import Sample from "./Sample/Sample";
-import SampleLayout from "./SampleLayout/SampleLayout";
-import Scrollbars from "react-custom-scrollbars";
 import Section from "../UI/Section";
 import TagBar from "./TagBar/TagBar";
 import classNames from "classnames";
-import { useArray } from "@hooks";
-import { useKeyboardShortcut } from "crooks";
-import { useToggle } from "@hooks";
 import Canvas from "./NewSampleTray/Canvas";
 
 // import {useToggle} from "@withvoid/melting-pot"
@@ -69,15 +63,15 @@ const SampleTray = ({ active }: { active: boolean }): JSX.Element => {
         backgroundColor="white"
         className={"sample-tray-inner-container"}
       >
-        <Heading>
-          <TagBar
+        {/* <Heading> */}
+        {/* <TagBar
             tagsState={state.tags}
             actions={actions}
             onTagClick={(id: string) => {
               setTagFilter(id);
             }}
-          />
-        </Heading>
+          /> */}
+        {/* </Heading> */}
         {/* <Scrollbars style={{ width: "100%", height: "100vh" }}> */}
         {/* <SampleLayout activeTags = {state.tags}/> */}
         <Canvas activeTags={state.tags} />

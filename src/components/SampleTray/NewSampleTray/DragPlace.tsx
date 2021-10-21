@@ -71,7 +71,8 @@ const DragPlace = ({
     // left: posRef.current.x,
     zIndex: 10,
     transform: transformState,
-    display: isDragging ? "block" : "none",
+    display: "none",
+    // display: isDragging ? "block" : "none",
   } as React.CSSProperties;
 
   dragRef(clickRef.current);

@@ -3,7 +3,7 @@ import Konva from "konva";
 import ReactPlayer from "react-player";
 import { packSamples } from "./rects";
 import SampleData from "@classes/SampleData";
-import { Group, Layer, Path, Rect, Stage, Text } from "react-konva";
+import { Group, Layer, Path, Rect, Stage, Text, Circle } from "react-konva";
 import { KonvaEventObject } from "konva/lib/Node";
 import { groupBy, mapRange } from "@utils";
 import { useDraggable } from "@dnd-kit/core";
@@ -16,22 +16,18 @@ import React, {
   useRef,
   useState,
 } from "react";
-// import rects from "./NewSampleTray/rects";
-// import { memo } from "easy-peasy";
+import tags from "@static/tags";
+import SamplePath, { EnrichedSample } from "./CanvasItems/SamplePath";
+import TagSelector, { TagSelectorProps } from "./CanvasItems/TagSelector";
 
-import { action, Action, useLocalStore } from "easy-peasy";
-
-interface EnrichedSample
-  extends Omit<SampleData, "setPath" | "calculateDimensions"> {
-  onDragMove: (e: KonvaEventObject<DragEvent>) => void;
-  onDragStart: (e: KonvaEventObject<DragEvent>) => void;
-  onDragEnd: (e: KonvaEventObject<DragEvent>) => void;
-  onMouseEnter: (e: KonvaEventObject<MouseEvent>) => void;
-  onMouseDown: (e: KonvaEventObject<MouseEvent>) => void;
-  onMouseUp: (e: KonvaEventObject<MouseEvent>) => void;
-  draggable: boolean;
-  fill: string;
-}
+import { action, Action, computed, Computed, useLocalStore } from "easy-peasy";
+import theme from "@static/theme";
+import Tag from "@classes/Tag";
+import SampleCollections from "./CanvasItems/SampleCollections";
+import SampleCollection from "@classes/SampleCollection";
+import { PathConfig } from "konva/lib/shapes/Path";
+import { Shape } from "konva/lib/Shape";
+import CollectionContainer from "./CanvasItems/CollectionContainer";
 
 const itemHeight = 75;
 const Canvas = ({ activeTags }: { activeTags: string[] }): JSX.Element => {
@@ -47,26 +43,29 @@ const Canvas = ({ activeTags }: { activeTags: string[] }): JSX.Element => {
   interface CanvasModel {
     //state
     hoveredId: string;
-    playingId: string;
+    allTags: Tag[];
+    selectedTags: string[];
+    playingSample: SampleData | undefined;
     draggingId: string;
     isDragging: boolean;
     stageY: number;
     stageHeight: number;
     viewHeight: number;
+    addToCurrentCollection: Action<CanvasModel, string>;
+    activeCollection: SampleCollection;
+    sampleCollections: SampleCollection[];
+    setActiveCollection: Action<CanvasModel, string>;
     setStageY: Action<CanvasModel, number>;
-    // enrichedSamples: Computed<CanvasModel, EnrichedSample[]>;
+    activeSamples: Computed<CanvasModel, SampleData[]>;
+    availableTags: Computed<CanvasModel, Tag[]>;
     packedSamples: SampleData[];
-    // packedSamples:SampleData[]
-    //requests
-
-    //setter
-    // setData: Action<CanvasStore, string[]>;
-    // draggingSample: Computed<CanvasModel, SampleData>;
+    addTag: Action<CanvasModel, string>;
+    removeTag: Action<CanvasModel, string>;
     setViewHeight: Action<CanvasModel, number>;
     setStageHeight: Action<CanvasModel, number>;
     setDraggingId: Action<CanvasModel, string>;
     setIsDragging: Action<CanvasModel, boolean>;
-    setPlaying: Action<CanvasModel, string>;
+    sePlayingSample: Action<CanvasModel, SampleData>;
     setHoveredId: Action<CanvasModel, string>;
   }
 
@@ -77,7 +76,7 @@ const Canvas = ({ activeTags }: { activeTags: string[] }): JSX.Element => {
     packed: SampleData[] | undefined;
     rows: number | undefined;
   }
-
+  const sampleLayerWidth = window.innerWidth / 3;
   const packedSamples: SampleFit = useMemo(() => {
     let packedRects = samples;
     if (activeTags.length > 0) {
@@ -103,13 +102,93 @@ const Canvas = ({ activeTags }: { activeTags: string[] }): JSX.Element => {
     } as SampleFit;
   }, [samples, activeTags]);
 
+  const allTags = useMemo(() => {
+    let allTags = packedSamples.packed.map((s) => s.tags);
+    let flatTags = allTags.reduce(function (prev, next) {
+      return prev.concat(next);
+    });
+    let map = new Map();
+
+    tags.map((tag) => {
+      if (!map.has(tag)) {
+        map.set(tag, getNumMatches(flatTags, tag));
+      }
+    });
+    const finalTags = tags.map((t) => {
+      // console.log(map.get(t));
+      return new Tag(t, map.get(t));
+    });
+    console.log(flatTags);
+    console.log(finalTags);
+    return finalTags;
+  }, [packedSamples]);
+  // const availableTags = tags.map()
+  const sampleCollections = Array.from(Array(10).keys()).map(
+    (n, i) => new SampleCollection([], `Sample_Collection_${i}`)
+  );
+
   const [state, actions] = useLocalStore<CanvasModel>(
     () => ({
+      allTags: allTags,
+      sampleCollections: sampleCollections,
+      activeCollection: sampleCollections[0],
+      addToCurrentCollection: action((state, toAddId) => {
+        console.log(`ADDING ${toAddId} TO CURRENT COLLECTION`);
+        // if (!state.activeCollection.samples.includes(f=>))
+        const toAdd = state.activeSamples.filter((s) => s.id === toAddId)[0];
+        console.log(toAdd);
+        state.activeCollection.samples.push(
+          state.activeSamples.filter((s) => s.id === toAddId)[0]
+        );
+      }),
+      setActiveCollection: action((state, collectionName) => {
+        state.activeCollection = state.sampleCollections.filter(
+          (c) => c.name === collectionName
+        )[0];
+      }),
+      availableTags: computed(
+        [(state) => state.activeSamples],
+        (activeSamples) => {
+          let allTags = activeSamples.map((s) => s.tags);
+          let flatTags = allTags.reduce(function (prev, next) {
+            return prev.concat(next);
+          });
+          let map = new Map();
+
+          tags.map((tag) => {
+            if (!map.has(tag)) {
+              map.set(tag, getNumMatches(flatTags, tag));
+            }
+          });
+          const finalTags = tags.map((t) => {
+            return new Tag(t, map.get(t));
+          });
+          return finalTags;
+        }
+      ),
+      selectedTags: [],
+      addTag: action((state, tagToAdd) => {
+        state.selectedTags.push(tagToAdd);
+      }),
+      removeTag: action((state, tagToRemove) => {
+        state.selectedTags = state.selectedTags.filter(
+          (t) => t !== tagToRemove
+        );
+      }),
       hoveredId: "",
-      playingId: "",
+      playingSample: undefined,
       isDragging: false,
       draggingId: "",
       packedSamples: packedSamples.packed,
+      activeSamples: computed(
+        [(state) => state.packedSamples, (state) => state.selectedTags],
+        (packedSamples, activeTags) => {
+          const active = packedSamples.filter((sample) =>
+            activeTags.every((t) => sample.tags.includes(t))
+          );
+          return packSamples(active, sampleLayerWidth, 5000);
+        }
+      ),
       stageY: 0,
       viewHeight: stageContainerRef.current?.getBoundingClientRect().height,
       stageHeight: packedSamples.rows * itemHeight,
@@ -127,7 +206,9 @@ const Canvas = ({ activeTags }: { activeTags: string[] }): JSX.Element => {
         if (y > 0) {
           console.log(y);
           if (state.stageY < 0) {
-            state.stageY += y;
+            console.log("doing first");
+            state.stageY = Math.min(state.stageY + y, 0);
+            console.log(state.stageY);
           }
         } else {
           if (state.stageY > max) {
@@ -146,8 +227,8 @@ const Canvas = ({ activeTags }: { activeTags: string[] }): JSX.Element => {
       setHoveredId: action((state, hoveredId) => {
         state.hoveredId = hoveredId;
       }),
-      setPlaying: action((state, playingId) => {
-        state.playingId = playingId;
+      sePlayingSample: action((state, playingId) => {
+        state.playingSample = playingId;
       }),
     }),
     [packedSamples, samples],
@@ -162,34 +243,36 @@ const Canvas = ({ activeTags }: { activeTags: string[] }): JSX.Element => {
       e.evt.preventDefault();
       actions.setStageY(e.evt.deltaY);
     },
+    // y: state.stageY,
+  };
+
+  const sampleLayerProps = {
+    // onWheel: (e: KonvaEventObject<WheelEvent>) => {
+    //   console.log(e);
+    //   e.evt.preventDefault();
+    //   actions.setStageY(e.evt.deltaY);
+    // },
+    x: window.innerWidth / 2 - sampleLayerWidth / 2,
     y: state.stageY,
   };
 
   const [dragPos, setDragPos] = useState({ x: 0, y: 0 });
   const posRef = useRef({ x: 0, y: 0 });
   const [currentSample, setCurrentRect] = useState<Konva.Path | null>(null);
+
   const { attributes, listeners, setNodeRef } = useDraggable({
     id: currentSample?.attrs.id ?? "none",
     data: { rect: currentSample },
   });
 
-  const [playingSample, setPlayingSample] = useState(undefined);
   const stageNodeRef = useRef<Konva.Stage>(null);
   useEffect(() => {
-    console.log(stageContainerRef);
-    console.log(stageContainerRef.current);
-    console.log(stageContainerRef.current?.getBoundingClientRect().height);
-    console.log(currentSample);
     actions.setViewHeight(
       stageContainerRef.current?.getBoundingClientRect().height
     );
-    stageNodeRef.current.container().style.backgroundColor = "#989898";
+    stageNodeRef.current.container().style.backgroundColor = theme.primary;
   }, [currentSample]);
 
-  // useEffect(() => {
-  //   console.log(activeTags);
-  // }, [activeTags]);
-  // console.log(packedSamples);
   const refForDragOverlay = useRef<HTMLDivElement>(null);
 
   const onRectMouseDown = (e: KonvaEventObject<MouseEvent>): void => {
@@ -205,18 +288,34 @@ const Canvas = ({ activeTags }: { activeTags: string[] }): JSX.Element => {
     // setDraggingId(e.target.attrs.id);
   };
   const onRectMouseUp = (e: KonvaEventObject<MouseEvent>): void => {
-    setPlayingSample(
+    console.log(e);
+    console.log(
+      state.packedSamples.filter((s) => s.filename === e.target.attrs.id)[0]
+    );
+    actions.sePlayingSample(
       state.packedSamples.filter((s) => s.filename === e.target.attrs.id)[0]
     );
   };
 
+  const [toClone, setToClone] = useState(undefined);
+  const draggingRef = useRef<Konva.Path>(null);
+  const sampleTrayRef = useRef(null);
+
   const toEnriched = (samples: SampleData[]): EnrichedSample[] => {
     return samples.map((sample) => {
       const onMouseDown = onRectMouseDown;
-      const onDragStart = (e: KonvaEventObject<DragEvent>) =>
-        actions.setIsDragging(true);
-      const onDragEnd = (e: KonvaEventObject<DragEvent>) =>
+      const onDragStart = (e: KonvaEventObject<DragEvent>) => {
+        setToClone(e.target as Shape<PathConfig>);
+        console.log(e.target);
+      };
+
+      const onDragEnd = (e: KonvaEventObject<DragEvent>) => {
+        console.log("GOT DRAG END AT CANVAS");
         actions.setIsDragging(false);
+        let target = e.target as Konva.Path;
+        actions.addToCurrentCollection(target.attrs.id);
+      };
+
       const onMouseEnter = (e: KonvaEventObject<MouseEvent>) =>
         actions.setHoveredId(e.target.attrs.id);
       const onDragMove = (e: KonvaEventObject<DragEvent>) => {
@@ -243,78 +342,168 @@ const Canvas = ({ activeTags }: { activeTags: string[] }): JSX.Element => {
     });
   };
   const enriched = useMemo(() => {
-    return toEnriched(packedSamples.packed);
-  }, [packedSamples]);
+    console.log(state.activeSamples);
+    return toEnriched(state.activeSamples);
+  }, [state.activeSamples]);
 
-  // useEffect(() => {
-  //   console.log(playingSample);
-  // }, [playingSample]);
   const containerStyle = {
     border: "1px solid red",
     height: "100%",
     width: "100%",
   } as React.CSSProperties;
 
+  const drawSamples = (): JSX.Element[] => {
+    if (enriched[0].fit) {
+      return enriched.map((sample) => {
+        return <SamplePath key={sample.id} sample={sample} />;
+      });
+    }
+  };
+
+  const circles = state.availableTags.map((tag, i) => {
+    // console.log(Math.sin(i));
+    const dIndex = (1 / tags.length) * i * 2 * Math.PI;
+    // console.log(dIndex);
+    let xPos = stageNodeRef.current?.width() / 2;
+    // console.log(xPos);
+    let yPos = stageNodeRef.current?.height() / 2;
+    const xSin = -0.5 + Math.sin(dIndex);
+    const yCos = -0.5 + Math.cos(dIndex);
+    // console.log(xSin, yCos);
+    const radius = 400;
+    xPos += xSin * radius;
+    yPos += yCos * radius;
+    // console.log(xPos, yPos);
+    xPos += radius / 2;
+    yPos += radius / 2;
+
+    const circleRadius = mapRange(tag.count, 0, 360, 50, 150);
+
+    const onMouseUp = (e: KonvaEventObject<MouseEvent>): void => {
+      console.log("got circle mouse up");
+      console.log(tag);
+      // const selectedTagNames = state.selectedTags.map((t) => t.name);
+
+      if (state.selectedTags.includes(tag.name)) {
+        actions.removeTag(tag.name);
+      } else {
+        actions.addTag(tag.name);
+      }
+      console.log(state.selectedTags);
+    };
+    return {
+      activeTags: state.selectedTags,
+      tag: tag,
+      key: i,
+      radius: circleRadius,
+      fill: theme.primary,
+      x: xPos,
+      y: yPos,
+      stroke: theme.secondary,
+      strokeWidth: 5,
+      onMouseUp,
+    };
+  });
+
   return (
     <>
       <div
-        // {...attributes}
         {...listeners}
         style={containerStyle}
         ref={stageContainerRef}
         className={"outer-tray"}
       >
-        {playingSample ? (
+        {state.playingSample ? (
           <ReactPlayer
-            height={0}
-            // loop={true}
             playing={true}
+            height={0}
             width={0}
-            // height={10}
             progressInterval={1}
             onProgress={({ played, playedSeconds, loaded, loadedSeconds }) => {
-              // setSampleProgress(played);
               currentSample?.fill("white");
-              // currentSample.fill() = "white";
-              console.log(playingSample);
+              console.log(state.playingSample);
             }}
-            url={playingSample?.src ?? ""}
+            url={state.playingSample?.src}
           />
         ) : (
           <></>
         )}
         <Stage {...stageProps} ref={stageNodeRef}>
           <Layer
-            drawHit={(e) => {}}
-            // hitGraphEnabled={true}
-            // hit
-            dragBoundFunc={(e) => {
-              console.log(e);
-              return { x: 0, y: 0 };
+            onDragMove={(e) => {
+              // console.log("im moving ON THIS LAYER");
+              // console.log(sampleTrayRef.current);
+              if (draggingRef.current && sampleTrayRef.current) {
+                if (
+                  haveIntersection(
+                    e.target.getClientRect(),
+                    sampleTrayRef.current.getClientRect()
+                  )
+                ) {
+                  console.log("INTERSECTED WITH TRAY");
+                }
+              }
             }}
+            {...sampleLayerProps}
           >
-            {enriched[0].fit ? (
-              enriched.map((sample) => {
-                return (
-                  <SamplePath
-                    key={sample.id}
-                    sample={sample}
-                    // ref={sampleRef}
-                    // setRef={(ref) => {
-                    //   // sampleRef.current = ref;
-                    //   // setCurrentRect(ref.current);
-                    // }}
-                  />
-                );
-              })
+            {drawSamples()}
+          </Layer>
+          <Layer
+          // onDragMove={(e) => {
+          //   console.log("im moving ON THIS LAYER");
+          //   if (draggingRef.current) {
+          //     if (
+          //       haveIntersection(
+          //         e.target.getClientRect(),
+          //         sampleTrayRef.current.getClientRect()
+          //       )
+          //     ) {
+          //       console.log("INTERSECTED WITH TRAY");
+          //     }
+          //   }
+          // }}
+          >
+            {toClone ? (
+              <Path
+                {...toClone}
+                x={dragPos.x}
+                y={dragPos.y}
+                ref={draggingRef}
+                draggable
+                // onDragMove={(e) => {
+                //   console.log("moving clone");
+                //   if (
+                //     haveIntersection(
+                //       e.target.getClientRect(),
+                //       sampleTrayRef.current.getClientRect()
+                //     )
+                //   ) {
+                //     console.log("INTERSECTED WITH TRAY");
+                //   }
+                // }}
+              />
             ) : (
               <></>
             )}
+            <SampleCollections
+              sampleCollections={sampleCollections}
+              // sampleTrayRef={sampleTrayRef}
+              onMouseUp={(e: KonvaEventObject<MouseEvent>) => {
+                actions.setActiveCollection(e.target.attrs.id);
+              }}
+              activeCollection={state.activeCollection.name}
+            />
+            <CollectionContainer
+              sampleCollection={state.activeCollection}
+              ref={sampleTrayRef}
+            />
+            {circles.map((c) => {
+              return <TagSelector {...c} />;
+            })}
           </Layer>
         </Stage>
       </div>
       <DragPlace
-        // sampleRef={sampleRef}
         transform={dragPos}
         id={"drag-container"}
         isDragging={state.isDragging}
@@ -327,166 +516,24 @@ const Canvas = ({ activeTags }: { activeTags: string[] }): JSX.Element => {
     </>
   );
 };
+
 export default Canvas;
 
-const SamplePath = React.memo(
-  ({
-    sample,
-    ref,
-    setRef,
-  }: // setSample,
-  {
-    sample: EnrichedSample;
-    ref?: MutableRefObject<Konva.Path>;
-    setRef?: (ref: RefObject<Konva.Path>) => void;
-  }): JSX.Element => {
-    const {
-      w,
-      h,
-      fill,
-      onMouseDown,
-      onDragStart,
-      onDragEnd,
-      onMouseEnter,
-      onDragMove,
-      onMouseUp,
-      draggable,
-      id,
-      svgPath,
-      fit,
-      // isHovered,
-    } = sample;
-    const [isHovered, setisHovered] = useState(false);
-    const [absolutePosition, setabsolutePosition] = useState({ x: 0, y: 0 });
-    const sampleRef = useRef<Konva.Path>(null);
+function getNumMatches(array: any[], valToFind: string): number {
+  let numMatches = 0;
+  for (let i = 0, j = array.length; i < j; i += 1) {
+    if (array[i] === valToFind) {
+      numMatches += 1;
+    }
+  }
+  return numMatches;
+}
 
-    // const [sampleRef, setSampleRef] = useState<()
-    // useEffect(() => {
-    //   console.log(hoveredId);
-    // setisHovered(hoveredId === id);
-    // }, [hoveredId]);
-    const actualWidth = mapRange(sample.w, 0, 2.5, 0, 400);
-
-    const { x, y } = fit;
-    const startPoint = { x: x, y: y };
-    // const startPoint = { x: 0, y: 0 };
-    const endPoint = { x: x + w, y: y + h };
-    const gradient = getGradient(sample.tags);
-    // console.log(svgPath);
-    return (
-      <Group x={x} y={y} width={w} height={h}>
-        <Path
-          ref={sampleRef}
-          width={w}
-          height={h}
-          id={id}
-          y={h / 2}
-          data={svgPath}
-          // y={75 / 2}
-          scaleX={isHovered ? 1.1 : 1}
-          scaleY={isHovered ? 1.1 : 1}
-          fillPriority={"linear-gradient"}
-          fill={fill}
-          // offsetY={-itemHeight / 2}
-          // hitFunc={(context) => {
-          //   // context.setAttr() = "red"
-          //   return context.fillRect(0, 0, 100, 100);
-          // // }}
-          // onClick={(e) => {
-          //   // setRef(sampleRef);
-          //   // setRef()
-          //   // ref.current = sampleRef.current;
-          //   // onMouseDown(e);
-          // }}
-          onMouseUp={onMouseUp}
-          onMouseDown={(e) => {
-            console.log(e.target.absolutePosition());
-            setabsolutePosition(e.target.absolutePosition());
-            onMouseDown(e);
-          }}
-          onDragStart={onDragStart}
-          onDragEnd={onDragEnd}
-          onMouseEnter={(e) => {
-            onMouseEnter(e);
-            setisHovered(true);
-          }}
-          onMouseLeave={(e) => {
-            onMouseEnter(e);
-            setisHovered(false);
-          }}
-          dragBoundFunc={(e) => {
-            // console.log(e);
-            // return { x: x, y: y };
-            // return null;
-            return absolutePosition;
-            // return { x: 0, y: 0 };
-          }}
-          // shadowColor={"black"}
-          // shadowBlur={15}
-          // shadowOffsetX={0}
-          // shadowOffsetY={0}
-          // shadowOpacity={0.2}
-          fillLinearGradientStartPoint={{ x: 0, y: 0 }}
-          fillLinearGradientEndPoint={{ x: w, y: h }}
-          fillLinearGradientColorStops={gradient}
-          onDragMove={(e) => {
-            onDragMove(e);
-          }}
-          draggable={draggable}
-          stroke={isHovered ? "white" : "black"}
-          strokeWidth={isHovered ? 2 : 2}
-        />
-        {/* <Rect
-          // fillLinearGradientStartPoint={{ x: w, y: h }}
-          // // fillLinearGradientStartPoint={startPoint}
-          // fillLinearGradientEndPoint={{ x: 0, y: 0 }}
-          // fillLinearGradientColorStops={[0, "red", 0.5, "black", 1, "green"]}
-          stroke={isHovered ? "white" : "red"}
-          strokeWidth={2}
-          // width={actualWidth}
-          width={w}
-          height={h}
-          x={0}
-          y={0}
-        /> */}
-      </Group>
-    );
-  }
-);
-const getGradient = (tags: string[]): (string | number)[] => {
-  let stop1 = "blue";
-  let stop2 = "yellow";
-
-  if (tags.includes("MR")) {
-    stop1 = "#3023AE";
-    stop2 = "#53A0FD";
-    // console.log("HAD AN MR");
-  }
-  if (tags.includes("LR")) {
-    stop1 = "#8c34eb";
-    stop2 = "#d034eb";
-  }
-  if (tags.includes("LR")) {
-    stop1 = "#ebd510";
-    stop2 = "#eb8110";
-  }
-  if (tags.includes("MIX")) {
-    stop1 = "#60eb10";
-    stop2 = "#2a10eb";
-  }
-
-  return [0, stop1, 0.5, stop2, 1, stop1];
-};
-//   console.log("STARTED RECT DRAG");
-//   actions.setIsDragging(true);
-// };
-// const onSampleDragEnd = (e: KonvaEventObject<DragEvent>) => {
-//   actions.setIsDragging(false);
-// };
-// const onSampleDragMove = (e: KonvaEventObject<DragEvent>) => {
-//   // setDragPos({ x: e.evt.pageX, y: e.evt.pageY });
-//   posRef.current = { x: e.evt.pageX, y: e.evt.pageY };
-// };
-// const onSampleMouseEnter = (e: KonvaEventObject<MouseEvent>) => {
-//   actions.setHoveredId(e.target.attrs.id);
-// };
+function haveIntersection(r1: any, r2: any) {
+  return !(
+    r2.x > r1.x + r1.width ||
+    r2.x + r2.width < r1.x ||
+    r2.y > r1.y + r1.height ||
+    r2.y + r2.height < r1.y
+  );
+}

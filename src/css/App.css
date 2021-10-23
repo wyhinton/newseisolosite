@@ -3,17 +3,21 @@
   overflow: hidden
 } */
 @font-face {
-  font-family: 'Nippo-Regular';
-  src: local('Nippo-Regular'),url(./Nippo-Regular.otf) format('opentype');
+  font-family: "Nippo-Regular";
+  src: local("Nippo-Regular"), url(./Nippo-Regular.otf) format("opentype");
 }
-html *{
-  font-family: Nippo-Regular,
+html * {
+  font-family: Nippo-Regular;
+}
+
+.hidden {
+  display: none;
 }
 
 .App {
   text-align: center;
   max-height: 100vh;
-  overflow: hidden
+  overflow: hidden;
 }
 
 .App-logo {
@@ -51,7 +55,7 @@ html *{
   }
 }
 
-#draggable{
+#draggable {
   position: absolute;
   pointer-events: none;
   height: 100%;

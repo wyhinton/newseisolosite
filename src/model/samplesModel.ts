@@ -49,7 +49,6 @@ const samplesModel: SamplesModel = {
         const sampleDataArray = rawSampleRows.map((r) => new SampleData(r));
         actions.setSamples(sampleDataArray);
       }
-      //extract only the needed properties from the GoogleSheetRow
     }
   ),
   //processing
@@ -77,7 +76,6 @@ const samplesModel: SamplesModel = {
   setSamples: action((state, samplesArray) => {
     console.log("setting samples");
     state.samples = samplesArray;
-    // state.tempLayout = layouts;
   }),
   setDraggingSample: action((state, id) => {
     console.log("setting samples");

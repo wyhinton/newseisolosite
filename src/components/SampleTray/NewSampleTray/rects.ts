@@ -2,6 +2,7 @@ import Packer from "./Packer";
 import { RectConfig } from "konva/lib/shapes/Rect";
 import SampleData from "@classes/SampleData";
 import { mapRange } from "@utils";
+import appConfig from "@static/appConfig";
 
 const stageProps = {
   width: window.innerWidth,
@@ -59,38 +60,13 @@ export const packSamples = (
   // const sampleBlocks = samplesToBlocks(samples);
   console.log("PACKING SAMPLES");
   samples.forEach((sample) => {
-    sample.calculateDimensions(width, 75);
+    sample.calculateDimensions(width, appConfig.sampleHeight);
   });
   const packer = new Packer(width, height, 10);
   packer.fit(samples);
-  // samples.forEach((sample) => {
-  //   // sample.createKonvaObject();
-  // });
-  console.log(samples);
+  // console.log(samples);
   return samples;
 };
-
-// const makeRects = (b: Block[]) => {
-//   let set = b.map((block, i) => {
-//     if (block.fit) {
-//       const rect = {
-//         cornerRadius: 5,
-//         key: `rect_${i}`,
-//         id: `rect_${i}`,
-//         x: block.fit.x,
-//         y: block.fit.y,
-//         width: block.w,
-//         height: block.h,
-//         fill: randomElement(greens),
-//         draggable: true,
-//       };
-//       return rect;
-//     } else {
-//       return undefined;
-//     }
-//   });
-//   return set.filter((rect) => rect) as Partial<RectConfig>[];
-// };
 
 function randomElement<T>(array: T[]): T {
   return array[Math.floor(Math.random() * array.length)];

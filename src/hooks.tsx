@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from "react";
 
 import { StoreModel } from "./model";
 import { createTypedHooks } from "easy-peasy";
@@ -13,16 +13,48 @@ export const useStoreActions = typedHooks.useStoreActions;
 export const useStoreDispatch = typedHooks.useStoreDispatch;
 export const useStoreState = typedHooks.useStoreState;
 
-
 export function useToggle(initialValue: boolean): [boolean, () => void] {
-    const [value, setValue] = useState<boolean>(initialValue);
-  
-    const toggleValue = () => setValue(!value);
-  
-    return [value, toggleValue];
+  const [value, setValue] = useState<boolean>(initialValue);
+
+  const toggleValue = () => setValue(!value);
+
+  return [value, toggleValue];
 }
 
-export {useArray}
-
+export { useArray };
 
 const test = "test";
+
+import { RefObject, useEffect } from "react";
+
+type AnyEvent = MouseEvent | TouchEvent;
+
+export function useOnClickOutside<T extends HTMLElement = HTMLElement>(
+  ref: RefObject<T>,
+  handler: (event: AnyEvent) => void
+): void {
+  useEffect(() => {
+    const listener = (event: AnyEvent) => {
+      const el = ref?.current;
+
+      // Do nothing if clicking ref's element or descendent elements
+      if (!el || el.contains(event.target as Node)) {
+        return;
+      }
+
+      handler(event);
+    };
+
+    document.addEventListener(`mousedown`, listener);
+    document.addEventListener(`touchstart`, listener);
+
+    return () => {
+      document.removeEventListener(`mousedown`, listener);
+      document.removeEventListener(`touchstart`, listener);
+    };
+
+    // Reload only if ref or handler changes
+  }, [ref, handler]);
+}
+
+// export function useAppMode()

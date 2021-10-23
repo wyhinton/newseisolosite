@@ -4,6 +4,7 @@ import { Group, Layer, Path, Rect, Stage, Text, Circle } from "react-konva";
 import { KonvaEventObject } from "konva/lib/Node";
 import { groupBy, mapRange } from "@utils";
 import React, { MutableRefObject, RefObject, useRef, useState } from "react";
+import theme from "@static/theme";
 
 export interface EnrichedSample
   extends Omit<SampleData, "setPath" | "calculateDimensions"> {
@@ -53,6 +54,7 @@ const SamplePath = React.memo(
     const [isHovered, setisHovered] = useState(false);
     const [absolutePosition, setabsolutePosition] = useState({ x: 0, y: 0 });
     const sampleRef = useRef<Konva.Path>(null);
+    const [isDragging, setIsDragging] = useState(false);
 
     // const [sampleRef, setSampleRef] = useState<()
     // useEffect(() => {
@@ -67,6 +69,27 @@ const SamplePath = React.memo(
     const endPoint = { x: x + w, y: y + h };
     const gradient = getGradient(sample.tags);
     // console.log(svgPath);
+    const renderGhost = () => {
+      if (isDragging) {
+        return (
+          <Path
+            //  ref={sampleRef}
+            width={w}
+            height={h}
+            id={`ghost_${id}`}
+            y={h / 2}
+            data={svgPath}
+            scaleX={isHovered ? 1.1 : 1}
+            scaleY={isHovered ? 1.1 : 1}
+            fillPriority={"linear-gradient"}
+            // fill={fill}
+            stroke={theme.secondary}
+            strokeWidth={2}
+            // onMouseUp={onMouseUp}
+          />
+        );
+      }
+    };
     return (
       <Group x={x} y={y} width={w} height={h}>
         <Path
@@ -74,10 +97,12 @@ const SamplePath = React.memo(
           width={w}
           height={h}
           id={id}
-          y={h / 2}
+          // y={h / 2}
           data={svgPath}
-          scaleX={isHovered ? 1.1 : 1}
-          scaleY={isHovered ? 1.1 : 1}
+          // scaleX={isHovered ? 1.1 : 1}
+          scaleX={0.2}
+          scaleY={0.6}
+          // scaleY={isHovered ? 1.1 : 1}
           fillPriority={"linear-gradient"}
           fill={fill}
           onMouseUp={onMouseUp}
@@ -86,8 +111,16 @@ const SamplePath = React.memo(
             setabsolutePosition(e.target.absolutePosition());
             onMouseDown(e);
           }}
-          onDragStart={onDragStart}
-          onDragEnd={onDragEnd}
+          onDragStart={(e) => {
+            setIsDragging(true);
+            onDragStart;
+          }}
+          onDragEnd={(e) => {
+            setIsDragging(false);
+            e.target.x(0);
+            e.target.y(h / 2);
+            onDragEnd(e);
+          }}
           onMouseEnter={(e) => {
             onMouseEnter(e);
             setisHovered(true);
@@ -96,13 +129,13 @@ const SamplePath = React.memo(
             onMouseEnter(e);
             setisHovered(false);
           }}
-          dragBoundFunc={(e) => {
-            // console.log(e);
-            // return { x: x, y: y };
-            // return null;
-            return absolutePosition;
-            // return { x: 0, y: 0 };
-          }}
+          // dragBoundFunc={(e) => {
+          //   // console.log(e);
+          //   // return { x: x, y: y };
+          //   // return null;
+          //   return absolutePosition;
+          //   // return { x: 0, y: 0 };
+          // }}
           // shadowColor={"black"}
           // shadowBlur={15}
           // shadowOffsetX={0}
@@ -118,19 +151,20 @@ const SamplePath = React.memo(
           stroke={isHovered ? "white" : "black"}
           strokeWidth={isHovered ? 2 : 2}
         />
-        {/* <Rect
-            // fillLinearGradientStartPoint={{ x: w, y: h }}
-            // // fillLinearGradientStartPoint={startPoint}
-            // fillLinearGradientEndPoint={{ x: 0, y: 0 }}
-            // fillLinearGradientColorStops={[0, "red", 0.5, "black", 1, "green"]}
-            stroke={isHovered ? "white" : "red"}
-            strokeWidth={2}
-            // width={actualWidth}
-            width={w}
-            height={h}
-            x={0}
-            y={0}
-          /> */}
+        <Rect
+          // fillLinearGradientStartPoint={{ x: w, y: h }}
+          // // fillLinearGradientStartPoint={startPoint}
+          // fillLinearGradientEndPoint={{ x: 0, y: 0 }}
+          // fillLinearGradientColorStops={[0, "red", 0.5, "black", 1, "green"]}
+          stroke={isHovered ? "white" : "red"}
+          strokeWidth={2}
+          // width={actualWidth}
+          width={w}
+          height={h}
+          x={0}
+          y={0}
+        />
+        {renderGhost()}
       </Group>
     );
   }

@@ -53,7 +53,7 @@ export class Packer {
       if ((node = this.findNode(this.root, block.w, block.h))) {
         const fit = this.splitNode(node, block.w, block.h, block.id);
         block.fit = this.splitNode(node, block.w, block.h, block.id);
-        console.log(fit);
+        // console.log(fit);
       }
 
       // console.log(this.splitNode(node, block.w, block.h, block.id));

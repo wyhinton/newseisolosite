@@ -1,74 +1,78 @@
-import DragPlace from "./DragPlace";
+import appConfig from "@static/appConfig";
+import CollectionContainer from "./CanvasItems/CollectionContainer";
+import DialogBox from "./DialogBox";
 import Konva from "konva";
+import Kosima from "@classes/Kosima";
+import KosimaRender from "./CanvasItems/Layers/KosimaRender";
 import ReactPlayer from "react-player";
-import { packSamples } from "./rects";
+import SampleCollection from "@classes/SampleCollection";
+import CollectionNav from "./CanvasItems/CollectionNav";
 import SampleData from "@classes/SampleData";
-import { Group, Layer, Path, Rect, Stage, Text, Circle } from "react-konva";
-import { KonvaEventObject } from "konva/lib/Node";
+import Tag from "@classes/Tag";
+import tags from "@static/tags";
+import theme from "@static/theme";
+import { action, Action, computed, Computed, useLocalStore } from "easy-peasy";
+import { Group, Layer, Rect, Stage } from "react-konva";
 import { groupBy, mapRange } from "@utils";
-import { useDraggable } from "@dnd-kit/core";
+import { KonvaEventObject } from "konva/lib/Node";
+import { packSamples } from "./rects";
+// import { useDraggable } from "@dnd-kit/core";
 import { useStoreState } from "@hooks";
 import React, {
   MutableRefObject,
-  RefObject,
-  useEffect,
-  useMemo,
   useRef,
   useState,
+  useMemo,
+  useEffect,
 } from "react";
-import tags from "@static/tags";
-import SamplePath, { EnrichedSample } from "./CanvasItems/SamplePath";
-import TagSelector, { TagSelectorProps } from "./CanvasItems/TagSelector";
+import TagsLayer from "./CanvasItems/Layers/TagsLayer";
+import canvasConfig from "@static/canvasConfig";
+import { useKeyboardShortcut } from "crooks";
+import SampleLayer from "./CanvasItems/Layers/SampleLayer";
+import WidgetsLayer from "./CanvasItems/Layers/WidgetsLayer";
+import Navigation from "./CanvasItems/Navigation";
 
-import { action, Action, computed, Computed, useLocalStore } from "easy-peasy";
-import theme from "@static/theme";
-import Tag from "@classes/Tag";
-import SampleCollections from "./CanvasItems/SampleCollections";
-import SampleCollection from "@classes/SampleCollection";
-import { PathConfig } from "konva/lib/shapes/Path";
-import { Shape } from "konva/lib/Shape";
-import CollectionContainer from "./CanvasItems/CollectionContainer";
+export type AppMode = "editor" | "samples" | "viewer";
 
-const itemHeight = 75;
+export interface CanvasModel {
+  activeCollection: SampleCollection;
+  activeSamples: Computed<CanvasModel, SampleData[]>;
+  addTag: Action<CanvasModel, string>;
+  addToCurrentCollection: Action<CanvasModel, string>;
+  allTags: Tag[];
+  appMode: AppMode;
+  availableTags: Computed<CanvasModel, Tag[]>;
+  draggingId: string;
+  hoveredId: string;
+  isDragging: boolean;
+  kosima: Kosima;
+  packedSamples: SampleData[];
+  playingSample: SampleData | undefined;
+  popOverOpen: boolean;
+  removeTag: Action<CanvasModel, string>;
+  sampleCollections: SampleCollection[];
+  sampleToClone: Konva.Path | undefined;
+  // sampleToClone: Shape<PathConfig> | undefined;
+  selectedTags: string[];
+  setActiveCollection: Action<CanvasModel, string>;
+  setAppMode: Action<CanvasModel, AppMode>;
+  setDraggingId: Action<CanvasModel, string>;
+  setHoveredId: Action<CanvasModel, string>;
+  setIsDragging: Action<CanvasModel, boolean>;
+  setPlayingSample: Action<CanvasModel, SampleData>;
+  setPopOverOpen: Action<CanvasModel, boolean>;
+  setSampleToClone: Action<CanvasModel, Konva.Path>;
+  // setSampleToClone: Action<CanvasModel, Shape<PathConfig>>;
+  setStageHeight: Action<CanvasModel, number>;
+  setStageY: Action<CanvasModel, number>;
+  setViewHeight: Action<CanvasModel, number>;
+  stageHeight: number;
+  stageY: number;
+  viewHeight: number;
+}
+// type CanvasState = StateMapper<_Pick<CanvasModel, _FilterKeys<CanvasModel, ActionTypes, "default">>>
+
 const Canvas = ({ activeTags }: { activeTags: string[] }): JSX.Element => {
-  const greens = [
-    "#A4DE02",
-    "#76BA1B",
-    "#4C9A2A",
-    "#1E5631",
-    "#68BB59",
-    "#ACDF87",
-  ];
-
-  interface CanvasModel {
-    //state
-    hoveredId: string;
-    allTags: Tag[];
-    selectedTags: string[];
-    playingSample: SampleData | undefined;
-    draggingId: string;
-    isDragging: boolean;
-    stageY: number;
-    stageHeight: number;
-    viewHeight: number;
-    addToCurrentCollection: Action<CanvasModel, string>;
-    activeCollection: SampleCollection;
-    sampleCollections: SampleCollection[];
-    setActiveCollection: Action<CanvasModel, string>;
-    setStageY: Action<CanvasModel, number>;
-    activeSamples: Computed<CanvasModel, SampleData[]>;
-    availableTags: Computed<CanvasModel, Tag[]>;
-    packedSamples: SampleData[];
-    addTag: Action<CanvasModel, string>;
-    removeTag: Action<CanvasModel, string>;
-    setViewHeight: Action<CanvasModel, number>;
-    setStageHeight: Action<CanvasModel, number>;
-    setDraggingId: Action<CanvasModel, string>;
-    setIsDragging: Action<CanvasModel, boolean>;
-    sePlayingSample: Action<CanvasModel, SampleData>;
-    setHoveredId: Action<CanvasModel, string>;
-  }
-
   const samples = useStoreState((state) => state.samplesModel.samples);
   const stageContainerRef = useRef<HTMLDivElement>();
 
@@ -85,11 +89,9 @@ const Canvas = ({ activeTags }: { activeTags: string[] }): JSX.Element => {
       );
       console.log(packedRects);
     }
-    packedRects = packSamples(
-      packedRects,
-      window.innerWidth - 100,
-      5000
-    ).filter((s) => s.fit);
+    packedRects = packSamples(packedRects, sampleLayerWidth, 5000).filter(
+      (s) => s.fit
+    );
     let rows = 0;
     if (packedRects[0]?.fit) {
       const fits = samples.map((s) => s.fit).filter((f) => f);
@@ -127,19 +129,42 @@ const Canvas = ({ activeTags }: { activeTags: string[] }): JSX.Element => {
     (n, i) => new SampleCollection([], `Sample_Collection_${i}`)
   );
 
+  const defaultCollection1 = new SampleCollection(
+    samples.slice(1, 6),
+    "collection 1"
+  );
+  const defaultCollection2 = new SampleCollection(
+    samples.slice(13, 19),
+    "collection 2"
+  );
+  const defaultCollection3 = new SampleCollection([], "collection 3");
+  const defaultCollection4 = new SampleCollection([], "collection 4");
+  const defaultCollection5 = new SampleCollection([], "collection 5");
+
   const [state, actions] = useLocalStore<CanvasModel>(
     () => ({
       allTags: allTags,
-      sampleCollections: sampleCollections,
+      appMode: canvasConfig.startMode,
+      // defaultCollections: [defaultCollection1, defaultCollection2, defaultCollection3, defaultCollection4, defaultCollection5],
+      sampleCollections: [
+        defaultCollection1,
+        defaultCollection2,
+        defaultCollection3,
+        defaultCollection4,
+        defaultCollection5,
+      ],
+      // sampleCollections: sampleCollections,
       activeCollection: sampleCollections[0],
       addToCurrentCollection: action((state, toAddId) => {
         console.log(`ADDING ${toAddId} TO CURRENT COLLECTION`);
-        // if (!state.activeCollection.samples.includes(f=>))
         const toAdd = state.activeSamples.filter((s) => s.id === toAddId)[0];
-        console.log(toAdd);
         state.activeCollection.samples.push(
           state.activeSamples.filter((s) => s.id === toAddId)[0]
         );
+      }),
+      sampleToClone: undefined,
+      setSampleToClone: action((state, toClone) => {
+        state.sampleToClone = toClone;
       }),
       setActiveCollection: action((state, collectionName) => {
         state.activeCollection = state.sampleCollections.filter(
@@ -175,11 +200,16 @@ const Canvas = ({ activeTags }: { activeTags: string[] }): JSX.Element => {
           (t) => t !== tagToRemove
         );
       }),
+      kosima: new Kosima(),
       hoveredId: "",
       playingSample: undefined,
       isDragging: false,
       draggingId: "",
       packedSamples: packedSamples.packed,
+      popOverOpen: false,
+      setPopOverOpen: action((state, open) => {
+        state.popOverOpen = open;
+      }),
       activeSamples: computed(
         [(state) => state.packedSamples, (state) => state.selectedTags],
         (packedSamples, activeTags) => {
@@ -191,7 +221,7 @@ const Canvas = ({ activeTags }: { activeTags: string[] }): JSX.Element => {
       ),
       stageY: 0,
       viewHeight: stageContainerRef.current?.getBoundingClientRect().height,
-      stageHeight: packedSamples.rows * itemHeight,
+      stageHeight: packedSamples.rows * appConfig.sampleHeight,
       setStageHeight: action((state, height) => {
         state.stageHeight = height;
       }),
@@ -218,6 +248,9 @@ const Canvas = ({ activeTags }: { activeTags: string[] }): JSX.Element => {
         }
         console.log(state.stageHeight);
       }),
+      setAppMode: action((state, mode) => {
+        state.appMode = mode;
+      }),
       setIsDragging: action((state, isDragging) => {
         state.isDragging = isDragging;
       }),
@@ -227,14 +260,14 @@ const Canvas = ({ activeTags }: { activeTags: string[] }): JSX.Element => {
       setHoveredId: action((state, hoveredId) => {
         state.hoveredId = hoveredId;
       }),
-      sePlayingSample: action((state, playingId) => {
+      setPlayingSample: action((state, playingId) => {
         state.playingSample = playingId;
       }),
     }),
     [packedSamples, samples],
     () => ({ devTools: false })
   );
-
+  // const test = state.sampleToClone
   const stageProps = {
     width: window.innerWidth,
     height: state.viewHeight,
@@ -243,27 +276,13 @@ const Canvas = ({ activeTags }: { activeTags: string[] }): JSX.Element => {
       e.evt.preventDefault();
       actions.setStageY(e.evt.deltaY);
     },
-    // y: state.stageY,
   };
 
-  const sampleLayerProps = {
-    // onWheel: (e: KonvaEventObject<WheelEvent>) => {
-    //   console.log(e);
-    //   e.evt.preventDefault();
-    //   actions.setStageY(e.evt.deltaY);
-    // },
-    x: window.innerWidth / 2 - sampleLayerWidth / 2,
-    y: state.stageY,
+  const test = {
+    one: "yes",
+    two: "no",
   };
-
-  const [dragPos, setDragPos] = useState({ x: 0, y: 0 });
-  const posRef = useRef({ x: 0, y: 0 });
   const [currentSample, setCurrentRect] = useState<Konva.Path | null>(null);
-
-  const { attributes, listeners, setNodeRef } = useDraggable({
-    id: currentSample?.attrs.id ?? "none",
-    data: { rect: currentSample },
-  });
 
   const stageNodeRef = useRef<Konva.Stage>(null);
   useEffect(() => {
@@ -273,146 +292,79 @@ const Canvas = ({ activeTags }: { activeTags: string[] }): JSX.Element => {
     stageNodeRef.current.container().style.backgroundColor = theme.primary;
   }, [currentSample]);
 
-  const refForDragOverlay = useRef<HTMLDivElement>(null);
+  useKeyboardShortcut({
+    keyCode: 32, //f
+    action: () => {
+      if (state.appMode === "editor") {
+        actions.setAppMode("samples");
+      } else {
+        actions.setAppMode("editor");
+      }
+    },
+    disabled: false, // This key is not required
+  });
 
-  const onRectMouseDown = (e: KonvaEventObject<MouseEvent>): void => {
-    console.log("DOING ON RECT MOUSE DOWN");
-    const { pageX, pageY } = e.evt;
-    setDragPos({ x: pageX, y: pageY });
-    actions.setIsDragging(true);
-    if (refForDragOverlay.current) {
-      refForDragOverlay.current.click();
-    }
-    setCurrentRect(e.currentTarget as Konva.Path);
-    console.log(e.target.attrs.id);
-    // setDraggingId(e.target.attrs.id);
-  };
-  const onRectMouseUp = (e: KonvaEventObject<MouseEvent>): void => {
-    console.log(e);
-    console.log(
-      state.packedSamples.filter((s) => s.filename === e.target.attrs.id)[0]
-    );
-    actions.sePlayingSample(
-      state.packedSamples.filter((s) => s.filename === e.target.attrs.id)[0]
-    );
-  };
-
-  const [toClone, setToClone] = useState(undefined);
   const draggingRef = useRef<Konva.Path>(null);
-  const sampleTrayRef = useRef(null);
-
-  const toEnriched = (samples: SampleData[]): EnrichedSample[] => {
-    return samples.map((sample) => {
-      const onMouseDown = onRectMouseDown;
-      const onDragStart = (e: KonvaEventObject<DragEvent>) => {
-        setToClone(e.target as Shape<PathConfig>);
-        console.log(e.target);
-      };
-
-      const onDragEnd = (e: KonvaEventObject<DragEvent>) => {
-        console.log("GOT DRAG END AT CANVAS");
-        actions.setIsDragging(false);
-        let target = e.target as Konva.Path;
-        actions.addToCurrentCollection(target.attrs.id);
-      };
-
-      const onMouseEnter = (e: KonvaEventObject<MouseEvent>) =>
-        actions.setHoveredId(e.target.attrs.id);
-      const onDragMove = (e: KonvaEventObject<DragEvent>) => {
-        // console.log(e.evt.pageX);
-        setDragPos({ x: e.evt.pageX, y: e.evt.pageY });
-        // posRef.current = { x: e.evt.pageX, y: e.evt.pageY };
-      };
-      const onMouseUp = onRectMouseUp;
-
-      const fill = "green";
-      const draggable = true;
-
-      return {
-        ...sample,
-        fill,
-        draggable,
-        onDragMove,
-        onDragStart,
-        onDragEnd,
-        onMouseEnter,
-        onMouseDown,
-        onMouseUp,
-      };
-    });
-  };
-  const enriched = useMemo(() => {
-    console.log(state.activeSamples);
-    return toEnriched(state.activeSamples);
-  }, [state.activeSamples]);
+  const sampleTrayGroupRef = useRef<Konva.Group>(null);
+  const dragLayerRef = useRef(null);
+  const widgetContainerRef = useRef(null);
 
   const containerStyle = {
-    border: "1px solid red",
+    // border: "1px solid red",
     height: "100%",
     width: "100%",
   } as React.CSSProperties;
 
-  const drawSamples = (): JSX.Element[] => {
-    if (enriched[0].fit) {
-      return enriched.map((sample) => {
-        return <SamplePath key={sample.id} sample={sample} />;
-      });
-    }
-  };
+  const containerHeight = window.innerHeight - 100;
+  let sampleTrayGroupY = (window.innerHeight - containerHeight) / 2;
 
-  const circles = state.availableTags.map((tag, i) => {
-    // console.log(Math.sin(i));
-    const dIndex = (1 / tags.length) * i * 2 * Math.PI;
-    // console.log(dIndex);
-    let xPos = stageNodeRef.current?.width() / 2;
-    // console.log(xPos);
-    let yPos = stageNodeRef.current?.height() / 2;
-    const xSin = -0.5 + Math.sin(dIndex);
-    const yCos = -0.5 + Math.cos(dIndex);
-    // console.log(xSin, yCos);
-    const radius = 400;
-    xPos += xSin * radius;
-    yPos += yCos * radius;
-    // console.log(xPos, yPos);
-    xPos += radius / 2;
-    yPos += radius / 2;
-
-    const circleRadius = mapRange(tag.count, 0, 360, 50, 150);
-
-    const onMouseUp = (e: KonvaEventObject<MouseEvent>): void => {
-      console.log("got circle mouse up");
-      console.log(tag);
-      // const selectedTagNames = state.selectedTags.map((t) => t.name);
-
-      if (state.selectedTags.includes(tag.name)) {
-        actions.removeTag(tag.name);
+  useEffect(() => {
+    console.log(state.appMode);
+    if (widgetContainerRef.current) {
+      if (widgetContainerRef.current && state.appMode === "editor") {
+        const targY = widgetContainerRef.current.y();
+        const targX = widgetContainerRef.current.x();
+        const targHeight = widgetContainerRef.current.height();
+        sampleTrayGroupRef.current.to({
+          x: targX,
+          y: targY,
+          opacity: 1,
+        });
+        sampleTrayGroupRef.current.children[0].to({
+          height: canvasConfig.widgetHeight,
+          width: canvasConfig.widgetWidth,
+        });
+      } else if (widgetContainerRef.current && state.appMode === "viewer") {
+        sampleTrayGroupRef.current.to({
+          opacity: 0,
+          duration: 0.1,
+        });
       } else {
-        actions.addTag(tag.name);
+        sampleTrayGroupY = (window.innerHeight - containerHeight) / 2;
+        sampleTrayGroupRef.current.to({
+          x: canvasConfig.sampleCollectionGroupX,
+          y: (window.innerHeight - containerHeight) / 2,
+          opacity: 1,
+        });
+        sampleTrayGroupRef.current.children[0].to({
+          height: canvasConfig.sampleCollectionRectHeight,
+          width: canvasConfig.widgetWidth,
+        });
       }
-      console.log(state.selectedTags);
-    };
-    return {
-      activeTags: state.selectedTags,
-      tag: tag,
-      key: i,
-      radius: circleRadius,
-      fill: theme.primary,
-      x: xPos,
-      y: yPos,
-      stroke: theme.secondary,
-      strokeWidth: 5,
-      onMouseUp,
-    };
-  });
+    }
+  }, [state.appMode]);
 
   return (
     <>
       <div
-        {...listeners}
         style={containerStyle}
         ref={stageContainerRef}
         className={"outer-tray"}
       >
+        <DialogBox
+          open={state.popOverOpen}
+          setOpen={(val) => actions.setPopOverOpen(val)}
+        />
         {state.playingSample ? (
           <ReactPlayer
             playing={true}
@@ -428,91 +380,91 @@ const Canvas = ({ activeTags }: { activeTags: string[] }): JSX.Element => {
         ) : (
           <></>
         )}
+        <Navigation
+          setAppMode={(mode) => actions.setAppMode(mode)}
+          appMode={state.appMode}
+        />
         <Stage {...stageProps} ref={stageNodeRef}>
           <Layer
+            ref={dragLayerRef}
+            onDragStart={(e) => {
+              state.sampleToClone.moveTo(dragLayerRef.current);
+              // toClone.moveTo(dragLayerRef.current);
+            }}
+            onDragEnd={(e) => {
+              console.log(e.target);
+              console.log(sampleTrayGroupRef);
+              // console.log(toClone);
+            }}
             onDragMove={(e) => {
-              // console.log("im moving ON THIS LAYER");
-              // console.log(sampleTrayRef.current);
-              if (draggingRef.current && sampleTrayRef.current) {
+              if (state.sampleToClone && sampleTrayGroupRef.current) {
                 if (
-                  haveIntersection(
-                    e.target.getClientRect(),
-                    sampleTrayRef.current.getClientRect()
+                  intersect(
+                    draggingRef.current.getClientRect(),
+                    sampleTrayGroupRef.current.getClientRect()
                   )
                 ) {
+                  sampleTrayGroupRef.current.getChildren()[0].attrs.fill =
+                    theme.secondaryHover;
                   console.log("INTERSECTED WITH TRAY");
+                } else {
+                  sampleTrayGroupRef.current.getChildren()[0].attrs.fill =
+                    theme.primaryInactive;
+                  console.log("NO INTERSECTION");
                 }
               }
             }}
-            {...sampleLayerProps}
-          >
-            {drawSamples()}
-          </Layer>
-          <Layer
-          // onDragMove={(e) => {
-          //   console.log("im moving ON THIS LAYER");
-          //   if (draggingRef.current) {
-          //     if (
-          //       haveIntersection(
-          //         e.target.getClientRect(),
-          //         sampleTrayRef.current.getClientRect()
-          //       )
-          //     ) {
-          //       console.log("INTERSECTED WITH TRAY");
-          //     }
-          //   }
-          // }}
-          >
-            {toClone ? (
-              <Path
-                {...toClone}
-                x={dragPos.x}
-                y={dragPos.y}
-                ref={draggingRef}
-                draggable
-                // onDragMove={(e) => {
-                //   console.log("moving clone");
-                //   if (
-                //     haveIntersection(
-                //       e.target.getClientRect(),
-                //       sampleTrayRef.current.getClientRect()
-                //     )
-                //   ) {
-                //     console.log("INTERSECTED WITH TRAY");
-                //   }
-                // }}
-              />
-            ) : (
-              <></>
-            )}
-            <SampleCollections
-              sampleCollections={sampleCollections}
-              // sampleTrayRef={sampleTrayRef}
+          ></Layer>
+          <Layer>
+            <WidgetsLayer
+              widgetContainerRef={widgetContainerRef}
+              appMode={state.appMode}
+            />
+            <CollectionNav
+              sampleCollections={state.sampleCollections}
               onMouseUp={(e: KonvaEventObject<MouseEvent>) => {
                 actions.setActiveCollection(e.target.attrs.id);
               }}
               activeCollection={state.activeCollection.name}
             />
-            <CollectionContainer
-              sampleCollection={state.activeCollection}
-              ref={sampleTrayRef}
-            />
-            {circles.map((c) => {
-              return <TagSelector {...c} />;
-            })}
+            <Group
+              ref={sampleTrayGroupRef}
+              height={containerHeight}
+              y={sampleTrayGroupY}
+              x={canvasConfig.sampleCollectionGroupX}
+            >
+              <CollectionContainer
+                sampleCollection={state.activeCollection}
+                appMode={state.appMode}
+              />
+            </Group>
           </Layer>
+          <SampleLayer
+            appMode={state.appMode}
+            samples={state.activeSamples}
+            sampleTrayGroupRef={sampleTrayGroupRef}
+            setSampleToClone={actions.setSampleToClone}
+            addToCurrentCollection={actions.addToCurrentCollection}
+            setIsDragging={actions.setIsDragging}
+            dragLayerRef={dragLayerRef}
+            sampleToClone={state.sampleToClone as Konva.Path}
+            setHoveredId={actions.setHoveredId}
+            setPlayingSample={actions.setPlayingSample}
+            stageY={state.stageY}
+          />
+          <TagsLayer
+            appMode={state.appMode}
+            tags={state.availableTags}
+            selectedTags={state.selectedTags}
+            removeTag={actions.removeTag}
+            addTag={actions.addTag}
+          />
+          <KosimaRender
+            kosima={state.kosima}
+            setPopOverOpen={actions.setPopOverOpen}
+          />
         </Stage>
       </div>
-      <DragPlace
-        transform={dragPos}
-        id={"drag-container"}
-        isDragging={state.isDragging}
-        posRef={posRef}
-        clickRef={refForDragOverlay}
-        dragRef={setNodeRef}
-        currentSample={currentSample}
-        draggableId={currentSample?.attrs.id}
-      />
     </>
   );
 };
@@ -529,7 +481,7 @@ function getNumMatches(array: any[], valToFind: string): number {
   return numMatches;
 }
 
-function haveIntersection(r1: any, r2: any) {
+function intersect(r1: any, r2: any): boolean {
   return !(
     r2.x > r1.x + r1.width ||
     r2.x + r2.width < r1.x ||
@@ -537,3 +489,16 @@ function haveIntersection(r1: any, r2: any) {
     r2.y + r2.height < r1.y
   );
 }
+
+// const dIndex = (1 / tags.length) * i * 2 * Math.PI;
+// const radius = 300;
+// let xPos = window.innerWidth - radius - 100;
+// // let xPos = window.innerWidth / 2;
+// let yPos = window.innerHeight / 2;
+// const xSin = -0.5 + Math.sin(dIndex);
+// const yCos = -0.5 + Math.cos(dIndex);
+
+// xPos += xSin * radius;
+// yPos += yCos * radius;
+// xPos += radius / 2;
+// yPos += radius / 2;

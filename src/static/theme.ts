@@ -1,14 +1,25 @@
 export interface Theme {
   primary: string;
+  primaryInactive: string;
   secondary: string;
-  secondary_hover: string;
+  secondaryHover: string;
+  stroke: string;
+  transparent: string;
+  borderRadius: number;
+  textDark: string;
 }
 
 const theme = {
-  primary: "#989898",
+  primary: "#333333",
+  // primary: "#121212",
+  // primary: "#989898",
   secondary: "#FFC300",
-  secondary_hover: "#b38900",
-  primary_inactive: "#4c4c4c",
+  secondaryHover: "#b38900",
+  primaryInactive: "#4c4c4c",
+  transparent: "#0000",
+  stroke: "black",
+  borderRadius: 10,
+  textDark: "black",
 };
 
 export default theme;

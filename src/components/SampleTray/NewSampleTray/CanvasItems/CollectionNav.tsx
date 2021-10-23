@@ -6,13 +6,13 @@ import { RectConfig } from "konva/lib/shapes/Rect";
 import React, { useState, useEffect, useRef } from "react";
 import { Group, Rect } from "react-konva";
 
-interface SampleCollectionProperties extends Partial<RectConfig> {
+interface CollectionNavProperties extends Partial<RectConfig> {
   sampleCollections: SampleCollection[];
   activeCollection: string;
   // onMouseUp: (e: KonvaEventObject<MouseEvent>) => void;
 }
 
-const SampleCollections = (props: SampleCollectionProperties): JSX.Element => {
+const CollectionNav = (props: CollectionNavProperties): JSX.Element => {
   const height = 15;
   const spacing = 5;
   const numSamples = props.sampleCollections.length;
@@ -49,4 +49,4 @@ const SampleCollections = (props: SampleCollectionProperties): JSX.Element => {
   );
 };
 
-export default SampleCollections;
+export default CollectionNav;

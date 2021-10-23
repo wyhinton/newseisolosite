@@ -1,37 +1,46 @@
 import SampleCollection from "@classes/SampleCollection";
+import appConfig from "@static/appConfig";
+import canvasConfig from "@static/canvasConfig";
 import theme from "@static/theme";
-import Konva from "konva";
-import React, { useState, useEffect, RefObject } from "react";
+import React, { MutableRefObject } from "react";
 import { Group, Rect, Text } from "react-konva";
-import SamplePath from "./SamplePath";
+import { AppMode } from "../Canvas";
+import BasicSamplePath from "./BasicSamplePath";
 
 const CollectionContainer = ({
   sampleCollection,
-  ref,
+  appMode,
 }: {
   sampleCollection: SampleCollection;
-  ref: RefObject<Konva.Rect>;
+  appMode: AppMode;
 }): JSX.Element => {
-  const containerHeight = window.innerHeight - 100;
-  const containerY = (window.innerHeight - containerHeight) / 2;
+  console.log("RENDERING COLLECTION CONTAINER");
 
   return (
-    <Group y={containerY} x={40}>
-      <Text text={sampleCollection.name} />
-      {sampleCollection.samples.map((s) => {
-        <Text text={s.id} />;
-        // <SamplePath sample={s} />;
-      })}
+    <>
       <Rect
-        ref={ref}
+        fill={theme.stroke}
         height={window.innerHeight - 100}
-        width={300}
-        stroke={theme.primary_inactive}
+        width={canvasConfig.sampleContainerWidth}
+        stroke={theme.primaryInactive}
         strokeWidth={2}
         cornerRadius={5}
       />
-    </Group>
+      <Text text={sampleCollection.name} />
+      {sampleCollection.samples.map((s, i) => {
+        const padding = 20;
+        const samplePath = {
+          x: 20,
+          y: appConfig.sampleHeight * i + appConfig.sampleHeight / 2 + padding,
+          sample: s,
+          h: appConfig.sampleHeight,
+          width: 10,
+          scaleX: 0.5,
+        };
+        return <BasicSamplePath key={i} {...samplePath} />;
+      })}
+    </>
   );
 };
 
-export default CollectionContainer;
+export default React.memo(CollectionContainer);

@@ -72,9 +72,3 @@ class SampleData {
   // }
 }
 export default SampleData;
-
-const getSampleWidth2 = (sample: SampleData): number => {
-  const mapped = mapRange(sample.length, 0, 3.0, 5, 12);
-  const rounded = Math.round(mapped);
-  return rounded;
-};

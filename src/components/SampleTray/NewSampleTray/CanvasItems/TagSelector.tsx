@@ -34,9 +34,19 @@ const TagSelector = (props: TagSelectorProps): JSX.Element => {
     strokeWidth,
     // isHovered,
   } = props;
+
+  useEffect(() => {
+    console.log(x, y);
+    groupRef.current.to({
+      x: x,
+      y: y,
+    });
+  }, [x, y]);
+
+  const groupRef = useRef(null);
   const groupProps = {
-    y,
-    x,
+    // y,
+    // x,
     onMouseDown,
     onDragStart,
     onDragEnd,
@@ -53,7 +63,7 @@ const TagSelector = (props: TagSelectorProps): JSX.Element => {
   const [hovered, setHovered] = useState(false);
   const circRef = useRef(null);
   useEffect(() => {
-    console.log(activeTags);
+    // console.log(activeTags);
     if (activeTags.includes(tag.name)) {
       setCircleFill(theme.secondary);
     } else {
@@ -62,7 +72,7 @@ const TagSelector = (props: TagSelectorProps): JSX.Element => {
   }, [activeTags]);
 
   useEffect(() => {
-    console.log(radius);
+    // console.log(radius);
     circRef.current.to({
       radius: radius,
       duration: 0.3,
@@ -71,7 +81,7 @@ const TagSelector = (props: TagSelectorProps): JSX.Element => {
   }, [radius]);
 
   return (
-    <Group {...groupProps}>
+    <Group {...groupProps} ref={groupRef}>
       <Circle
         onMouseEnter={(e) => {
           setHovered(true);
@@ -83,19 +93,26 @@ const TagSelector = (props: TagSelectorProps): JSX.Element => {
         }}
         id={`tag_${tag.name}_circle`}
         {...circleProps}
-        stroke={tag.count === 0 ? theme.primary_inactive : stroke}
+        stroke={tag.count === 0 ? theme.primaryInactive : stroke}
         fill={
           tag.count == 0
             ? theme.primary
             : hovered
-            ? theme.secondary_hover
-            : circleFill
+            ? theme.secondaryHover
+            : theme.stroke
         }
+        // fill={"green"}
         ref={circRef}
       />
-      <Text x={-radius} text={tag.name} align={"center"} width={radius * 2} />
+      <Text
+        x={-radius}
+        fill={"white"}
+        text={tag.name}
+        align={"center"}
+        width={radius * 2}
+      />
     </Group>
   );
 };
 
-export default TagSelector;
+export default React.memo(TagSelector);

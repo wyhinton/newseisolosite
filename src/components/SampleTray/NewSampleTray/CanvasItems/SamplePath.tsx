@@ -103,8 +103,9 @@ const SamplePath = React.memo(
           scaleX={0.2}
           scaleY={0.6}
           // scaleY={isHovered ? 1.1 : 1}
-          fillPriority={"linear-gradient"}
+          // fillPriority={"linear-gradient"}
           fill={fill}
+          // fill={fill}
           onMouseUp={onMouseUp}
           onMouseDown={(e) => {
             console.log(e.target.absolutePosition());
@@ -156,7 +157,7 @@ const SamplePath = React.memo(
           // // fillLinearGradientStartPoint={startPoint}
           // fillLinearGradientEndPoint={{ x: 0, y: 0 }}
           // fillLinearGradientColorStops={[0, "red", 0.5, "black", 1, "green"]}
-          stroke={isHovered ? "white" : "red"}
+          // stroke={isHovered ? "white" : "red"}
           strokeWidth={2}
           // width={actualWidth}
           width={w}

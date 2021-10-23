@@ -147,7 +147,8 @@ const SampleLayer = ({
       };
       const onMouseUp = onRectMouseUp;
 
-      const fill = "green";
+      const fill = theme.secondary;
+      // const fill = "green";
       const draggable = true;
 
       return {

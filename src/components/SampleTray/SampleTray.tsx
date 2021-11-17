@@ -57,25 +57,12 @@ const SampleTray = ({ active }: { active: boolean }): JSX.Element => {
 
   return (
     <Section className={sampleTrayClass}>
-      {/* <CloseButton onMouseUp= {toggleValue}/> */}
       <Section
         column={true}
         backgroundColor="white"
         className={"sample-tray-inner-container"}
       >
-        {/* <Heading> */}
-        {/* <TagBar
-            tagsState={state.tags}
-            actions={actions}
-            onTagClick={(id: string) => {
-              setTagFilter(id);
-            }}
-          /> */}
-        {/* </Heading> */}
-        {/* <Scrollbars style={{ width: "100%", height: "100vh" }}> */}
-        {/* <SampleLayout activeTags = {state.tags}/> */}
         <Canvas activeTags={state.tags} />
-        {/* </Scrollbars> */}
       </Section>
     </Section>
   );

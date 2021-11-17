@@ -103,8 +103,8 @@ const SamplePath = React.memo(
           scaleX={0.2}
           scaleY={0.6}
           // scaleY={isHovered ? 1.1 : 1}
-          // fillPriority={"linear-gradient"}
-          fill={fill}
+          fillPriority={"linear-gradient"}
+          // fill={fill}
           // fill={fill}
           onMouseUp={onMouseUp}
           onMouseDown={(e) => {

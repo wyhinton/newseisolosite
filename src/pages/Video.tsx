@@ -3,7 +3,8 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Stats from "three/examples/jsm/libs/stats.module";
 import { GUI } from "three/examples/jsm/libs/dat.gui.module";
-import { OBJLoader } from "three-obj-loader";
+import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
+// import { OBJLoader } from "three-obj-loader";
 const Video = (): JSX.Element => {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef(null);
@@ -100,6 +101,27 @@ const Video = (): JSX.Element => {
     }
 
     const loader = new OBJLoader();
+    loader.load(
+      `${process.env.PUBLIC_URL}/Models/CHURCH_BALL_DEMO.obj`,
+      //   "https://raw.githubusercontent.com/wyhinton/newseisolosite/master/public/Models/CHURCH_BALL_DEMO.obj",
+      (obj) => {
+        scene.add(obj);
+        var material = new THREE.MeshBasicMaterial({
+          color: 0xff0000,
+          transparent: true,
+          opacity: 0.5,
+        });
+        console.log(obj);
+        const curch = scene.getObjectByName(
+          "sagrada-familia-basilica-complete-mw.001"
+        ) as THREE.Mesh;
+        const scale = 1.1;
+        curch.scale.set(scale, scale, scale);
+        curch.material = material;
+        // obj.children[0].
+        // obj.scale = new THREE.Vector3(10,10,10)
+      }
+    );
 
     function animate() {
       requestAnimationFrame(animate);

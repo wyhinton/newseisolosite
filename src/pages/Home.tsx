@@ -200,22 +200,22 @@ const Home = (): JSX.Element => {
 
   return (
     <section style={cotainerStyle}>
-      <h1 style={headerStyle}>Seisolo.io</h1>
+      {/* <h1 style={headerStyle}>Seisolo.io</h1> */}
       <div>
-        <p style={paragraphStyle}>
+        {/* <p style={paragraphStyle}>
           SeiSolo.io is a multimedia web installation exploring classical and
           electronic music, aiming to create a unique and accessible way of
           engaging with both. It features a recorded solo violin recital, five
           commissioned remixes of the recital repertoire, and a web-based
           software for users to remix on their own.
-        </p>
+        </p> */}
         <Video />
-        <Link to="/app">
+        {/* <Link to="/app">
           <img
             style={imageStyle}
             src={`${process.env.PUBLIC_URL}/MVNT Logo 1.svg`}
           ></img>
-        </Link>
+        </Link> */}
       </div>
     </section>
   );

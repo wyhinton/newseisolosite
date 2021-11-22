@@ -1,0 +1,16 @@
+@use "../variables" as v;
+
+.frequencyBands {
+  padding: 1px;
+  width: 10px;
+  margin: 1px;
+  transform: rotatex(180deg);
+  transform-origin: top;
+  background-color: v.$secondary;
+  bottom: 0;
+  border-radius: v.$borderRadius;
+  overflow: hidden;
+}
+
+.eq-container {
+}

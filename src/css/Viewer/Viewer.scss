@@ -1,0 +1,109 @@
+@import "../_variables";
+
+.viewer-window {
+  background-color: red;
+  width: 30vh;
+  height: 30vh;
+  border-radius: 50%;
+  outline: $border;
+  margin: 0 auto;
+  // overflow: hidden;
+  animation: grow-in 0.5s ease-out;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  // transition: transform 0.5s ease-out;
+}
+
+.viewer-container-notes {
+  transform: scale(0.5);
+}
+
+.visual-mask {
+  border-radius: 50%;
+  overflow: hidden;
+  width: 30vh;
+  height: 30vh;
+  // border: $border;
+}
+
+.circle-border {
+  // transform: rotate(0deg);
+  transition: transform 1.5s ease-out;
+}
+.circle-border-stop {
+  transform: rotate(100deg);
+  transition: transform 1.5s ease-out;
+  // transition: transform 1.5s ease-out;
+}
+.circle-border-playing {
+  // transform: rotate(0deg);
+  animation: 5s rotate infinite linear;
+  transition: transform 0.5s ease-out;
+}
+// .border-playing {
+//   animation: 0.5s grow-scale linear;
+// }
+
+// @keyframes grow-in {
+//   0% {
+//     width: 30vh;
+//     height: 30vh;
+//   }
+//   25% {
+//     width: 35vh;
+//     height: 35vh;
+//   }
+//   75% {
+//     width: 35vh;
+//     height: 35vh;
+//   }
+//   100% {
+//     width: 30vh;
+//     height: 30vh;
+//   }
+// }
+@keyframes grow-scale {
+  0% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.1);
+  }
+  75% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes grow-in {
+  0% {
+    width: 30vh;
+    height: 30vh;
+  }
+  25% {
+    width: 5vh;
+    height: 5vh;
+  }
+  75% {
+    width: 5vh;
+    height: 5vh;
+  }
+  100% {
+    width: 30vh;
+    height: 30vh;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

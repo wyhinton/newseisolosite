@@ -1,12 +1,36 @@
-import React, { useState, useEffect } from "react";
+import React, {
+  useState,
+  useEffect,
+  RefObject,
+  createContext,
+  useRef,
+} from "react";
 import { Route, BrowserRouter as Router, Switch, Link } from "react-router-dom";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Stats from "three/examples/jsm/libs/stats.module";
 import { GUI } from "three/examples/jsm/libs/dat.gui.module";
-import Video from "./Video";
+import Video from "../components/Home/Graphics/Video";
+import Player from "@components/Home/Player";
+import FlexRow from "@components/FlexRow";
+import FlexColumn from "@components/FlexColumn";
+import theme from "@static/theme";
+import AudioDataContainer from "@components/Home/Player/EQ/AudioDataContainer";
+import { TrackSelection } from "@interfaces/TrackSelection";
+import Viewer from "@components/Home/Player/Viewer";
+import tracks from "@static/tracks";
+import { Track } from "@interfaces/Track";
+import { useToggle } from "@hooks";
+
+export type HomeMode = "player" | "notes" | "about";
 
 const Home = (): JSX.Element => {
+  const audio = useRef(null);
+
+  useEffect(() => {
+    audio.current = new AudioContext();
+  }, []);
+
   const cotainerStyle = {
     // width: "100%",
     display: "flex",
@@ -15,6 +39,8 @@ const Home = (): JSX.Element => {
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "column",
+    zIndex: 10,
+    backgroundColor: theme.primary,
   } as React.CSSProperties;
 
   const paragraphStyle = {
@@ -29,179 +55,84 @@ const Home = (): JSX.Element => {
     fontSize: "4em",
   } as React.CSSProperties;
 
-  // const scene = new THREE.Scene();
+  const topStyle = {
+    width: "45%",
+    // width: "25%",
+    textAlign: "center",
+    // borderRadius: theme.borderRadius,
+    // backgroundColor: theme.secondary,
+    // border: theme.border,
+    // overflow: "hidden",
+    zIndex: 10,
+  } as React.CSSProperties;
 
-  // const camera = new THREE.PerspectiveCamera(
-  //   75,
-  //   window.innerWidth / window.innerHeight,
-  //   0.1,
-  //   1000
-  // );
+  const innerGroupStyle = {
+    width: "100%",
+    textAlign: "center",
+    // borderRadius: theme.borderRadius,
+    // backgroundColor: theme.secondary,
+    // border: theme.border,
+    // overflow: "hidden",
+    zIndex: 10,
+    // marginTop: "1em",
+  } as React.CSSProperties;
 
-  // const renderer = new THREE.WebGLRenderer();
-  // renderer.setSize(window.innerWidth, window.innerHeight);
-  // document.body.appendChild(renderer.domElement);
+  const [activeTrack, setTrack] = useState<undefined | Track>(undefined);
+  const [playing, setPlaying] = useState(false);
+  const [homeMode, setHomeMode] = useState<HomeMode>("player");
+  const [progress, setProgress] = useState(0);
+  const [audioElem, setAudioElem] = useState<undefined | HTMLAudioElement>(
+    undefined
+  );
+  useEffect(() => {
+    console.log(progress);
+  }, [progress]);
 
-  // const controls = new OrbitControls(camera, renderer.domElement);
+  // const audio = new AudioContext();
+  // const [track, setTrack] = useState<undefined | Track>(undefined);
 
-  // const gridHelper = new THREE.GridHelper(10, 10);
-  // gridHelper.position.y = -1.5;
-  // scene.add(gridHelper);
+  // useEffect(() => {
+  //   if (track) {
+  //     console.log(trackSelection.src);
+  //     console.log();
+  //     setTrack(tracks.filter((t) => t.src == trackSelection.src)[0]);
+  //   }
+  // }, [trackSelection])
+  useEffect(() => {
+    console.log(playing);
+  }, [playing]);
 
-  // camera.position.z = 5;
+  const setToPlay = (
+    track: Track,
+    audioElem: RefObject<HTMLAudioElement>
+  ): void => {
+    setTrack(track);
+    console.log(audioElem.current);
+    setAudioElem(audioElem.current);
+  };
 
-  // window.addEventListener("resize", onWindowResize, false);
-  // function onWindowResize() {
-  //   camera.aspect = window.innerWidth / window.innerHeight;
-  //   camera.updateProjectionMatrix();
-  //   renderer.setSize(window.innerWidth, window.innerHeight);
-  //   render();
-  // }
+  const [showAbout, ToggleAbout] = useToggle(false);
+  const info = () => {
+    if (activeTrack) {
+      return activeTrack.about;
+    } else {
+      return "";
+    }
+  };
 
-  // const webcam = document.createElement("video") as HTMLMediaElement;
-
-  // var constraints = { audio: false, video: { width: 640, height: 480 } };
-
-  // navigator.mediaDevices
-  //   .getUserMedia(constraints)
-  //   .then(function (mediaStream) {
-  //     webcam.srcObject = mediaStream;
-  //     webcam.onloadedmetadata = function (e) {
-  //       webcam.setAttribute("autoplay", "true");
-  //       webcam.setAttribute("playsinline", "true");
-  //       webcam.play();
-  //     };
-  //   })
-  //   .catch(function (err) {
-  //     alert(err.name + ": " + err.message);
-  //   });
-
-  // const webcamCanvas = document.createElement("canvas") as HTMLCanvasElement;
-  // webcamCanvas.width = 1024;
-  // webcamCanvas.height = 1024;
-
-  // const canvasCtx = webcamCanvas.getContext("2d") as CanvasRenderingContext2D;
-  // canvasCtx.fillStyle = "#000000";
-  // canvasCtx.fillRect(0, 0, webcamCanvas.width, webcamCanvas.height);
-  // const webcamTexture: THREE.Texture = new THREE.Texture(webcamCanvas);
-  // webcamTexture.minFilter = THREE.LinearFilter;
-  // webcamTexture.magFilter = THREE.LinearFilter;
-
-  // const geometry = new THREE.BoxGeometry();
-  // //const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ map: webcamTexture})
-
-  // function vertexShader() {
-  //   return `
-  //       varying vec2 vUv;
-  //       void main( void ) {
-  //           vUv = uv;
-  //           gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
-  //       }
-  //   `;
-  // }
-  // function fragmentShader() {
-  //   return `
-  //       uniform vec3 keyColor;
-  //       uniform float similarity;
-  //       uniform float smoothness;
-  //       varying vec2 vUv;
-  //       uniform sampler2D map;
-  //       void main() {
-  //           vec4 videoColor = texture2D(map, vUv);
-
-  //           float Y1 = 0.299 * keyColor.r + 0.587 * keyColor.g + 0.114 * keyColor.b;
-  //           float Cr1 = keyColor.r - Y1;
-  //           float Cb1 = keyColor.b - Y1;
-
-  //           float Y2 = 0.299 * videoColor.r + 0.587 * videoColor.g + 0.114 * videoColor.b;
-  //           float Cr2 = videoColor.r - Y2;
-  //           float Cb2 = videoColor.b - Y2;
-
-  //           float blend = smoothstep(similarity, similarity + smoothness, distance(vec2(Cr2, Cb2), vec2(Cr1, Cb1)));
-  //           gl_FragColor = vec4(videoColor.rgb, videoColor.a * blend);
-  //       }
-  //   `;
-  // }
-
-  // const material = new THREE.ShaderMaterial({
-  //   transparent: true,
-  //   uniforms: {
-  //     map: { value: webcamTexture },
-  //     keyColor: { value: [0.0, 1.0, 0.0] },
-  //     similarity: { value: 0.8 },
-  //     smoothness: { value: 0.0 },
-  //   },
-  //   vertexShader: vertexShader(),
-  //   fragmentShader: fragmentShader(),
-  // });
-
-  // const cube = new THREE.Mesh(geometry, material);
-  // cube.add(new THREE.BoxHelper(cube, 0xff0000));
-
-  // cube.rotateY(0.5);
-  // cube.scale.x = 4;
-  // cube.scale.y = 3;
-  // cube.scale.z = 4;
-  // scene.add(cube);
-
-  // const stats: Stats = Stats();
-  // document.body.appendChild(stats.dom);
-
-  // var data = {
-  //   keyColor: [0, 255, 0],
-  //   similarity: 0.8,
-  //   smoothness: 0.0,
-  // };
-
-  // const gui = new GUI();
-  // gui.addColor(data, "keyColor").onChange(() => updateKeyColor(data.keyColor));
-  // gui
-  //   .add(data, "similarity", 0.0, 1.0)
-  //   .onChange(() => updateSimilarity(data.similarity));
-  // gui
-  //   .add(data, "smoothness", 0.0, 1.0)
-  //   .onChange(() => updateSmoothness(data.smoothness));
-
-  // function updateKeyColor(v: number[]) {
-  //   material.uniforms.keyColor.value = [v[0] / 255, v[1] / 255, v[2] / 255];
-  // }
-  // function updateSimilarity(v: number) {
-  //   material.uniforms.similarity.value = v;
-  // }
-  // function updateSmoothness(v: number) {
-  //   material.uniforms.smoothness.value = v;
-  // }
-
-  // function animate() {
-  //   requestAnimationFrame(animate);
-
-  //   //if (webcam.readyState === webcam.HAVE_ENOUGH_DATA) {
-  //   canvasCtx.drawImage(
-  //     webcam as CanvasImageSource,
-  //     0,
-  //     0,
-  //     webcamCanvas.width,
-  //     webcamCanvas.height
-  //   );
-  //   if (webcamTexture) webcamTexture.needsUpdate = true;
-  //   //}
-
-  //   controls.update();
-
-  //   render();
-
-  //   stats.update();
-  // }
-
-  // function render() {
-  //   renderer.render(scene, camera);
-  // }
-  // animate();
-
+  const playerContainerStyle = {
+    width: "100%",
+    position: "absolute",
+    top: 0,
+    left: 0,
+  } as React.CSSProperties;
+  const TrackContext = createContext(null);
   return (
     <section style={cotainerStyle}>
-      {/* <h1 style={headerStyle}>Seisolo.io</h1> */}
-      <div>
+      <FlexRow width="100%" justifyContent="space-around">
+        {/* <section style={cotainerStyle}> */}
+        {/* <h1 style={headerStyle}>Seisolo.io</h1> */}
+        {/* <div> */}
         {/* <p style={paragraphStyle}>
           SeiSolo.io is a multimedia web installation exploring classical and
           electronic music, aiming to create a unique and accessible way of
@@ -209,17 +140,66 @@ const Home = (): JSX.Element => {
           commissioned remixes of the recital repertoire, and a web-based
           software for users to remix on their own.
         </p> */}
-        <Video />
+        {/* <TrackContext.Provider value={activeTrack}> */}
+
+        {/* <BgBar audioElem={audioElem} /> */}
+        <FlexColumn style={topStyle}>
+          {/* <Bar audioElem={audioElem} /> */}
+          {/* 
+          <AudioDataContainer
+            tracks={tracks}
+            track={activeTrack}
+            audioElem={audioElem}
+            playing={playing}
+            // audioContext={audio}
+          /> */}
+          <FlexColumn style={innerGroupStyle}>
+            {/* <div>Seisolo.io</div> */}
+            {/* <InfoContainer
+              setHomeMode={setHomeMode}
+              track={activeTrack}
+              visible={showAbout}
+              toggle={() => {
+                console.log("hello");
+              }}
+            /> */}
+            <div style={playerContainerStyle}>
+              <Player
+                audioContext={audio}
+                setTrack={setToPlay}
+                activeTrack={activeTrack}
+                setPlaying={setPlaying}
+                setProgress={setProgress}
+                // appMode={appMode}
+              />
+            </div>
+          </FlexColumn>
+        </FlexColumn>
+        <FlexColumn width={"30%"}>
+          {/* <Viewer
+            track={activeTrack}
+            playing={playing}
+            appMode={homeMode}
+            setHomeMode={setHomeMode}
+          /> */}
+          <div style={{ fontSize: 30 }}>{info()}</div>
+        </FlexColumn>
+        {/* </TrackContext.Provider> */}
+
+        {/* <Video /> */}
         {/* <Link to="/app">
           <img
             style={imageStyle}
             src={`${process.env.PUBLIC_URL}/MVNT Logo 1.svg`}
           ></img>
         </Link> */}
-      </div>
+        {/* </div> */}
+      </FlexRow>
     </section>
   );
 };
+
+// const Bar
 
 export default Home;
 
@@ -230,3 +210,160 @@ export default Home;
 //     <div>hello</div>
 //   )
 // }
+
+const BgBar = ({
+  audioElem,
+}: {
+  audioElem: HTMLAudioElement;
+  // audioElem: RefObject<HTMLAudioElement>;
+}): JSX.Element => {
+  // const [containerStyle, setcontainerStyle] = useState(")
+  const [rect, setRect] = useState<DOMRect>(undefined);
+  useEffect(() => {
+    // audioElem.getBoundingClientRect()
+    // setRect(audioElem.getBoundingClientRect());
+  }, [audioElem]);
+
+  // const {x, , width, height} = audioElem.
+  const containerStyle = {
+    margin: "auto",
+    justifyContent: "center",
+    width: "100%",
+    height: 20,
+    display: "flex",
+    alignItems: "center",
+    // left: rect.x,
+    // top: rect.y,
+    // overflow: "visible",
+  } as React.CSSProperties;
+
+  return <div style={containerStyle}>hello</div>;
+};
+
+const Bar = ({
+  audioElem,
+}: {
+  audioElem: HTMLAudioElement;
+  // audioElem: RefObject<HTMLAudioElement>;
+}): JSX.Element => {
+  const [curTime, setcurTime] = useState(0);
+
+  const containerStyle = {
+    margin: "auto",
+    justifyContent: "center",
+    width: "100%",
+    // position: "relative",
+    height: 20,
+    // backgroundColor: "blue",
+    display: "flex",
+    alignItems: "center",
+    // overflow: "visible",
+  } as React.CSSProperties;
+
+  const barStyle = {
+    width: "50%",
+    position: "relative",
+    height: 2,
+    backgroundColor: "black",
+    overflow: "visible",
+  } as React.CSSProperties;
+  const s = 15;
+  const playHeadStyle = {
+    width: s,
+    // width: "5%",
+    position: "absolute",
+    height: s,
+    backgroundColor: "black",
+    left: curTime,
+    transform: "translate(0px, -50%)",
+    borderRadius: "50%",
+  } as React.CSSProperties;
+
+  const headRef = useRef<HTMLDivElement>(null);
+  const barRef = useRef<HTMLDivElement>(null);
+  // useEffect(()=>{
+  //   console.log(dep);
+  // },[dep]);
+
+  useEffect(() => {
+    if (audioElem) {
+      audioElem.currentTime = 0;
+      console.log(audioElem.currentTime);
+      audioElem.ontimeupdate = (e: Event) => {
+        console.log(e);
+        let elem = e.target as HTMLAudioElement;
+        const progress = elem.currentTime / elem.duration;
+        const pos =
+          (barRef.current.clientWidth - headRef.current.clientWidth) * progress;
+        setcurTime(pos);
+      };
+    }
+  }, [audioElem]);
+
+  return (
+    <div style={containerStyle}>
+      <div style={barStyle} ref={barRef}>
+        <div style={playHeadStyle} ref={headRef}></div>
+      </div>
+    </div>
+  );
+};
+
+const InfoContainer = ({
+  track,
+  visible,
+  toggle,
+  setHomeMode,
+}: {
+  track: Track;
+  visible: boolean;
+  toggle: () => void;
+  setHomeMode: (v: HomeMode) => void;
+}): JSX.Element => {
+  const s = 30;
+  const containerRef = useRef(null);
+  // useOnClickOutside(containerRef, () => {
+  //   // if (visible) toggle();
+  //   if (visible) {
+  //     toggle();
+  //   }
+  //   // toggle();
+  // });
+  useEffect(() => {
+    if (visible) {
+      setHomeMode("about");
+    } else {
+      setHomeMode("player");
+    }
+  }, [visible]);
+
+  const containerStyle = {
+    // bottom: "-236%",
+    width: "100%",
+    // position: "absolute",
+    height: "5vh",
+    fontSize: 22,
+    lineHeight: 28,
+    // height: "30vh",
+    border: theme.border,
+    zIndex: 100,
+    left: "50%",
+    // transform: " translate(-50%, -50%)",
+    borderRadius: theme.borderRadius,
+    backgroundColor: theme.secondary,
+    display: visible ? "flex" : "none",
+    // zIndex: 100,
+  } as React.CSSProperties;
+
+  const text = (): string => {
+    if (track) {
+      return track.about;
+    }
+  };
+
+  return (
+    <div ref={containerRef} style={containerStyle}>
+      <p>{text()}</p>
+    </div>
+  );
+};

@@ -4,6 +4,8 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Stats from "three/examples/jsm/libs/stats.module";
 import { GUI } from "three/examples/jsm/libs/dat.gui.module";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
+// import fragment from "./fragment.glsl";
+
 // import { OBJLoader } from "three-obj-loader";
 const Video = (): JSX.Element => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -11,17 +13,34 @@ const Video = (): JSX.Element => {
 
   useEffect(() => {
     const scene = new THREE.Scene();
-
+    scene.background = new THREE.Color(0xff0000);
     const camera = new THREE.PerspectiveCamera(
       75,
       window.innerWidth / window.innerHeight,
       0.1,
       1000
     );
+    // const camera = new THREE.OrthographicCamera(
+    //   75,
+    //   window.innerWidth / window.innerHeight,
+    //   0.1,
+    //   1000
+    // );
+    const width = window.innerWidth / 2;
+    const height = window.innerHeight / 2;
+    // const camera = new THREE.OrthographicCamera(
+    //   width / -2,
+    //   width / 2,
+    //   height / 2,
+    //   height / -2,
+    //   1,
+    //   1000
+    // );
 
     const renderer = new THREE.WebGLRenderer({ alpha: true });
     renderer.setClearColor(0x000000, 0);
     renderer.setSize(window.innerWidth, window.innerHeight);
+    // renderer.sortObjects = false;
     document.body.appendChild(renderer.domElement);
 
     const controls = new OrbitControls(camera, renderer.domElement);
@@ -34,7 +53,7 @@ const Video = (): JSX.Element => {
 
     window.addEventListener("resize", onWindowResize, false);
     function onWindowResize() {
-      camera.aspect = window.innerWidth / window.innerHeight;
+      // camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
       render();
@@ -44,7 +63,7 @@ const Video = (): JSX.Element => {
     //550x850
     // videoRef.current.
     const videoTexture = new THREE.VideoTexture(videoRef.current);
-    videoTexture.format = THREE.RGBFormat;
+    videoTexture.format = THREE.RGBAFormat;
     videoRef.current.play();
     videoRef.current.setAttribute("crossorigin", "anonymous");
 
@@ -64,10 +83,10 @@ const Video = (): JSX.Element => {
     const cube = new THREE.Mesh(geometry, material);
     cube.add(new THREE.BoxHelper(cube, 0xff0000));
 
-    cube.rotateY(0.5);
-    cube.scale.x = 4;
-    cube.scale.y = 3;
-    cube.scale.z = 4;
+    // cube.rotateY(0.5);
+    // cube.scale.x = 4;
+    // cube.scale.y = 3;
+    // cube.scale.z = 4;
     scene.add(cube);
 
     const stats: Stats = Stats();
@@ -107,7 +126,7 @@ const Video = (): JSX.Element => {
       (obj) => {
         scene.add(obj);
         var material = new THREE.MeshBasicMaterial({
-          color: 0xff0000,
+          color: "black",
           transparent: true,
           opacity: 0.5,
         });
@@ -118,25 +137,11 @@ const Video = (): JSX.Element => {
         const scale = 1.1;
         curch.scale.set(scale, scale, scale);
         curch.material = material;
-        // obj.children[0].
-        // obj.scale = new THREE.Vector3(10,10,10)
       }
     );
 
     function animate() {
       requestAnimationFrame(animate);
-
-      //if (webcam.readyState === webcam.HAVE_ENOUGH_DATA) {
-      //   canvasCtx.drawImage(
-      //     webcam as CanvasImageSource,
-      //     0,
-      //     0,
-      //     webcamCanvas.width,
-      //     webcamCanvas.height
-      //   );
-      //   if (webcamTexture) webcamTexture.needsUpdate = true;
-      //}
-
       controls.update();
 
       render();
@@ -182,6 +187,7 @@ const Video = (): JSX.Element => {
           height: "100%",
           // backgroundColor: "red",
         }}
+        muted
         // loop
         // crossOrigin="anonymous"
         src={`${process.env.PUBLIC_URL}/Videos/ROTOSCOPE_TEST_1.mp4`}
@@ -202,6 +208,39 @@ function vertexShader() {
   `;
 }
 function fragmentShader() {
+  return `
+      uniform vec3 keyColor;
+      uniform float similarity;
+      uniform float smoothness;
+      varying vec2 vUv;
+      uniform sampler2D map;
+      void main() {
+          vec4 videoColor = texture2D(map, vUv);
+   
+          float Y1 = 0.299 * keyColor.r + 0.587 * keyColor.g + 0.114 * keyColor.b;
+          float Cr1 = keyColor.r - Y1;
+          float Cb1 = keyColor.b - Y1;
+          
+          float Y2 = 0.299 * videoColor.r + 0.587 * videoColor.g + 0.114 * videoColor.b;
+          float Cr2 = videoColor.r - Y2; 
+          float Cb2 = videoColor.b - Y2; 
+          
+          float blend = smoothstep(similarity, similarity + smoothness, distance(vec2(Cr2, Cb2), vec2(Cr1, Cb1)));
+          gl_FragColor = vec4(videoColor.rgb, videoColor.a * blend); 
+      }
+  `;
+}
+
+function vertex2() {
+  return `
+      varying vec2 vUv;
+      void main( void ) {     
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0);
+      }
+  `;
+}
+function frag2() {
   return `
       uniform vec3 keyColor;
       uniform float similarity;

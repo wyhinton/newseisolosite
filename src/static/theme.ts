@@ -10,16 +10,17 @@ export interface Theme {
 }
 
 const theme = {
-  primary: "#333333",
-  // primary: "#121212",
-  // primary: "#989898",
-  secondary: "#FFC300",
+  primary: "#9e9e9e",
+  primaryDark: "#1f1f1f",
+  secondary: "#fff200",
   secondaryHover: "#b38900",
   primaryInactive: "#4c4c4c",
   transparent: "#0000",
   stroke: "black",
+  border: "2px solid black",
   borderRadius: 10,
   textDark: "black",
+  text: "white",
 };
 
 export default theme;

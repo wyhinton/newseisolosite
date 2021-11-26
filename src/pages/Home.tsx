@@ -78,6 +78,7 @@ const Home = (): JSX.Element => {
   } as React.CSSProperties;
 
   const [activeTrack, setTrack] = useState<undefined | Track>(undefined);
+  const [trackIndex, setTrackIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [homeMode, setHomeMode] = useState<HomeMode>("player");
   const [progress, setProgress] = useState(0);
@@ -87,6 +88,11 @@ const Home = (): JSX.Element => {
   useEffect(() => {
     console.log(progress);
   }, [progress]);
+
+  // useEffect(() => {
+  //   console.log(trackIndex);
+  //   setTrack(tracks[trackIndex]);
+  // }, [trackIndex]);
 
   // const audio = new AudioContext();
   // const [track, setTrack] = useState<undefined | Track>(undefined);
@@ -119,33 +125,26 @@ const Home = (): JSX.Element => {
       return "";
     }
   };
-
-  const playerContainerStyle = {
-    width: "100%",
-    position: "absolute",
-    top: 0,
-    left: 0,
-  } as React.CSSProperties;
   const TrackContext = createContext(null);
   return (
     <section style={cotainerStyle}>
-      <FlexRow width="100%" justifyContent="space-around">
-        {/* <section style={cotainerStyle}> */}
-        {/* <h1 style={headerStyle}>Seisolo.io</h1> */}
-        {/* <div> */}
-        {/* <p style={paragraphStyle}>
+      {/* <FlexRow width="100%" justifyContent="space-around"> */}
+      {/* <section style={cotainerStyle}> */}
+      {/* <h1 style={headerStyle}>Seisolo.io</h1> */}
+      {/* <div> */}
+      {/* <p style={paragraphStyle}>
           SeiSolo.io is a multimedia web installation exploring classical and
           electronic music, aiming to create a unique and accessible way of
           engaging with both. It features a recorded solo violin recital, five
           commissioned remixes of the recital repertoire, and a web-based
           software for users to remix on their own.
         </p> */}
-        {/* <TrackContext.Provider value={activeTrack}> */}
+      {/* <TrackContext.Provider value={activeTrack}> */}
 
-        {/* <BgBar audioElem={audioElem} /> */}
-        <FlexColumn style={topStyle}>
-          {/* <Bar audioElem={audioElem} /> */}
-          {/* 
+      {/* <BgBar audioElem={audioElem} /> */}
+      <FlexColumn style={topStyle}>
+        <Bar audioElem={audioElem} />
+        {/* 
           <AudioDataContainer
             tracks={tracks}
             track={activeTrack}
@@ -153,48 +152,45 @@ const Home = (): JSX.Element => {
             playing={playing}
             // audioContext={audio}
           /> */}
-          <FlexColumn style={innerGroupStyle}>
-            {/* <div>Seisolo.io</div> */}
-            {/* <InfoContainer
-              setHomeMode={setHomeMode}
-              track={activeTrack}
-              visible={showAbout}
-              toggle={() => {
-                console.log("hello");
-              }}
-            /> */}
-            <div style={playerContainerStyle}>
-              <Player
-                audioContext={audio}
-                setTrack={setToPlay}
-                activeTrack={activeTrack}
-                setPlaying={setPlaying}
-                setProgress={setProgress}
-                // appMode={appMode}
-              />
-            </div>
-          </FlexColumn>
-        </FlexColumn>
-        <FlexColumn width={"30%"}>
-          {/* <Viewer
+        <FlexColumn style={innerGroupStyle}>
+          <Viewer
             track={activeTrack}
             playing={playing}
             appMode={homeMode}
             setHomeMode={setHomeMode}
-          /> */}
-          <div style={{ fontSize: 30 }}>{info()}</div>
+          />
+          {/* <div>Seisolo.io</div> */}
+          <InfoContainer
+            setHomeMode={setHomeMode}
+            track={activeTrack}
+            visible={showAbout}
+            toggle={() => {
+              console.log("hello");
+            }}
+          />
+          <Player
+            setTrackIndex={setTrackIndex}
+            audioContext={audio}
+            setTrack={setToPlay}
+            activeTrack={activeTrack}
+            setPlaying={setPlaying}
+            setProgress={setProgress}
+            // appMode={appMode}
+          />
         </FlexColumn>
-        {/* </TrackContext.Provider> */}
+      </FlexColumn>
+      <FlexColumn width={"50%"}>{/* <div>{info()}</div> */}</FlexColumn>
+      {/* </TrackContext.Provider> */}
 
-        {/* <Video /> */}
-        {/* <Link to="/app">
+      {/* <Video /> */}
+      {/* <Link to="/app">
           <img
             style={imageStyle}
             src={`${process.env.PUBLIC_URL}/MVNT Logo 1.svg`}
           ></img>
         </Link> */}
-        {/* </div> */}
-      </FlexRow>
+      {/* </div> */}
+      {/* </FlexRow> */}
     </section>
   );
 };

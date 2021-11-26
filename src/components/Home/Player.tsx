@@ -12,12 +12,14 @@ const Player = ({
   setPlaying,
   audioContext,
   setProgress,
+  setTrackIndex,
 }: {
   activeTrack: Track;
   setTrack: (t: Track, a: RefObject<HTMLAudioElement>) => void;
   setPlaying: (playing: boolean) => void;
   audioContext: MutableRefObject<AudioContext>;
   setProgress: (p: number) => void;
+  setTrackIndex: (n: number) => void;
 }): JSX.Element => {
   const divStyle = {
     backgroundColor: theme.primary,
@@ -41,6 +43,7 @@ const Player = ({
           }
           return (
             <Audio
+              setTrackIndex={setTrackIndex}
               track={track}
               key={i}
               setTrack={setTrack}

@@ -47,7 +47,11 @@ const Viewer = ({
     // overflow: "hidden",
     minWidth: "20%",
     minHeight: "20%",
+    width: "50%",
     // backgroundColor: "yellow",
+    // display: "flex",
+    margin: "auto",
+    justifyContent: "center",
     position: "relative",
   } as React.CSSProperties;
   const circleBorderClass = classNames("circle-border", {

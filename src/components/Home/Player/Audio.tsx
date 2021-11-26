@@ -19,6 +19,7 @@ const Audio = ({
   stop,
   index,
   setProgress,
+  setTrackIndex,
 }: {
   track: Track;
   setTrack: (t: Track, a: RefObject<HTMLAudioElement>) => void;
@@ -27,6 +28,7 @@ const Audio = ({
   // audioContext: MutableRefObject<AudioContext>;
   index: number;
   setProgress: (p: number) => void;
+  setTrackIndex: (p: number) => void;
 }): JSX.Element => {
   const audioRef = useRef(null);
 
@@ -59,7 +61,14 @@ const Audio = ({
   const { src, artist, title, link, about } = track;
   return (
     <FlexRow className={songContainerClass}>
-      <audio id={"audio" + "_" + src} ref={audioRef}>
+      <audio
+        id={"audio" + "_" + src}
+        ref={audioRef}
+        onEnded={(e) => {
+          setPlaying(false);
+          index + 1;
+        }}
+      >
         <source src={src} />
         Your browser does not support the <code>audio</code> element.
       </audio>

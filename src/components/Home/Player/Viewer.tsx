@@ -19,13 +19,22 @@ const Viewer = ({
   setHomeMode: (v: HomeMode) => void;
 }): JSX.Element => {
   const innerContent = (): JSX.Element => {
-    let content = <div>hello</div>;
+    let content = <div></div>;
     if (track) {
       console.log("had track");
       switch (track.visualType) {
         case "image":
           console.log("had image");
-          content = <img src={track.visual}></img>;
+          content = (
+            <img
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+              }}
+              src={track.visual}
+            ></img>
+          );
           break;
         case "video":
           content = <video src={track.visual}></video>;
@@ -102,7 +111,8 @@ const Viewer = ({
         style={circleBorderStyle}
       ></img>
       <div key={key()} className={"viewer-window"}>
-        <div className={"visual-mask"}>{innerContent()}</div>
+        {/* <div className={"visual-mask"}>{innerContent()}</div> */}
+        {innerContent()}
         <AboutButton toggle={toggleValue} />
         {/* <InfoContainer visible={true} track={track} toggle={toggleValue} /> */}
       </div>

@@ -21,6 +21,7 @@ import Viewer from "@components/Home/Player/Viewer";
 import tracks from "@static/tracks";
 import { Track } from "@interfaces/Track";
 import { useToggle } from "@hooks";
+import { useKeyboardShortcut } from "crooks";
 
 export type HomeMode = "player" | "notes" | "about";
 
@@ -143,30 +144,30 @@ const Home = (): JSX.Element => {
 
       {/* <BgBar audioElem={audioElem} /> */}
       <FlexColumn style={topStyle}>
-        <Bar audioElem={audioElem} />
-        {/* 
-          <AudioDataContainer
-            tracks={tracks}
-            track={activeTrack}
-            audioElem={audioElem}
-            playing={playing}
-            // audioContext={audio}
-          /> */}
+        {/* <Bar audioElem={audioElem} /> */}
+
         <FlexColumn style={innerGroupStyle}>
+          {/* <div>Seisolo.io</div> */}
+          <InfoContainer
+            setHomeMode={setHomeMode}
+            track={activeTrack}
+            visible={true}
+            toggle={() => {
+              console.log("hello");
+            }}
+          />
           <Viewer
             track={activeTrack}
             playing={playing}
             appMode={homeMode}
             setHomeMode={setHomeMode}
           />
-          {/* <div>Seisolo.io</div> */}
-          <InfoContainer
-            setHomeMode={setHomeMode}
+          <AudioDataContainer
+            tracks={tracks}
             track={activeTrack}
-            visible={showAbout}
-            toggle={() => {
-              console.log("hello");
-            }}
+            audioElem={audioElem}
+            playing={playing}
+            // audioContext={audio}
           />
           <Player
             setTrackIndex={setTrackIndex}
@@ -318,37 +319,48 @@ const InfoContainer = ({
 }): JSX.Element => {
   const s = 30;
   const containerRef = useRef(null);
-  // useOnClickOutside(containerRef, () => {
-  //   // if (visible) toggle();
+  // useEffect(() => {
   //   if (visible) {
-  //     toggle();
+  //     setHomeMode("about");
+  //   } else {
+  //     setHomeMode("player");
   //   }
-  //   // toggle();
-  // });
-  useEffect(() => {
-    if (visible) {
-      setHomeMode("about");
-    } else {
-      setHomeMode("player");
-    }
-  }, [visible]);
+  // }, [visible]);
 
+  const [isVisible, setVisible] = useState(false);
+  useKeyboardShortcut({
+    keyCode: 32, //f
+    action: () => {
+      console.log("GOT SPACEBART");
+      setVisible(!isVisible);
+      // toggleSampleTrayIsActive();
+    },
+    disabled: false, // This key is not required
+  });
+
+  useEffect(() => {
+    console.log(isVisible);
+  }, [isVisible]);
   const containerStyle = {
     // bottom: "-236%",
-    width: "100%",
-    // position: "absolute",
-    height: "5vh",
-    fontSize: 22,
+    backgroundColor: theme.primary,
+    width: 1000,
+    position: "absolute",
+    height: 800,
+    fontSize: 50,
+    color: theme.secondary,
+    fontWeight: "bold",
     lineHeight: 28,
+    overflow: "scroll",
+    overflowX: "hidden",
+    top: 0,
     // height: "30vh",
-    border: theme.border,
-    zIndex: 100,
-    left: "50%",
-    // transform: " translate(-50%, -50%)",
-    borderRadius: theme.borderRadius,
-    backgroundColor: theme.secondary,
-    display: visible ? "flex" : "none",
-    // zIndex: 100,
+    zIndex: 10000,
+    left: "0%",
+    transform: `translate(50%, 10%)`,
+    // top: 0,
+    display: isVisible ? "flex" : "none",
+    // zIndex:100,
   } as React.CSSProperties;
 
   const text = (): string => {

@@ -15,13 +15,6 @@ const Song = ({
 }): JSX.Element => {
   return (
     <FlexRow className="song">
-      {/* {link ? (
-        <a href={link} target="_blank">
-          {songArtist + " - "}
-        </a>
-      ) : (
-        <div className="song-artist">{songArtist + " - "}</div>
-      )} */}
       <div className="song-artist">{`${index + 1}. ` + songArtist + " - "}</div>
       <div className="song-title">{songName}</div>
     </FlexRow>

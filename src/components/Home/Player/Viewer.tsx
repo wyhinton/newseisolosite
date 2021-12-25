@@ -48,9 +48,6 @@ const Viewer = ({
   useEffect(() => {
     console.log(track);
   }, [playing]);
-  // useEffect(() => {
-  //   console.log(track);
-  // }, [track.playing]);
 
   const containerStyle = {
     // overflow: "hidden",

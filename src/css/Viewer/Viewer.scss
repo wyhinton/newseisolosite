@@ -1,20 +1,22 @@
 @import "../_variables";
 
 .viewer-window {
-  // background-color: red;
-  width: 50vh;
-  height: 50vh;
+  background-color: red;
+  // width: 50vh;
+  // height: 50vh;
   // border-radius: 50%;
-  outline: $border;
+  // outline: $border;
   margin: 0 auto;
   // overflow: hidden;
-  animation: grow-in 0.5s ease-out;
+  // animation: grow-in 0.5s ease-out;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 100;
   overflow: hidden;
+  width: max-content;
+  max-height: 40vh;
   // transition: transform 0.5s ease-out;
 }
 

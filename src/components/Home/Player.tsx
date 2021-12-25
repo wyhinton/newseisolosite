@@ -30,32 +30,35 @@ const Player = ({
   const containerStyle = {
     backgroundColor: theme.primary,
     color: theme.text,
-    width: "100%",
+    width: "50%",
+    border: "1px solid black",
+    display: "flex",
+    boxShadow: theme.shadow,
+    borderRadius: theme.borderRadius,
   } as React.CSSProperties;
 
   return (
-    <div style={divStyle}>
-      <FlexColumn style={containerStyle}>
-        {tracks.map((track, i) => {
-          let stop = true;
-          if (activeTrack) {
-            stop = activeTrack.title !== track.title;
-          }
-          return (
-            <Audio
-              setTrackIndex={setTrackIndex}
-              track={track}
-              key={i}
-              setTrack={setTrack}
-              stop={stop}
-              setShouldPlay={setPlaying}
-              index={i}
-              setProgress={setProgress}
-            ></Audio>
-          );
-        })}
-      </FlexColumn>
-    </div>
+    <FlexColumn style={containerStyle}>
+      {tracks.map((track, i) => {
+        let stop = true;
+        if (activeTrack) {
+          stop = activeTrack.title !== track.title;
+        }
+        return (
+          <Audio
+            setTrackIndex={setTrackIndex}
+            track={track}
+            key={i}
+            setTrack={setTrack}
+            stop={stop}
+            setShouldPlay={setPlaying}
+            index={i}
+            setProgress={setProgress}
+          ></Audio>
+        );
+      })}
+    </FlexColumn>
+    // </div>
   );
 };
 

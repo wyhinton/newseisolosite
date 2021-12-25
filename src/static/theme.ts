@@ -7,6 +7,7 @@ export interface Theme {
   transparent: string;
   borderRadius: number;
   textDark: string;
+  shadow: string;
 }
 
 const theme = {
@@ -21,6 +22,7 @@ const theme = {
   borderRadius: 10,
   textDark: "black",
   text: "white",
+  shadow: "5px 5px 15px 5px #000000",
 };
 
 export default theme;

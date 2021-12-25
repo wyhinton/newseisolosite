@@ -50,12 +50,9 @@ const Viewer = ({
   }, [playing]);
 
   const containerStyle = {
-    // overflow: "hidden",
     minWidth: "20%",
     minHeight: "20%",
     width: "50%",
-    // backgroundColor: "yellow",
-    // display: "flex",
     margin: "auto",
     justifyContent: "center",
     position: "relative",
@@ -68,7 +65,6 @@ const Viewer = ({
     width: "100%",
     height: "100%",
     transform: !playing ? "rotate(0deg)" : "",
-    // animation: ()=>{track.playing ?? "rotate 1s infinite",
   } as React.CSSProperties;
 
   const key = (): string => {
@@ -109,7 +105,7 @@ const Viewer = ({
       ></img>
       <div key={key()} className={"viewer-window"}>
         {/* <div className={"visual-mask"}>{innerContent()}</div> */}
-        {innerContent()}
+        {/* {innerContent()} */}
         <AboutButton toggle={toggleValue} />
         {/* <InfoContainer visible={true} track={track} toggle={toggleValue} /> */}
       </div>

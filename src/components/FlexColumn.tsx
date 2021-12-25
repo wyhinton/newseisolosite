@@ -26,6 +26,7 @@ const FlexColumn = ({
         display: "flex",
         flexDirection: "column",
         padding: padding,
+        justifyContent: "center",
         width,
         // width:
         ...style,

@@ -42,6 +42,7 @@ const Home = (): JSX.Element => {
     flexDirection: "column",
     zIndex: 10,
     backgroundColor: theme.primary,
+    margin: "auto",
   } as React.CSSProperties;
 
   const paragraphStyle = {
@@ -143,11 +144,18 @@ const Home = (): JSX.Element => {
       {/* <TrackContext.Provider value={activeTrack}> */}
 
       {/* <BgBar audioElem={audioElem} /> */}
+      <Viewer
+        track={activeTrack}
+        playing={playing}
+        appMode={homeMode}
+        setHomeMode={setHomeMode}
+      />
       <FlexColumn style={topStyle}>
         {/* <Bar audioElem={audioElem} /> */}
 
         <FlexColumn style={innerGroupStyle}>
           {/* <div>Seisolo.io</div> */}
+          <ArtistImage track={activeTrack} />
           <InfoContainer
             setHomeMode={setHomeMode}
             track={activeTrack}
@@ -156,19 +164,14 @@ const Home = (): JSX.Element => {
               console.log("hello");
             }}
           />
-          <Viewer
-            track={activeTrack}
-            playing={playing}
-            appMode={homeMode}
-            setHomeMode={setHomeMode}
-          />
-          <AudioDataContainer
+
+          {/* <AudioDataContainer
             tracks={tracks}
             track={activeTrack}
             audioElem={audioElem}
             playing={playing}
             // audioContext={audio}
-          />
+          /> */}
           <Player
             setTrackIndex={setTrackIndex}
             audioContext={audio}
@@ -200,6 +203,35 @@ const Home = (): JSX.Element => {
 
 export default Home;
 
+const ArtistImage = (track): JSX.Element => {
+  const innerContent = (): JSX.Element => {
+    let content = <div></div>;
+    if (track) {
+      console.log("had track");
+      switch (track.visualType) {
+        case "image":
+          console.log("had image");
+          content = (
+            <img
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+              }}
+              src={track.visual}
+            ></img>
+          );
+          break;
+        case "video":
+          content = <video src={track.visual}></video>;
+          break;
+      }
+    }
+
+    return content;
+  };
+  return <div>{innerContent()}</div>;
+};
 // const NavItem = ({src, text, link}:{src: string, text: string, link?: string}): JSX.Element =>{
 
 //   return(

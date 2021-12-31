@@ -10,7 +10,8 @@ const anjaliTrack = `${process.env.PUBLIC_URL}/Tracks/1.wav`;
 const pacificTrack = `${process.env.PUBLIC_URL}/Tracks/overandunder (infinity).wav`;
 const contourTrack = `${process.env.PUBLIC_URL}/Tracks/Kontour_Remix.wav`;
 
-const pacificAbout = `It's been a while since I've had a chance to experiment with sampling, and to be honest my sound as of late has been geared to more of an analog/live nature, so it was very interesting getting back into the more electronic sound. I'm finding my new setup is a lot more equipped for the task than I was aware of. I feel like I landed on a nice balance of electronic and live/acoustic with this one. Going through the files I found myself wanting to keep their integrity as much as possible, and as a result found myself playing with very subtle pitch corrections, and spending time finding phrases and bits that felt organic in reference to a melody I wrote on rhodes piano. Pulling samples from two completely different pieces was a really interesting experiment. I found Ysaye's "Ballade" and Bartok's "Presto" to have the most favorable parts for the comp. Their usage of such abstract melody and the players spotless technique made them resonate in a way that gave me all the inspiration I needed to write the progression. Towards the end I tried my hand at a solo using only phrasing from the violin audio. Although the overall placement of the violin alongside the other instruments in the piece throughout tends to be a more supportive role, I wanted to give it a way to stand out. It never fails to blow my mind when creating circumstances around the musical process produces such beautiful and bizarre results. I feel I may have never attempted such a thing, had this opportunity not been present. This will most certainly have lasting effects on my creative process.`;
+// const pacificAbout = `It's been a while since I've had a chance to experiment with sampling, and to be honest my sound as of late has been geared to more of an analog/live nature, so it was very interesting getting back into the more electronic sound. I'm finding my new setup is a lot more equipped for the task than I was aware of. I feel like I landed on a nice balance of electronic and live/acoustic with this one. Going through the files I found myself wanting to keep their integrity as much as possible, and as a result found myself playing with very subtle pitch corrections, and spending time finding phrases and bits that felt organic in reference to a melody I wrote on rhodes piano. Pulling samples from two completely different pieces was a really interesting experiment. I found Ysaye's "Ballade" and Bartok's "Presto" to have the most favorable parts for the comp. Their usage of such abstract melody and the players spotless technique made them resonate in a way that gave me all the inspiration I needed to write the progression. Towards the end I tried my hand at a solo using only phrasing from the violin audio. Although the overall placement of the violin alongside the other instruments in the piece throughout tends to be a more supportive role, I wanted to give it a way to stand out. It never fails to blow my mind when creating circumstances around the musical process produces such beautiful and bizarre results. I feel I may have never attempted such a thing, had this opportunity not been present. This will most certainly have lasting effects on my creative process.`;
+const pacificAbout = `Going through the files I found myself wanting to keep their integrity as much as possible, and as a result found myself playing with very subtle pitch corrections, and spending time finding phrases and bits that felt organic in reference to a melody I wrote on rhodes piano. Pulling samples from two completely different pieces was a really interesting experiment. I found Ysaye's "Ballade" and Bartok's "Presto" to have the most favorable parts for the comp. Their usage of such abstract melody and the players spotless technique made them resonate in a way that gave me all the inspiration I needed to write the progression. Towards the end I tried my hand at a solo using only phrasing from the violin audio. Although the overall placement of the violin alongside the other instruments in the piece throughout tends to be a more supportive role, I wanted to give it a way to stand out. It never fails to blow my mind when creating circumstances around the musical process produces such beautiful and bizarre results. I feel I may have never attempted such a thing, had this opportunity not been present. This will most certainly have lasting effects on my creative process.`;
 
 const vVideo = `${process.env.PUBLIC_URL}/Headshots/ROTOSCOPE_TEST_1.mp4`;
 const about =
@@ -26,6 +27,13 @@ const tracks: Track[] = [
     visualType: "image",
     visual: anjaliImage,
     playing: false,
+    connections: [
+      {
+        target: "Ysaye",
+        description: "Connects in this way",
+      },
+    ],
+    category: "remix",
   },
   {
     artist: "Pacific Yew",
@@ -36,6 +44,13 @@ const tracks: Track[] = [
     visualType: "image",
     visual: pacificImage,
     playing: false,
+    connections: [
+      {
+        target: "Ysaye",
+        description: "Connects in this way",
+      },
+    ],
+    category: "remix",
   },
   {
     artist: "Contour",
@@ -47,6 +62,13 @@ const tracks: Track[] = [
     visualType: "image",
     visual: contourImage,
     playing: false,
+    connections: [
+      {
+        target: "Ysaye",
+        description: "Connects in this way",
+      },
+    ],
+    category: "remix",
   },
   {
     artist: "Vivek Menon",
@@ -55,6 +77,13 @@ const tracks: Track[] = [
     visualType: "video",
     visual: vVideo,
     playing: false,
+    connections: [
+      {
+        target: "Ysaye",
+        description: "Connects in this way",
+      },
+    ],
+    category: "recital",
   },
   {
     artist: "Vivek Menon",
@@ -63,6 +92,13 @@ const tracks: Track[] = [
     visualType: "video",
     visual: vVideo,
     playing: false,
+    connections: [
+      {
+        target: "Ysaye",
+        description: "Connects in this way",
+      },
+    ],
+    category: "recital",
   },
   {
     artist: "Vivek Menon",
@@ -71,6 +107,14 @@ const tracks: Track[] = [
     visualType: "video",
     visual: vVideo,
     playing: false,
+    connections: [
+      {
+        target: "Bach",
+        description: "Connects in this way",
+      },
+    ],
+    category: "recital",
+    // movements: {}
   },
 ];
 

@@ -1,3 +1,5 @@
+import Connection from "./Connection";
+
 export interface Track {
   artist: string;
   title: string;
@@ -8,4 +10,6 @@ export interface Track {
   link?: string;
   about?: string;
   node?: MediaElementAudioSourceNode;
+  connections?: Connection[];
+  category: "remix" | "recital";
 }

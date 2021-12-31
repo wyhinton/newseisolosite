@@ -15,7 +15,7 @@ const Song = ({
 }): JSX.Element => {
   return (
     <FlexRow className="song">
-      <div className="song-artist">{`${index + 1}. ` + songArtist + " - "}</div>
+      {/* <div className="song-artist">{`${index + 1}. ` + songArtist + " - "}</div> */}
       <div className="song-title">{songName}</div>
     </FlexRow>
   );

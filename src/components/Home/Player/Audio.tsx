@@ -11,6 +11,8 @@ import "@css/Player/PlayBody.scss";
 import { TrackSelection } from "@interfaces/TrackSelection";
 import { Track } from "@interfaces/Track";
 import classNames from "classnames";
+import "@css/PlayButton.scss";
+import FlexColumn from "@components/FlexColumn";
 
 const Audio = ({
   track,
@@ -45,6 +47,10 @@ const Audio = ({
     }
   }, [stop]);
 
+  useEffect(() => {
+    console.log(track.title);
+  }, [track.title]);
+
   // useEffect(()=>{
   //   console.log(dep);
   // },[dep]);
@@ -58,9 +64,18 @@ const Audio = ({
     margin: "auto",
     paddingRight: ".5em",
   };
-  const { src, artist, title, link, about } = track;
+  const { src, artist, title, link, about, category } = track;
   return (
-    <FlexRow className={songContainerClass}>
+    <FlexRow
+      className={songContainerClass}
+      style={{
+        border: "1px solid",
+        borderColor: category === "recital" ? "red" : "",
+        // backgroundColor: category === "recital" ? "red" : "",
+        padding: "3em",
+        // background,
+      }}
+    >
       <audio
         id={"audio" + "_" + src}
         ref={audioRef}
@@ -83,7 +98,15 @@ const Audio = ({
             }}
           />
         ) : (
-          <Play
+          // <Play
+          //   handleClick={() => {
+          //     track.playing = true;
+          //     setTrack(track, audioRef);
+          //     setPlaying(true);
+          //     setShouldPlay(true);
+          //   }}
+          // />
+          <PlayButton
             handleClick={() => {
               track.playing = true;
               setTrack(track, audioRef);
@@ -106,3 +129,50 @@ const Audio = ({
 };
 
 export default Audio;
+
+const PlayButton = ({
+  handleClick,
+}: {
+  handleClick: () => void;
+}): JSX.Element => {
+  return (
+    <div
+      className={"play-button-item"}
+      onClick={() => {
+        handleClick();
+      }}
+      style={{
+        width: 10,
+        height: "100%",
+        // backgroundColor: "red",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <svg
+        id="Layer_1"
+        data-name="Layer 1"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 67.91 76.24"
+        style={{ margin: "auto" }}
+      >
+        <path
+          fill="yellow"
+          d="M170.45,173l-53.71-31a7.1,7.1,0,0,0-10.65,6.15v62a7.1,7.1,0,0,0,10.65,6.14l53.71-31A7.1,7.1,0,0,0,170.45,173Z"
+          transform="translate(-106.09 -141)"
+        />
+      </svg>
+    </div>
+  );
+};
+
+// <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="68.9px"
+// height="77.2px" viewBox="0 0 68.9 77.2" xml:space="preserve">
+// <style type="text/css">
+// </style>
+// <defs>
+// </defs>
+// <path class="st0" d="M64.9,32.5l-53.7-31C6.4-1.3,0.5,2.1,0.5,7.6v62c0,5.5,5.9,8.9,10.6,6.1l53.7-31C69.6,42,69.6,35.2,64.9,32.5z"
+// />
+// </svg>

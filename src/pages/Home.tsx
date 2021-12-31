@@ -22,6 +22,10 @@ import tracks from "@static/tracks";
 import { Track } from "@interfaces/Track";
 import { useToggle } from "@hooks";
 import { useKeyboardShortcut } from "crooks";
+import { motion } from "framer-motion";
+import "@css/blockquote.scss";
+import Model from "@components/Home/Model";
+import Waveform3d from "@components/Home/Waveform3d";
 
 export type HomeMode = "player" | "notes" | "about";
 
@@ -58,7 +62,7 @@ const Home = (): JSX.Element => {
   } as React.CSSProperties;
 
   const topStyle = {
-    width: "45%",
+    // width: "45%",
     // width: "25%",
     textAlign: "center",
     // borderRadius: theme.borderRadius,
@@ -115,7 +119,7 @@ const Home = (): JSX.Element => {
     audioElem: RefObject<HTMLAudioElement>
   ): void => {
     setTrack(track);
-    console.log(audioElem.current);
+    // console.log(audioElem.current);
     setAudioElem(audioElem.current);
   };
 
@@ -130,6 +134,9 @@ const Home = (): JSX.Element => {
   const TrackContext = createContext(null);
   return (
     <section style={cotainerStyle}>
+      {/* <div></div> */}
+      <ArtistImage track={activeTrack} />
+      {activeTrack && <AboutText track={activeTrack} />}
       {/* <FlexRow width="100%" justifyContent="space-around"> */}
       {/* <section style={cotainerStyle}> */}
       {/* <h1 style={headerStyle}>Seisolo.io</h1> */}
@@ -150,12 +157,25 @@ const Home = (): JSX.Element => {
         appMode={homeMode}
         setHomeMode={setHomeMode}
       />
+      {/* <Model /> */}
+      <Waveform3d />
       <FlexColumn style={topStyle}>
         {/* <Bar audioElem={audioElem} /> */}
-
+        <Player
+          setTrackIndex={setTrackIndex}
+          audioContext={audio}
+          setTrack={setToPlay}
+          activeTrack={activeTrack}
+          setPlaying={setPlaying}
+          setProgress={setProgress}
+          // appMode={appMode}
+        />
         <FlexColumn style={innerGroupStyle}>
           {/* <div>Seisolo.io</div> */}
-          <ArtistImage track={activeTrack} />
+          {/* {activeTrack && (
+            <h1 style={{ fontSize: "3vh" }}>{activeTrack.about}</h1>
+          )} */}
+
           <InfoContainer
             setHomeMode={setHomeMode}
             track={activeTrack}
@@ -172,15 +192,6 @@ const Home = (): JSX.Element => {
             playing={playing}
             // audioContext={audio}
           /> */}
-          <Player
-            setTrackIndex={setTrackIndex}
-            audioContext={audio}
-            setTrack={setToPlay}
-            activeTrack={activeTrack}
-            setPlaying={setPlaying}
-            setProgress={setProgress}
-            // appMode={appMode}
-          />
         </FlexColumn>
       </FlexColumn>
       <FlexColumn width={"50%"}>{/* <div>{info()}</div> */}</FlexColumn>
@@ -203,14 +214,119 @@ const Home = (): JSX.Element => {
 
 export default Home;
 
-const ArtistImage = (track): JSX.Element => {
+const AboutText = ({ track }: { track: Track }): JSX.Element => {
+  const aboutTextContainerStyle = {
+    width: "50vw",
+    height: "auto",
+    backgroundColor: "red",
+    fontSize: "2vh",
+    // position: "absolute",
+  } as React.CSSProperties;
+
+  useEffect(() => {
+    console.log(track);
+    setTog(!tog);
+    // if (track.about !== text) {
+    //   setText(track.about);
+    //   setVariant("hide");
+    //   // setTog()
+    //   console.log("SETTING TO HIDE");
+    // } else {
+    //   setVariant("show");
+    //   console.log("SETTING TO SHOW");
+    // }
+  }, [track.about]);
+
+  const item = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1 },
+  };
+
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+      },
+    },
+  };
+
+  const [text, setText] = useState(track.about);
+  const [variant, setVariant] = useState("show");
+  const [tog, setTog] = useState(false);
+
+  const onComplete = () => {
+    if (variant === "show") {
+      // setVariant(hidden)
+    }
+  };
+  // const [state, setstate] = useState(initialState)
+  return (
+    <motion.div
+      // animate= {{opacity: 1}}
+      variants={container}
+      // initial="hidden"
+      animate={tog ? "hidden" : "show"}
+      // transition={{
+      //   repeat: 1,
+      //   repeatType: "reverse",
+      //   duration: 2,
+      // }}
+      // onAnimationComplete={() => {
+      //   setVariant("show");
+      // }}
+      // repeat: 1,
+      // animate={{ x: 100, y: 100, opacity: 1 }}
+      // transition={{
+      //   delay: 1,
+      //   x: { type: "spring", stiffness: 100 },
+      //   opacity: 0,
+      //   default: { duration: 2 },
+      // }}
+      className={"track-about-text"}
+      style={aboutTextContainerStyle}
+    >
+      <Quote text={text}></Quote>
+      {/* {track.about} */}
+    </motion.div>
+  );
+};
+const Quote = ({ text }: { text: string }): JSX.Element => {
+  const quoteStyle = {
+    fontSize: "5vh",
+  } as React.CSSProperties;
+  return (
+    <div>
+      {/* <div style={quoteStyle}>"</div> */}
+      <blockquote>{text}</blockquote>
+      {/* <div style={quoteStyle}>"</div> */}
+    </div>
+  );
+};
+const ArtistImage = ({ track }: { track: Track }): JSX.Element => {
+  const containerStyle = {
+    width: 200,
+    height: 200,
+    backgroundColor: "red",
+    borderRadius: "50%",
+    overflow: "hidden",
+    margin: "auto",
+    right: 0,
+    position: "absolute",
+  } as React.CSSProperties;
+
+  useEffect(() => {
+    // console.log(track);
+  }, [track]);
+
   const innerContent = (): JSX.Element => {
     let content = <div></div>;
     if (track) {
-      console.log("had track");
+      // console.log("had track");
       switch (track.visualType) {
         case "image":
-          console.log("had image");
+          // console.log("had image");
           content = (
             <img
               style={{
@@ -230,7 +346,11 @@ const ArtistImage = (track): JSX.Element => {
 
     return content;
   };
-  return <div>{innerContent()}</div>;
+  return (
+    <div className={"artist-image"} style={containerStyle}>
+      {innerContent()}
+    </div>
+  );
 };
 // const NavItem = ({src, text, link}:{src: string, text: string, link?: string}): JSX.Element =>{
 

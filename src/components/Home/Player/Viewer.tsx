@@ -50,10 +50,10 @@ const Viewer = ({
   }, [playing]);
 
   const containerStyle = {
-    minWidth: "20%",
-    minHeight: "20%",
-    width: "50%",
-    margin: "auto",
+    // minWidth: "20%",
+    // minHeight: "20%",
+    width: "10%",
+    // margin: "auto",
     justifyContent: "center",
     position: "relative",
   } as React.CSSProperties;

@@ -6,7 +6,12 @@
   white-space: pre;
   // padding-left: 1em;
   // justify-content: space-between;
-  border-bottom: 1px solid black;
+  // border-bottom: 1px solid black;
+  border: 1px solid black;
+  padding: 0.25em;
+  border-radius: 10px;
+  overflow: hidden;
+  // background-color: black;
 }
 
 .play-body-playing {

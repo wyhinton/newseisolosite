@@ -26,6 +26,7 @@ import { motion } from "framer-motion";
 import "@css/blockquote.scss";
 import Model from "@components/Home/Model";
 import Waveform3d from "@components/Home/Waveform3d";
+import Time from "@components/Home/Player/Time";
 
 export type HomeMode = "player" | "notes" | "about";
 
@@ -47,18 +48,6 @@ const Home = (): JSX.Element => {
     zIndex: 10,
     backgroundColor: theme.primary,
     margin: "auto",
-  } as React.CSSProperties;
-
-  const paragraphStyle = {
-    maxWidth: "80ch",
-  } as React.CSSProperties;
-
-  const imageStyle = {
-    maxWidth: "3em",
-  } as React.CSSProperties;
-
-  const headerStyle = {
-    fontSize: "4em",
   } as React.CSSProperties;
 
   const topStyle = {
@@ -135,8 +124,9 @@ const Home = (): JSX.Element => {
   return (
     <section style={cotainerStyle}>
       {/* <div></div> */}
-      <ArtistImage track={activeTrack} />
-      {activeTrack && <AboutText track={activeTrack} />}
+      {/* <ArtistImage track={activeTrack} /> */}
+      {/* {activeTrack && <AboutText track={activeTrack} />} */}
+      {activeTrack && <About track={activeTrack} />}
       {/* <FlexRow width="100%" justifyContent="space-around"> */}
       {/* <section style={cotainerStyle}> */}
       {/* <h1 style={headerStyle}>Seisolo.io</h1> */}
@@ -151,14 +141,15 @@ const Home = (): JSX.Element => {
       {/* <TrackContext.Provider value={activeTrack}> */}
 
       {/* <BgBar audioElem={audioElem} /> */}
-      <Viewer
+      {/* <Viewer
         track={activeTrack}
         playing={playing}
         appMode={homeMode}
         setHomeMode={setHomeMode}
-      />
+      /> */}
+      {activeTrack && <Time progress={progress} track = {activeTrack}/>}
       {/* <Model /> */}
-      <Waveform3d />
+      <Waveform3d progress={progress} />
       <FlexColumn style={topStyle}>
         {/* <Bar audioElem={audioElem} /> */}
         <Player
@@ -214,27 +205,31 @@ const Home = (): JSX.Element => {
 
 export default Home;
 
+
+const About = ({ track }: { track: Track }): JSX.Element => {
+  return (
+    <div style = {{border: "1px solidred", width: "50%", position: "absolute", top: 0}} >
+    {/* <div style = {{backgroundColor: "red", width: "50%", position: "absolute", top: 0}} > */}
+      <AboutText track = {track}/>
+      <ArtistImage track = {track}/>
+    </div>
+  )
+}
+
 const AboutText = ({ track }: { track: Track }): JSX.Element => {
   const aboutTextContainerStyle = {
     width: "50vw",
     height: "auto",
-    backgroundColor: "red",
-    fontSize: "2vh",
+    // backgroundColor: "red",
+    fontSize: "3vh",
+    // fontSize: "5vh",
+    border: "1px solid black",
     // position: "absolute",
   } as React.CSSProperties;
 
   useEffect(() => {
     console.log(track);
     setTog(!tog);
-    // if (track.about !== text) {
-    //   setText(track.about);
-    //   setVariant("hide");
-    //   // setTog()
-    //   console.log("SETTING TO HIDE");
-    // } else {
-    //   setVariant("show");
-    //   console.log("SETTING TO SHOW");
-    // }
   }, [track.about]);
 
   const item = {
@@ -306,14 +301,15 @@ const Quote = ({ text }: { text: string }): JSX.Element => {
 };
 const ArtistImage = ({ track }: { track: Track }): JSX.Element => {
   const containerStyle = {
-    width: 200,
-    height: 200,
+    width: 100,
+    height: 100,
     backgroundColor: "red",
     borderRadius: "50%",
     overflow: "hidden",
-    margin: "auto",
-    right: 0,
-    position: "absolute",
+    // margin: "auto",
+    // right: 0,
+    left: 0, 
+    // position: "absolute",
   } as React.CSSProperties;
 
   useEffect(() => {

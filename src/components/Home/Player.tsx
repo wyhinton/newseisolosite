@@ -56,21 +56,6 @@ const Player = ({
   useEffect(() => {
     console.log(tracks);
   }, [tracks]);
-  // const spaceStyle = {
-
-  //   width: 20,
-  //   backgroundColor: "red",
-  //   display: "flex",
-  //   flexDirection: "column",
-  //   height: "100%",
-  // } as React.CSSProperties;
-
-  // const dashContainerStyle = {
-  //   width: 10,
-  //   height: 10,
-  //   margin: "auto",
-  // } as React.CSSProperties;
-  // te
 
   return (
     <FlexRow style={containerStyle}>
@@ -82,8 +67,7 @@ const Player = ({
         return (
           <div key={track.title} className={track.title}>
             <FlexRow>
-              {i !== 0 && <Edge />}
-              {/* <div>{track.title}</div> */}
+              {i !== 0 && <Spacer />}
               <Audio
                 setTrackIndex={setTrackIndex}
                 track={track}
@@ -180,20 +164,22 @@ const Connections = ({
   );
 };
 
-const Edge = (): JSX.Element => {
+const Spacer = (): JSX.Element => {
+  const dashContainerStyle = {
+    width: "clamp(.1rem, 1vw, 2rem)",
+    height: 10,
+    margin: "auto",
+  } as React.CSSProperties;
+
   const spaceStyle = {
-    width: 20,
+    width: "100%",
     backgroundColor: "red",
     display: "flex",
     flexDirection: "column",
     height: "100%",
   } as React.CSSProperties;
 
-  const dashContainerStyle = {
-    width: 10,
-    height: 10,
-    margin: "auto",
-  } as React.CSSProperties;
+
 
   return (
     <div style={dashContainerStyle}>

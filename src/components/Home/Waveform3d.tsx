@@ -1,4 +1,4 @@
-import React, { Suspense, useRef } from "react";
+import React, { Suspense, useEffect, useRef } from "react";
 import {
   Canvas,
   extend,
@@ -18,6 +18,7 @@ import THREE, {
   Group,
   Color,
 } from "three";
+// https://codesandbox.io/s/yoga-r3f-lgl0j
 // import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 // import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 import { OrbitControls, OrthographicCamera, useGLTF } from "@react-three/drei";
@@ -32,7 +33,8 @@ declare module "three-stdlib" {
     materials: Record<string, Material>;
   }
 }
-const Waveform = () => {
+const Waveform = ({progress}:{progress: number}) => {
+
   const loader = new CubeTextureLoader();
   // The CubeTextureLoader load method takes an array of urls representing all 6 sides of the cube.
   const texture = loader.load([
@@ -80,9 +82,18 @@ const Waveform = () => {
   };
 
   const items = Array.from(Array(50).keys());
+  const pathRef = useRef<Mesh>();
+
+  useEffect(()=>{
+    if (pathRef.current){
+      pathRef.current.position.x = progress * 10
+    }
+  }, [progress]);
+
+
   return (
     <group>
-      <mesh geometry={path.geometry}>
+      <mesh geometry={path.geometry} ref = {pathRef}>
         <meshPhysicalMaterial
           {...materialProps}
           attach="material"
@@ -97,17 +108,28 @@ const Waveform = () => {
       {items.map((n, i) => {
         const x = i * 10;
         return (
-          <mesh key={i} position={[x - 50, 0, 0]} material-color="hotpink">
-            <planeGeometry args={[1, 20]} />
+          <mesh key={i} position={[x, 0, 0]} material-color="hotpink">
+            {/* <planeGeometry args={[10, 50]} /> */}
+            <boxGeometry attach="geometry" args={[50, 10000, 50]} />
+            <meshBasicMaterial
+              {...materialProps}
+              attach="material"
+              color="red"
+              toneMapped={false}
+            />
           </mesh>
         );
       })}
+      {/* <gridHelper/> */}
       {/* <mesh position={[0, 0, -10]} material-color="hotpink">
         <planeGeometry args={[20, 2]} />
       </mesh>
       <mesh position={[0, 0, -10]} material-color="hotpink">
         <planeGeometry args={[2, 20]} />
       </mesh> */}
+      <mesh>
+        <sphereGeometry></sphereGeometry>
+      </mesh>
       <mesh geometry={grid.geometry} material-color="hotpink">
         <meshBasicMaterial
           {...materialProps}
@@ -126,7 +148,7 @@ const Waveform = () => {
 // Loads the skybox texture and applies it to the scene.
 
 // Lights
-const Waveform3d = (): JSX.Element => {
+const Waveform3d = ({progress}:{progress: number}): JSX.Element => {
   return (
     <div
       style={{
@@ -150,7 +172,7 @@ const Waveform3d = (): JSX.Element => {
           <OrthographicCamera makeDefault zoom={2} />
           <OrbitControls />
           {/* <Sphere /> */}
-          <Waveform />
+          <Waveform progress = {progress} />
           {/* <SkyBox /> */}
           {/* <EffectComposer multisampling={8}>
             <Bloom

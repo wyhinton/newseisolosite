@@ -65,6 +65,9 @@ const Audio = ({
     paddingRight: ".5em",
   };
   const { src, artist, title, link, about, category } = track;
+
+  const padMin = "0rem"
+  const padMax = ".5rem"
   return (
     <FlexRow
       className={songContainerClass}
@@ -72,12 +75,14 @@ const Audio = ({
         border: "1px solid",
         borderColor: category === "recital" ? "red" : "",
         // backgroundColor: category === "recital" ? "red" : "",
-        padding: "3em",
-        // background,
+        paddingLeft: `clamp(${padMin}, 1vw, ${padMax})`,
+        paddingRight: `clamp(${padMin}, 1vw, ${padMax})`,
+        paddingTop: `clamp(${padMin}, 1vw, ${padMax})`,
+        paddingBottom: `clamp(${padMin}, 1vw, ${padMax})`,
       }}
     >
       <audio
-        id={"audio" + "_" + src}
+        id={"audio_"+track.title}
         ref={audioRef}
         onEnded={(e) => {
           setPlaying(false);

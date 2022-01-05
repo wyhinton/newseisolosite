@@ -51,7 +51,8 @@ const TrackItem = ({ track }: { track: Track }): JSX.Element => {
       whileHover={{
         // scale: 1.1,
         // textShadow: "0px 0px 4px gray",
-        backgroundColor: "rgba(255, 242, 0, 150)",
+        backgroundColor: theme.primaryMedium,
+        // backgroundColor: "rgba(255, 242, 0, 150)",
         transition: { duration: 0.1 },
       }}
     >

@@ -25,8 +25,8 @@ const GridLayout = ({
   const noBorderArray = [
     "arrow",
     "oneRecital",
-    "threeRemixes",
-    "oneRecitalText",
+    // "threeRemixes",
+    // "oneRecitalText",
     "player",
   ];
   const wrapped = children.map((c, i) => {
@@ -89,13 +89,25 @@ const GridLayout = ({
   //     containerPadding: [padding, padding],
   //   };
   const rows = 12;
-
+  const trueInnerHeight = window.innerHeight - padding * 2.05;
+  // const trueRowHeight = (1047 - padding * rows) / rows;
+  // const trueRowHeight = trueInnerHeight / rows;
+  // h * rowHeight + (h - 1) * margin
+  //12*(x+10) = window.innerHeight
+  //x+10 = window.innerHeight/12
+  //x =  (window.innerHeight/12)-10
+  const trueRowHeight = (window.innerHeight - 20 * rows) / 12;
+  // const h = window.innerHeight / rowHeight - viewPortOffset / rowHeight
+  // https://github.com/react-grid-layout/react-grid-layout/issues/233#issuecomment-319995357
   return (
     <ResponsiveGridLayout
       className={className}
       layouts={layouts}
+      margin={[padding, padding]}
       // rowHeight={window.innerHeight / rows}
-      rowHeight={(window.outerHeight - (rows * padding) / 2) / rows}
+      rowHeight={trueRowHeight}
+      // rowHeight={(window.innerHeight - (rows * padding + 10) / 2) / rows}
+      // rowHeight={(window.innerHeight - (rows * padding + 10) / 2) / rows}
       cols={{ lg: 12, md: 12, sm: 12 }}
       containerPadding={[padding, padding]}
       // {...gridSettings}
@@ -104,6 +116,7 @@ const GridLayout = ({
     </ResponsiveGridLayout>
   );
 };
+("1=20px");
 
 export default GridLayout;
 
@@ -112,3 +125,5 @@ function getRandomIntInclusive(min, max) {
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
 }
+//288-384
+//96

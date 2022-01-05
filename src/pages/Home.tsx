@@ -94,9 +94,10 @@ const Home = (): JSX.Element => {
     { i: "title", x: 0, y: 0, w: 5, h: 1 },
     // {i}
     { i: "time", x: 6, y: 0, w: 2, h: 1 },
-    // { i: "violin", x: 0, y: 4, w: 1, h: 2 },
+
     { i: "oneRecitalText", x: 0, y: 3, w: 4, h: 1 },
     { i: "oneRecital", x: 0, y: 4, w: 4, h: 2 },
+    { i: "violin", x: 4, y: 4, w: 1, h: 2 },
     { i: "arrow", x: 5, y: 4, w: 1, h: 2 },
     //REMIXES
     { i: "threeRemixes", x: 6, y: 3, w: 4, h: 1 },
@@ -129,7 +130,7 @@ const Home = (): JSX.Element => {
             progress={progress}
             track={activeTrack}
           />
-          {/* <ViolinWidget key="violin" /> */}
+          <ViolinWidget key="violin" />
           {/* <Bar audioElem={audioElem} /> */}
           <RemixesWidget
             key="player"

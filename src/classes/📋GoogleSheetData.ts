@@ -32,7 +32,7 @@ export default class GoogleSheetData {
     return document.loadInfo().then(() => {
       document.sheetsByIndex.forEach((element) => {
         const myTest = element.getRows();
-        console.log(myTest);
+        // console.log(myTest);
         sheetPromiseArray.push(myTest);
       });
       return sheetPromiseArray;

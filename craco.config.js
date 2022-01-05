@@ -30,4 +30,7 @@ module.exports = {
       plugins: [require("tailwindcss"), require("autoprefixer")],
     },
   },
+  babel: {
+    plugins: ["glsl"],
+  },
 };

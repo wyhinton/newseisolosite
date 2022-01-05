@@ -1,10 +1,22 @@
-import React, { Suspense, useEffect, useRef } from "react";
+import React, { RefObject, Suspense, useEffect, useMemo, useRef } from "react";
+import theme from "@static/theme";
+import { Bloom, EffectComposer } from "@react-three/postprocessing";
+import { GLTF as GLTFThree } from "three/examples/jsm/loaders/GLTFLoader";
+import { KernelSize } from "postprocessing";
+import glsl from "babel-plugin-glsl/macro";
+import {
+  OrbitControls,
+  OrthographicCamera,
+  shaderMaterial,
+  useGLTF,
+  useScroll,
+} from "@react-three/drei";
 import {
   Canvas,
   extend,
-  useThree,
   useFrame,
   ReactThreeFiber,
+  useThree,
 } from "react-three-fiber";
 // import { useGLTF } from "drei";
 import THREE, {
@@ -17,181 +29,222 @@ import THREE, {
   Material,
   Group,
   Color,
+  InstancedMesh,
+  Object3D,
+  Vector2,
+  LatheGeometry,
+  Vector3,
+  ShaderMaterial,
 } from "three";
+import { useControls } from "leva";
+import { OrbitControls as OC } from "three/examples/jsm/controls/OrbitControls";
+import { Track } from "@interfaces/Track";
+import AudioForm from "./Widgets/WaveformWidget/AudioForm";
 // https://codesandbox.io/s/yoga-r3f-lgl0j
 // import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 // import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
-import { OrbitControls, OrthographicCamera, useGLTF } from "@react-three/drei";
-import { EffectComposer, Bloom } from "@react-three/postprocessing";
-import { KernelSize } from "postprocessing";
 // import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
-import { GLTF as GLTFThree } from "three/examples/jsm/loaders/GLTFLoader";
-import theme from "@static/theme";
+import { OrbitControls as CustomControls } from "./CustomControls";
+import { NewControls } from "./NewControls";
+import { useRenderRoot } from "leva/dist/declarations/src/components/Leva";
+
 declare module "three-stdlib" {
   export interface GLTF extends GLTFThree {
     nodes: Record<string, Mesh>;
     materials: Record<string, Material>;
   }
 }
-const Waveform = ({progress}:{progress: number}) => {
 
-  const loader = new CubeTextureLoader();
-  // The CubeTextureLoader load method takes an array of urls representing all 6 sides of the cube.
-  const texture = loader.load([
-    `${process.env.PUBLIC_URL}/Textures/GradientEnv3/1.jpg`,
-    `${process.env.PUBLIC_URL}/Textures/GradientEnv3/1.jpg`,
-    `${process.env.PUBLIC_URL}/Textures/GradientEnv3/1.jpg`,
-    `${process.env.PUBLIC_URL}/Textures/GradientEnv3/1.jpg`,
-    `${process.env.PUBLIC_URL}/Textures/GradientEnv3/1.jpg`,
-    `${process.env.PUBLIC_URL}/Textures/GradientEnv3/1.jpg`,
-    //     `${process.env.PUBLIC_URL}/Models/test.jpg`,
-    //     `${process.env.PUBLIC_URL}/Models/test.jpg`,
-    //     `${process.env.PUBLIC_URL}/Models/test.jpg`,
-    //     `${process.env.PUBLIC_URL}/Models/test.jpg`,
-    //     `${process.env.PUBLIC_URL}/Models/test.jpg`,
-    //     `${process.env.PUBLIC_URL}/Models/test.jpg`,
-  ]);
+const tempObject = new Object3D();
 
-  const { scene, gl } = useThree();
-  const { nodes } = useGLTF(
-    `${process.env.PUBLIC_URL}/Models/SplineShapeTest.glb`
-  );
-  const path = nodes.PATH;
-  const grid = nodes.GRID;
-  console.log(nodes);
-  //   var textureCube = new THREE.CubeTextureLoader().load( urls );
-  const cubeRenderTarget = new WebGLCubeRenderTarget(256, {
-    format: RGBFormat,
-    generateMipmaps: true,
-    minFilter: LinearMipmapLinearFilter,
-  });
-  const cubeCamera = new CubeCamera(1, 1000, cubeRenderTarget);
-  cubeCamera.position.set(0, 0, 0);
-  useFrame(() => cubeCamera.update(gl, scene));
-  const materialProps = {
-    thickness: 5,
-    roughness: 1,
-    clearcoat: 1,
-    clearcoatRoughness: 0,
-    transmission: 1,
-    ior: 1.25,
-    envMapIntensity: 25,
-    color: "#ffffff",
-    attenuationTint: "#ffe79e",
-    attenuationDistance: 0,
-  };
-
+const Grid = ({ track }: { track: Track }): JSX.Element => {
   const items = Array.from(Array(50).keys());
-  const pathRef = useRef<Mesh>();
+  const meshRef = useRef<InstancedMesh>();
+  const count = 100;
+  const gap = 50;
 
-  useEffect(()=>{
-    if (pathRef.current){
-      pathRef.current.position.x = progress * 10
+  const audioElem = useRef<HTMLAudioElement>();
+  useEffect(() => {
+    audioElem.current = document.getElementById(
+      "audio_" + track.title
+    ) as HTMLAudioElement;
+  }, [track.title]);
+
+  useFrame((state) => {
+    if (meshRef.current) {
+      // const time = state.clock.getElapsedTime();
+      const time = audioElem.current.currentTime;
+      let i = 0;
+      for (let x = 0; x < count; x++) {
+        const id = i++;
+        tempObject.position.set(x * gap, 0, -1);
+
+        tempObject.updateMatrix();
+        meshRef.current.setMatrixAt(id, tempObject.matrix);
+
+        meshRef.current.instanceMatrix.needsUpdate = true;
+      }
+
+      meshRef.current.instanceMatrix.needsUpdate = true;
     }
-  }, [progress]);
-
+  });
 
   return (
     <group>
-      <mesh geometry={path.geometry} ref = {pathRef}>
-        <meshPhysicalMaterial
-          {...materialProps}
-          attach="material"
-          envMap={texture}
-          //   envMap={cubeCamera.renderTarget.texture}
-          color="white"
-          toneMapped={false}
-          // roughness={0.1}
-          // metalness={1}
-        />
-      </mesh>
-      {items.map((n, i) => {
-        const x = i * 10;
-        return (
-          <mesh key={i} position={[x, 0, 0]} material-color="hotpink">
-            {/* <planeGeometry args={[10, 50]} /> */}
-            <boxGeometry attach="geometry" args={[50, 10000, 50]} />
-            <meshBasicMaterial
-              {...materialProps}
-              attach="material"
-              color="red"
-              toneMapped={false}
-            />
-          </mesh>
-        );
-      })}
-      {/* <gridHelper/> */}
-      {/* <mesh position={[0, 0, -10]} material-color="hotpink">
-        <planeGeometry args={[20, 2]} />
-      </mesh>
-      <mesh position={[0, 0, -10]} material-color="hotpink">
-        <planeGeometry args={[2, 20]} />
-      </mesh> */}
-      <mesh>
-        <sphereGeometry></sphereGeometry>
-      </mesh>
-      <mesh geometry={grid.geometry} material-color="hotpink">
-        <meshBasicMaterial
-          {...materialProps}
-          attach="material"
-          color="red"
-          toneMapped={false}
-          // roughness={0.1}
-          // metalness={1}
-        />
-      </mesh>
+      <instancedMesh
+        ref={meshRef}
+        args={[null, null, 5000]}
+        // onPointerMove={(e) => set(e.instanceId)}
+        // onPointerOut={(e) => set(undefined)}
+      >
+        <boxGeometry args={[1, 250, 1]}>
+          <instancedBufferAttribute
+          // attachObject={["attributes", "color"]}
+          // args={[colorArray, 3]}
+          />
+        </boxGeometry>
+        <meshBasicMaterial color="black" />
+        {/* <meshPhongMaterial vertexColors={VertexColors} /> */}
+      </instancedMesh>
     </group>
   );
 };
+// instanced mesh
+// https://codesandbox.io/s/instanced-vertex-colors-8fo01?from-embed=&file=/src/index.js:1892-2275
 // https://codesandbox.io/s/bubbles-qy8ul
 // https://discourse.threejs.org/t/fresnel-shader-or-similar-effect/9997/5
 // Loads the skybox texture and applies it to the scene.
 
 // Lights
-const Waveform3d = ({progress}:{progress: number}): JSX.Element => {
+const Waveform3d = ({
+  progress,
+  track,
+}: {
+  progress: number;
+  track: Track;
+}): JSX.Element => {
+  const items = Array.from(Array(50).keys());
+  const orbitControlsRef = useRef(null);
+  const cameraRef = useRef<THREE.OrthographicCamera>();
+  const otherCameraRef = useRef<THREE.OrthographicCamera>();
+
+  // const { scene, gl } = useThree();
+  // useEffect(() => {
+  //   if (cameraRef.current) {
+  //     const startPos = cameraRef.current.position;
+  //     console.log(cameraRef.current);
+  //     if (orbitControlsRef.current) {
+  //       console.log(orbitControlsRef.current);
+  //       // orbitControlsRef.current.object =
+  //       cameraRef.current.addEventListener("change", (e) => {
+  //         console.log("CHANGING");
+  //         console.log(e);
+  //       });
+  //       orbitControlsRef.current.orbitControlsRef.current.addEventListener(
+  //         "change",
+  //         (e) => {
+  //           console.log("CHANGING");
+  //           console.log(e);
+  //           console.log(e.target);
+  //           const target: OC = e.target;
+  //           const controlPos = target.target;
+  //           cameraRef.current.position.set(
+  //             controlPos.x,
+  //             startPos.y,
+  //             startPos.z
+  //           );
+  //           console.log(target.target);
+  //         }
+  //       );
+  //     }
+  //   }
+  // }, []);
+  // var vector = new THREE.Vector3();
+  // var projector = new Projector();
+  // projector.projectVector(
+  //   vector.setFromMatrixPosition(object.matrixWorld),
+  //   camera
+  // );
+
   return (
-    <div
-      style={{
-        position: "relative",
-        width: "100%",
-        height: 100,
-        // backgroundColor: "red",
-        // margin: "1em",
-      }}
-    >
-      <Suspense fallback={<div>hello</div>}>
-        <Canvas className="canvas" shadows dpr={[1, 2]}>
-          <color attach="background" args={[theme.primary]} />
-          {/* <spotLight
-            position={[-4, 4, -4]}
-            angle={0.06}
-            penumbra={1}
-            castShadow
-            shadow-mapSize={[2048, 2048]}
-          /> */}
-          <OrthographicCamera makeDefault zoom={2} />
-          <OrbitControls />
-          {/* <Sphere /> */}
-          <Waveform progress = {progress} />
-          {/* <SkyBox /> */}
-          {/* <EffectComposer multisampling={8}>
-            <Bloom
-              kernelSize={3}
-              luminanceThreshold={0}
-              luminanceSmoothing={0.4}
-              intensity={0.6}
-            />
-            <Bloom
-              kernelSize={KernelSize.HUGE}
-              luminanceThreshold={0}
-              luminanceSmoothing={0}
-              intensity={0.5}
-            />
-          </EffectComposer> */}
-        </Canvas>
-      </Suspense>
-    </div>
+    <Suspense fallback={<div>hello</div>}>
+      <Canvas className="waveform-canvas" shadows dpr={[1, 2]}>
+        <color attach="background" args={[theme.primary]} />
+        <ambientLight color={"black"} intensity={0.5} />
+        <pointLight position={[5, 5, 5]} />
+        <OrthographicCamera
+          ref={cameraRef}
+          makeDefault
+          zoom={2}
+          // scale={3}
+          position={[0, 0, 100]}
+        />
+        <NewControls
+          ref={orbitControlsRef}
+          minX={-100}
+          maxX={100}
+          // args={[otherCameraRef.current]}
+          // screenSpacePanning={true}
+          enableRotate={true}
+          // enableRotate={false}
+          minZoom={0}
+          maxZoom={1}
+        />
+        <Geo track={track} />
+        {/* </EffectComposer> */}
+      </Canvas>
+    </Suspense>
   );
 };
 
-export default Waveform3d;
+interface ControlsProps {
+  scale: number;
+}
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      controls: ControlsProps;
+    }
+  }
+}
+// https://github.com/jwtea/three-viewer/blob/20744c53faf7ece7ee1bd19bc593a6322f39d002/components/ExtendedControls.jsx#L20
+
+export default React.memo(Waveform3d);
+
+const Geo = ({ track }: { track: Track }): JSX.Element => {
+  const audioElem = useRef<HTMLAudioElement>();
+
+  const groupRef = useRef<Group>();
+  useEffect(() => {
+    audioElem.current = document.getElementById(
+      "audio_" + track.title
+    ) as HTMLAudioElement;
+  }, [track.title]);
+
+  useFrame((state) => {
+    const time = state.clock.getElapsedTime();
+    // cubeCamera.update(gl, scene);
+    if (audioElem.current && !audioElem.current.paused && groupRef.current) {
+      // console.log(audioElem.current.currentTime);
+      groupRef.current.position.x -= 1;
+    }
+    // console.log(progress);
+  });
+
+  return (
+    <group ref={groupRef}>
+      <Grid track={track} />
+      <AudioForm track={track} />
+      {/* <AudioForm track={track} /> */}
+    </group>
+  );
+};
+
+const Sphere = (props) => {
+  return (
+    <mesh position={props.position}>
+      <sphereGeometry args={[100, 100, 100]} />
+      {props.children}
+    </mesh>
+  );
+};

@@ -37,7 +37,7 @@ const samplesModel: SamplesModel = {
   onSetSamplesSheets: thunkOn(
     (actions, storeActions) => storeActions.googleSheetsModel.setSamplesSheet,
     (actions, target) => {
-      console.log(target.payload);
+      // console.log(target.payload);
       const rawSampleRows = target.payload as RawSampleRow[];
       if (analyzeClips) {
         processSamples(rawSampleRows).then((samples) => {
@@ -74,7 +74,7 @@ const samplesModel: SamplesModel = {
     console.log("processing samples");
   }),
   setSamples: action((state, samplesArray) => {
-    console.log("setting samples");
+    // console.log("setting samples");
     state.samples = samplesArray;
   }),
   setDraggingSample: action((state, id) => {

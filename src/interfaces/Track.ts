@@ -11,5 +11,6 @@ export interface Track {
   about?: string;
   node?: MediaElementAudioSourceNode;
   connections?: Connection[];
+  // elementId: string;
   category: "remix" | "recital";
 }

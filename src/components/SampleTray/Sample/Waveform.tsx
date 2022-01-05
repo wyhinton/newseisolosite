@@ -1,9 +1,6 @@
 import "@css/Waveform.scss";
 
 import React, { useEffect, useState } from "react";
-import { useStoreActions, useStoreState } from "@hooks";
-
-import { Pane } from "evergreen-ui";
 import SampleData from "@classes/SampleData";
 import classNames from "classnames";
 import { mapRange } from "@utils";

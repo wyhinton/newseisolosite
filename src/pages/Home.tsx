@@ -27,9 +27,24 @@ import "@css/blockquote.scss";
 import Model from "@components/Home/Model";
 import Waveform3d from "@components/Home/Waveform3d";
 import Time from "@components/Home/Player/Time";
-
+import { Layout, Responsive, WidthProvider } from "react-grid-layout";
+import "@css/Layout.scss";
+import ViewCard from "@components/Home/ViewCard";
 export type HomeMode = "player" | "notes" | "about";
-
+import "@css/react-grid-layout.css";
+import "@css/react-resizable.css";
+import GridLayout from "@components/Home/GridLayout";
+import ArtistWidget from "@components/Home/Widgets/ArtistWidget";
+import AboutWidget from "@components/Home/Widgets/AboutWidget";
+import ViolinWidget from "@components/Home/Widgets/ViolinWidget";
+import WaveformWidget from "@components/Home/Widgets/WaveformWidget";
+import TitleWidget from "@components/Home/Widgets/TitleWidget";
+import OneRecital from "@components/Home/Widgets/OneRecital";
+import ThreeRemixes from "@components/Home/Widgets/ThreeRemixes";
+import ArrowWidget from "@components/Home/Widgets/ArrowWidget";
+import { StoreProvider } from "easy-peasy";
+import homeStore from "../homeStore";
+import OneRecitalTextWidget from "@components/Home/Widgets/OneRecitalTextWidget";
 const Home = (): JSX.Element => {
   const audio = useRef(null);
 
@@ -37,42 +52,18 @@ const Home = (): JSX.Element => {
     audio.current = new AudioContext();
   }, []);
 
-  const cotainerStyle = {
-    // width: "100%",
-    display: "flex",
-    height: "100vh",
-    width: "100vw",
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "column",
-    zIndex: 10,
-    backgroundColor: theme.primary,
-    margin: "auto",
-  } as React.CSSProperties;
-
   const topStyle = {
-    // width: "45%",
-    // width: "25%",
     textAlign: "center",
-    // borderRadius: theme.borderRadius,
-    // backgroundColor: theme.secondary,
-    // border: theme.border,
-    // overflow: "hidden",
     zIndex: 10,
   } as React.CSSProperties;
 
   const innerGroupStyle = {
     width: "100%",
     textAlign: "center",
-    // borderRadius: theme.borderRadius,
-    // backgroundColor: theme.secondary,
-    // border: theme.border,
-    // overflow: "hidden",
     zIndex: 10,
-    // marginTop: "1em",
   } as React.CSSProperties;
 
-  const [activeTrack, setTrack] = useState<undefined | Track>(undefined);
+  const [activeTrack, setTrack] = useState<undefined | Track>(tracks[0]);
   const [trackIndex, setTrackIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [homeMode, setHomeMode] = useState<HomeMode>("player");
@@ -80,92 +71,81 @@ const Home = (): JSX.Element => {
   const [audioElem, setAudioElem] = useState<undefined | HTMLAudioElement>(
     undefined
   );
-  useEffect(() => {
-    console.log(progress);
-  }, [progress]);
+  // useEffect(() => {
+  //   console.log(progress);
+  // }, [progress]);
 
   // useEffect(() => {
-  //   console.log(trackIndex);
-  //   setTrack(tracks[trackIndex]);
-  // }, [trackIndex]);
+  //   console.log(playing);
+  // }, [playing]);
 
-  // const audio = new AudioContext();
-  // const [track, setTrack] = useState<undefined | Track>(undefined);
+  // const setToPlay = (
+  //   track: Track,
+  //   audioElem: RefObject<HTMLAudioElement>
+  // ): void => {
+  //   setTrack(track);
+  //   // console.log(audioElem.current);
+  //   setAudioElem(audioElem.current);
+  // };
 
-  // useEffect(() => {
-  //   if (track) {
-  //     console.log(trackSelection.src);
-  //     console.log();
-  //     setTrack(tracks.filter((t) => t.src == trackSelection.src)[0]);
-  //   }
-  // }, [trackSelection])
-  useEffect(() => {
-    console.log(playing);
-  }, [playing]);
+  const layout = [
+    // { i: "artist", x: 0, y: 0, w: 1, h: 1 },
 
-  const setToPlay = (
-    track: Track,
-    audioElem: RefObject<HTMLAudioElement>
-  ): void => {
-    setTrack(track);
-    // console.log(audioElem.current);
-    setAudioElem(audioElem.current);
-  };
+    { i: "title", x: 0, y: 0, w: 5, h: 1 },
+    // {i}
+    { i: "time", x: 6, y: 0, w: 3, h: 2 },
+    { i: "violin", x: 0, y: 4, w: 1, h: 2 },
+    { i: "oneRecitalText", x: 0, y: 3, w: 4, h: 1 },
+    { i: "oneRecital", x: 1, y: 4, w: 4, h: 2 },
+    { i: "arrow", x: 5, y: 4, w: 1, h: 2 },
+    //REMIXES
+    { i: "threeRemixes", x: 6, y: 3, w: 4, h: 1 },
+    { i: "player", x: 6, y: 4, w: 5, h: 2 },
+    { i: "about", x: 8, y: 4, w: 2, h: 4 },
 
-  const [showAbout, ToggleAbout] = useToggle(false);
-  const info = () => {
-    if (activeTrack) {
-      return activeTrack.about;
-    } else {
-      return "";
-    }
-  };
+    //BOTTOM ROW
+    { i: "image", x: 0, y: 6, w: 3, h: 6 },
+    { i: "waveform", x: 3, y: 6, w: 9, h: 6 },
+  ];
+
+  // export default React.memo(CardGrid);
+
   const TrackContext = createContext(null);
   return (
-    <section style={cotainerStyle}>
-      {/* <div></div> */}
-      {/* <ArtistImage track={activeTrack} /> */}
-      {/* {activeTrack && <AboutText track={activeTrack} />} */}
-      {activeTrack && <About track={activeTrack} />}
-      {/* <FlexRow width="100%" justifyContent="space-around"> */}
-      {/* <section style={cotainerStyle}> */}
-      {/* <h1 style={headerStyle}>Seisolo.io</h1> */}
-      {/* <div> */}
-      {/* <p style={paragraphStyle}>
-          SeiSolo.io is a multimedia web installation exploring classical and
-          electronic music, aiming to create a unique and accessible way of
-          engaging with both. It features a recorded solo violin recital, five
-          commissioned remixes of the recital repertoire, and a web-based
-          software for users to remix on their own.
-        </p> */}
-      {/* <TrackContext.Provider value={activeTrack}> */}
-
-      {/* <BgBar audioElem={audioElem} /> */}
-      {/* <Viewer
-        track={activeTrack}
-        playing={playing}
-        appMode={homeMode}
-        setHomeMode={setHomeMode}
-      /> */}
-      {activeTrack && <Time progress={progress} track = {activeTrack}/>}
-      {/* <Model /> */}
-      <Waveform3d progress={progress} />
-      <FlexColumn style={topStyle}>
-        {/* <Bar audioElem={audioElem} /> */}
-        <Player
-          setTrackIndex={setTrackIndex}
-          audioContext={audio}
-          setTrack={setToPlay}
-          activeTrack={activeTrack}
-          setPlaying={setPlaying}
-          setProgress={setProgress}
-          // appMode={appMode}
-        />
-        <FlexColumn style={innerGroupStyle}>
-          {/* <div>Seisolo.io</div> */}
-          {/* {activeTrack && (
-            <h1 style={{ fontSize: "3vh" }}>{activeTrack.about}</h1>
-          )} */}
+    <section style={{ backgroundColor: theme.primary }}>
+      <StoreProvider store={homeStore}>
+        <GridLayout className={"layout"} layout={layout}>
+          {/* <About key="about" track={activeTrack} /> */}
+          <OneRecital key="oneRecital" />
+          <OneRecitalTextWidget key="oneRecitalText" />
+          <ArrowWidget key="arrow" />
+          <ThreeRemixes key="threeRemixes" />
+          <TitleWidget key="title" />
+          <AboutWidget key="about" track={activeTrack} />
+          <ArtistWidget key="image" track={activeTrack} />
+          <Time key="time" progress={progress} track={activeTrack} />
+          <WaveformWidget
+            key="waveform"
+            progress={progress}
+            track={activeTrack}
+          />
+          <ViolinWidget key="violin" />
+          {/* <Bar audioElem={audioElem} /> */}
+          <Player
+            key="player"
+            // setTrackIndex={setTrackIndex}
+            // audioContext={audio}
+            // setTrack={setToPlay}
+            // activeTrack={activeTrack}
+            // setPlaying={setPlaying}
+            // setProgress={setProgress}
+            // appMode={appMode}
+          />
+          {/* <FlexColumn style={innerGroupStyle}>
+          <div>Seisolo.io</div>
+          {activeTrack && (
+          <h1 style={{ fontSize: "3vh" }}>{activeTrack.about}</h1>
+        )}
 
           <InfoContainer
             setHomeMode={setHomeMode}
@@ -175,28 +155,20 @@ const Home = (): JSX.Element => {
               console.log("hello");
             }}
           />
+        </FlexColumn> */}
+          {/* </TrackContext.Provider> */}
 
-          {/* <AudioDataContainer
-            tracks={tracks}
-            track={activeTrack}
-            audioElem={audioElem}
-            playing={playing}
-            // audioContext={audio}
-          /> */}
-        </FlexColumn>
-      </FlexColumn>
-      <FlexColumn width={"50%"}>{/* <div>{info()}</div> */}</FlexColumn>
-      {/* </TrackContext.Provider> */}
-
-      {/* <Video /> */}
-      {/* <Link to="/app">
+          {/* <Video /> */}
+          {/* <Link to="/app">
           <img
             style={imageStyle}
             src={`${process.env.PUBLIC_URL}/MVNT Logo 1.svg`}
           ></img>
         </Link> */}
-      {/* </div> */}
-      {/* </FlexRow> */}
+          {/* </div> */}
+          {/* </FlexRow> */}
+        </GridLayout>
+      </StoreProvider>
     </section>
   );
 };
@@ -205,149 +177,6 @@ const Home = (): JSX.Element => {
 
 export default Home;
 
-
-const About = ({ track }: { track: Track }): JSX.Element => {
-  return (
-    <div style = {{border: "1px solidred", width: "50%", position: "absolute", top: 0}} >
-    {/* <div style = {{backgroundColor: "red", width: "50%", position: "absolute", top: 0}} > */}
-      <AboutText track = {track}/>
-      <ArtistImage track = {track}/>
-    </div>
-  )
-}
-
-const AboutText = ({ track }: { track: Track }): JSX.Element => {
-  const aboutTextContainerStyle = {
-    width: "50vw",
-    height: "auto",
-    // backgroundColor: "red",
-    fontSize: "3vh",
-    // fontSize: "5vh",
-    border: "1px solid black",
-    // position: "absolute",
-  } as React.CSSProperties;
-
-  useEffect(() => {
-    console.log(track);
-    setTog(!tog);
-  }, [track.about]);
-
-  const item = {
-    hidden: { opacity: 0 },
-    show: { opacity: 1 },
-  };
-
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        duration: 0.5,
-      },
-    },
-  };
-
-  const [text, setText] = useState(track.about);
-  const [variant, setVariant] = useState("show");
-  const [tog, setTog] = useState(false);
-
-  const onComplete = () => {
-    if (variant === "show") {
-      // setVariant(hidden)
-    }
-  };
-  // const [state, setstate] = useState(initialState)
-  return (
-    <motion.div
-      // animate= {{opacity: 1}}
-      variants={container}
-      // initial="hidden"
-      animate={tog ? "hidden" : "show"}
-      // transition={{
-      //   repeat: 1,
-      //   repeatType: "reverse",
-      //   duration: 2,
-      // }}
-      // onAnimationComplete={() => {
-      //   setVariant("show");
-      // }}
-      // repeat: 1,
-      // animate={{ x: 100, y: 100, opacity: 1 }}
-      // transition={{
-      //   delay: 1,
-      //   x: { type: "spring", stiffness: 100 },
-      //   opacity: 0,
-      //   default: { duration: 2 },
-      // }}
-      className={"track-about-text"}
-      style={aboutTextContainerStyle}
-    >
-      <Quote text={text}></Quote>
-      {/* {track.about} */}
-    </motion.div>
-  );
-};
-const Quote = ({ text }: { text: string }): JSX.Element => {
-  const quoteStyle = {
-    fontSize: "5vh",
-  } as React.CSSProperties;
-  return (
-    <div>
-      {/* <div style={quoteStyle}>"</div> */}
-      <blockquote>{text}</blockquote>
-      {/* <div style={quoteStyle}>"</div> */}
-    </div>
-  );
-};
-const ArtistImage = ({ track }: { track: Track }): JSX.Element => {
-  const containerStyle = {
-    width: 100,
-    height: 100,
-    backgroundColor: "red",
-    borderRadius: "50%",
-    overflow: "hidden",
-    // margin: "auto",
-    // right: 0,
-    left: 0, 
-    // position: "absolute",
-  } as React.CSSProperties;
-
-  useEffect(() => {
-    // console.log(track);
-  }, [track]);
-
-  const innerContent = (): JSX.Element => {
-    let content = <div></div>;
-    if (track) {
-      // console.log("had track");
-      switch (track.visualType) {
-        case "image":
-          // console.log("had image");
-          content = (
-            <img
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-              }}
-              src={track.visual}
-            ></img>
-          );
-          break;
-        case "video":
-          content = <video src={track.visual}></video>;
-          break;
-      }
-    }
-
-    return content;
-  };
-  return (
-    <div className={"artist-image"} style={containerStyle}>
-      {innerContent()}
-    </div>
-  );
-};
 // const NavItem = ({src, text, link}:{src: string, text: string, link?: string}): JSX.Element =>{
 
 //   return(
@@ -355,35 +184,6 @@ const ArtistImage = ({ track }: { track: Track }): JSX.Element => {
 //     <div>hello</div>
 //   )
 // }
-
-const BgBar = ({
-  audioElem,
-}: {
-  audioElem: HTMLAudioElement;
-  // audioElem: RefObject<HTMLAudioElement>;
-}): JSX.Element => {
-  // const [containerStyle, setcontainerStyle] = useState(")
-  const [rect, setRect] = useState<DOMRect>(undefined);
-  useEffect(() => {
-    // audioElem.getBoundingClientRect()
-    // setRect(audioElem.getBoundingClientRect());
-  }, [audioElem]);
-
-  // const {x, , width, height} = audioElem.
-  const containerStyle = {
-    margin: "auto",
-    justifyContent: "center",
-    width: "100%",
-    height: 20,
-    display: "flex",
-    alignItems: "center",
-    // left: rect.x,
-    // top: rect.y,
-    // overflow: "visible",
-  } as React.CSSProperties;
-
-  return <div style={containerStyle}>hello</div>;
-};
 
 const Bar = ({
   audioElem,
@@ -399,7 +199,6 @@ const Bar = ({
     width: "100%",
     // position: "relative",
     height: 20,
-    // backgroundColor: "blue",
     display: "flex",
     alignItems: "center",
     // overflow: "visible",
@@ -523,3 +322,58 @@ const InfoContainer = ({
     </div>
   );
 };
+
+{
+  /* <p style={paragraphStyle}>
+          SeiSolo.io is a multimedia web installation exploring classical and
+          electronic music, aiming to create a unique and accessible way of
+          engaging with both. It features a recorded solo violin recital, five
+          commissioned remixes of the recital repertoire, and a web-based
+          software for users to remix on their own.
+        </p> */
+}
+{
+  /* <TrackContext.Provider value={activeTrack}> */
+}
+
+{
+  /* <BgBar audioElem={audioElem} /> */
+}
+{
+  /* <Viewer
+        track={activeTrack}
+        playing={playing}
+        appMode={homeMode}
+        setHomeMode={setHomeMode}
+      /> */
+}
+
+{
+  /* <AudioDataContainer
+            tracks={tracks}
+            track={activeTrack}
+            audioElem={audioElem}
+            playing={playing}
+            // audioContext={audio}
+          /> */
+}
+
+//12 rows
+// const layout = [
+//   // { i: "artist", x: 0, y: 0, w: 1, h: 1 },
+
+//   { i: "title", x: 0, y: 0, w: 3, h: 2 },
+//   // {i}
+//   { i: "time", x: 6, y: 0, w: 3, h: 2 },
+//   { i: "oneRecital", x: 0, y: 1, w: 5, h: 1 },
+//   //REMIXES
+//   { i: "threeRemixes", x: 6, y: 2, w: 3, h: 1 },
+//   { i: "player", x: 3, y: 4, w: 6, h: 2 },
+//   { i: "about", x: 8, y: 4, w: 2, h: 4 },
+//   //
+
+//   // { i: "violin", x: 1, y: 1, w: 1, h: 1 },
+//   //BOTTOM ROW
+//   { i: "image", x: 0, y: 6, w: 3, h: 6 },
+//   { i: "waveform", x: 3, y: 6, w: 9, h: 6 },
+// ];

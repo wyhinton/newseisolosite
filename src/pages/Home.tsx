@@ -11,7 +11,6 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Stats from "three/examples/jsm/libs/stats.module";
 import { GUI } from "three/examples/jsm/libs/dat.gui.module";
 import Video from "../components/Home/Graphics/Video";
-import Player from "@components/Home/Player";
 import FlexRow from "@components/FlexRow";
 import FlexColumn from "@components/FlexColumn";
 import theme from "@static/theme";
@@ -39,12 +38,13 @@ import AboutWidget from "@components/Home/Widgets/AboutWidget";
 import ViolinWidget from "@components/Home/Widgets/ViolinWidget";
 import WaveformWidget from "@components/Home/Widgets/WaveformWidget";
 import TitleWidget from "@components/Home/Widgets/TitleWidget";
-import OneRecital from "@components/Home/Widgets/OneRecital";
+import RecitalWidgets from "@components/Home/Widgets/RecitalWidgets";
 import ThreeRemixes from "@components/Home/Widgets/ThreeRemixes";
 import ArrowWidget from "@components/Home/Widgets/ArrowWidget";
 import { StoreProvider } from "easy-peasy";
 import homeStore from "../homeStore";
 import OneRecitalTextWidget from "@components/Home/Widgets/OneRecitalTextWidget";
+import RemixesWidget from "@components/Home/Widgets/RemixesWidget";
 const Home = (): JSX.Element => {
   const audio = useRef(null);
 
@@ -93,15 +93,15 @@ const Home = (): JSX.Element => {
 
     { i: "title", x: 0, y: 0, w: 5, h: 1 },
     // {i}
-    { i: "time", x: 6, y: 0, w: 3, h: 2 },
-    { i: "violin", x: 0, y: 4, w: 1, h: 2 },
+    { i: "time", x: 6, y: 0, w: 2, h: 1 },
+    // { i: "violin", x: 0, y: 4, w: 1, h: 2 },
     { i: "oneRecitalText", x: 0, y: 3, w: 4, h: 1 },
-    { i: "oneRecital", x: 1, y: 4, w: 4, h: 2 },
+    { i: "oneRecital", x: 0, y: 4, w: 4, h: 2 },
     { i: "arrow", x: 5, y: 4, w: 1, h: 2 },
     //REMIXES
     { i: "threeRemixes", x: 6, y: 3, w: 4, h: 1 },
     { i: "player", x: 6, y: 4, w: 5, h: 2 },
-    { i: "about", x: 8, y: 4, w: 2, h: 4 },
+    { i: "about", x: 0, y: 1, w: 2, h: 1 },
 
     //BOTTOM ROW
     { i: "image", x: 0, y: 6, w: 3, h: 6 },
@@ -116,7 +116,7 @@ const Home = (): JSX.Element => {
       <StoreProvider store={homeStore}>
         <GridLayout className={"layout"} layout={layout}>
           {/* <About key="about" track={activeTrack} /> */}
-          <OneRecital key="oneRecital" />
+          <RecitalWidgets key="oneRecital" />
           <OneRecitalTextWidget key="oneRecitalText" />
           <ArrowWidget key="arrow" />
           <ThreeRemixes key="threeRemixes" />
@@ -129,9 +129,9 @@ const Home = (): JSX.Element => {
             progress={progress}
             track={activeTrack}
           />
-          <ViolinWidget key="violin" />
+          {/* <ViolinWidget key="violin" /> */}
           {/* <Bar audioElem={audioElem} /> */}
-          <Player
+          <RemixesWidget
             key="player"
             // setTrackIndex={setTrackIndex}
             // audioContext={audio}

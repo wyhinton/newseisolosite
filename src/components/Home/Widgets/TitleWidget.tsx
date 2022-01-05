@@ -7,13 +7,15 @@ const TitleWidget = (): JSX.Element => {
       style={{
         padding: ".5rem",
         height: "100%",
-        width: "fit-content",
+        // width: "fit-content",
         fontSize: theme.mediumFont,
         position: "relative",
         justifyContent: "center",
         margin: "auto",
         display: "flex",
         alignItems: "center",
+        width: "100%",
+        // backgroundColor: theme.secondary,
       }}
     >
       Seisolo.io Remixing the Recital

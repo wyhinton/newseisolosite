@@ -148,6 +148,21 @@ export function usePlaylist(): UsePlaylistProps {
   };
 }
 
+export const useIsPlaying = (track: Track) => {
+  const currentTrackState = useHomeState((state) => state.currentTrack);
+  const [isPlaying, setIsPlaying] = useState(
+    currentTrackState.title === track.title
+  );
+  useEffect(() => {
+    if (track.title === currentTrackState.title) {
+      setIsPlaying(true);
+    } else {
+      setIsPlaying(false);
+    }
+  }, [currentTrackState]);
+  return isPlaying;
+};
+
 const getTrackAudio = (track: Track): HTMLMediaElement => {
   return document.getElementById("audio_" + track.title) as HTMLMediaElement;
 };

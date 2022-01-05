@@ -22,7 +22,13 @@ const GridLayout = ({
     // border: "1px solid red",
     // backgroundColor: theme.primaryDark,
   } as React.CSSProperties;
-  const noBorderArray = ["arrow"];
+  const noBorderArray = [
+    "arrow",
+    "oneRecital",
+    "threeRemixes",
+    "oneRecitalText",
+    "player",
+  ];
   const wrapped = children.map((c, i) => {
     if (c) {
       const border = !noBorderArray.includes(c.key as string);
@@ -88,7 +94,8 @@ const GridLayout = ({
     <ResponsiveGridLayout
       className={className}
       layouts={layouts}
-      rowHeight={(window.innerHeight - rows * padding) / rows}
+      // rowHeight={window.innerHeight / rows}
+      rowHeight={(window.outerHeight - (rows * padding) / 2) / rows}
       cols={{ lg: 12, md: 12, sm: 12 }}
       containerPadding={[padding, padding]}
       // {...gridSettings}

@@ -71,7 +71,7 @@ const Time = ({
         alignItems: "center",
         display: "flex",
         margin: "auto",
-        backgroundColor: isPlaying ? "green" : "",
+        backgroundColor: isPlaying ? "green" : theme.primaryDark,
       }}
     >
       {`${formatTime(curTime)}/${formatTime(curDuration)}`}

@@ -8,6 +8,9 @@ export interface Theme {
   borderRadius: number;
   textDark: string;
   shadow: string;
+  primaryFont: string;
+  bigFont: string;
+  mediumFont: string;
 }
 
 const theme = {
@@ -23,6 +26,9 @@ const theme = {
   textDark: "black",
   text: "white",
   shadow: "5px 5px 15px 5px #000000",
+  primaryFont: "Nunito",
+  bigFont: "3.5vw",
+  mediumFont: "2.5vw",
 };
 
 export default theme;

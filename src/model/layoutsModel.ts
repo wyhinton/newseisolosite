@@ -17,7 +17,7 @@ import { AppMode } from "../enums";
 import RawCardRow from "../interfaces/RawCardRow";
 import RawLayoutRow from "../interfaces/RawLayoutRow";
 import IFrameValidator from "../IFrameValidator";
-import defaultLayout from "@static/defaultLayouts" 
+import defaultLayout from "@static/defaultLayouts";
 export interface LayoutsModel {
   //state
   activeLayout: LayoutData | undefined;
@@ -42,7 +42,7 @@ export interface LayoutsModel {
   swapCardContent: Thunk<LayoutsModel, CardSwapEvent, StoreModel>;
   deleteCard: Thunk<LayoutsModel, CardData, StoreModel>;
   addCard: Thunk<LayoutsModel, CardAddEvent, never, StoreModel>;
-  registerCardLoadFailure: Thunk<LayoutsModel, CardData, never, StoreModel>
+  registerCardLoadFailure: Thunk<LayoutsModel, CardData, never, StoreModel>;
 }
 
 const layoutsModel: LayoutsModel = {
@@ -88,13 +88,13 @@ const layoutsModel: LayoutsModel = {
     (actions, storeActions) => storeActions.appModel.toggleViewMode,
     // handler:
     (actions, target, { getState, getStoreState }) => {
-      console.log(
-        "listened to on toggle view mode in layout model, setting layout from buffer"
-      );
+      // console.log(
+      //   "listened to on toggle view mode in layout model, setting layout from buffer"
+      // );
       const { activeLayout } = getState();
       const buf = getState().bufferLayout;
       if (getStoreState().appModel.appMode === AppMode.DISPLAY) {
-        console.log("IT WAS IN DISPLAY MODE");
+        // console.log("IT WAS IN DISPLAY MODE");
         if (activeLayout?.layout) {
           activeLayout.layout = buf;
           actions.setActiveLayout(activeLayout);
@@ -109,7 +109,7 @@ const layoutsModel: LayoutsModel = {
     state.activeLayout = newActiveLayout;
   }),
   setExternalLayouts: action((state, newLayoutArray) => {
-    console.log("setting external layouts");
+    // console.log("setting external layouts");
     state.externalLayouts = newLayoutArray;
   }),
   //mutators
@@ -129,8 +129,8 @@ const layoutsModel: LayoutsModel = {
   ),
   deleteCard: thunk(
     (actions, cardToDelete, { getState, getStoreState, getStoreActions }) => {
-      console.log("deleting card at layotus model");
-      console.log(cardToDelete);
+      // console.log("deleting card at layotus model");
+      // // console.log(cardToDelete);
       // let buf = getState().bufferLayout;
       const previousLayout = getState().activeLayout;
       console.log("got here");
@@ -160,23 +160,25 @@ const layoutsModel: LayoutsModel = {
       console.log(cardToAdd);
     }
   }),
-  registerCardLoadFailure: thunk((actions, failedCard, { getState, getStoreState }) => {
-    console.log("Got card Register Load Failure at Layouts Model");
-    console.log(failedCard);
-    const { activeLayout } = getState();
-    if (activeLayout){
-      activeLayout.failCard(failedCard)
+  registerCardLoadFailure: thunk(
+    (actions, failedCard, { getState, getStoreState }) => {
+      console.log("Got card Register Load Failure at Layouts Model");
+      console.log(failedCard);
+      const { activeLayout } = getState();
+      if (activeLayout) {
+        activeLayout.failCard(failedCard);
+      }
+      // if (activeLayout && cardToAdd) {
+      //   const buf = getState().bufferLayout;
+      //   console.log(debug(buf));
+      //   activeLayout.setGridLayout(buf);
+      //   activeLayout?.addCard(cardToAdd, targetPosition);
+      //   actions.setActiveLayout(activeLayout);
+      //   // actions.setBufferLayout(activeLayout.layout);
+      //   console.log(cardToAdd);
+      // }
     }
-    // if (activeLayout && cardToAdd) {
-    //   const buf = getState().bufferLayout;
-    //   console.log(debug(buf));
-    //   activeLayout.setGridLayout(buf);
-    //   activeLayout?.addCard(cardToAdd, targetPosition);
-    //   actions.setActiveLayout(activeLayout);
-    //   // actions.setBufferLayout(activeLayout.layout);
-    //   console.log(cardToAdd);
-    // }
-  }),
+  ),
   setBufferLayout: action((state, layouts) => {
     console.log("setting buffer layout");
     console.log(layouts);

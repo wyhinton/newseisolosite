@@ -6,14 +6,18 @@ const FlexRow = ({
   className,
   style,
   width,
+  height,
   justifyContent,
+  id,
 }: {
-  children: JSX.Element | JSX.Element[];
+  children: JSX.Element | JSX.Element[] | Element[];
   padding?: string;
   className?: string;
   style?: React.CSSProperties;
   width?: string;
+  height?: string;
   justifyContent?: string;
+  id?: string;
 }): JSX.Element => {
   return (
     <div
@@ -23,9 +27,11 @@ const FlexRow = ({
         flexDirection: "row",
         padding: padding,
         width,
+        height,
         justifyContent,
         ...style,
       }}
+      id={id}
     >
       {children}
     </div>

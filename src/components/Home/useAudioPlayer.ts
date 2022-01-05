@@ -23,7 +23,8 @@ function useAudioPlayer(ref: RefObject<HTMLMediaElement>) {
     audio.addEventListener("timeupdate", setAudioTime);
 
     // React state listeners: update DOM on React state changes
-    playing ? audio.play() : audio.pause();
+    // playing ? audio.play() : audio.pause();
+    playing ? handlePlay(audio) : audio.pause();
 
     if (clickedTime && clickedTime !== curTime) {
       audio.currentTime = clickedTime;
@@ -44,6 +45,21 @@ function useAudioPlayer(ref: RefObject<HTMLMediaElement>) {
     setPlaying,
     setClickedTime,
   };
+}
+function handlePlay(e: HTMLMediaElement) {
+  var playPromise = e.play();
+
+  if (playPromise !== undefined) {
+    playPromise
+      .then((_) => {
+        // Automatic playback started!
+        // Show playing UI.
+      })
+      .catch((error) => {
+        // Auto-play was prevented
+        // Show paused UI.
+      });
+  }
 }
 
 export default useAudioPlayer;

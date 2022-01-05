@@ -47,7 +47,7 @@ export interface AppDataModel {
   setCurrentLayout: Action<AppDataModel, Layouts>;
   setActiveCards: Action<AppDataModel, CardData[]>;
   setAvailableCards: Action<AppDataModel, CardData[]>;
-  registerCardLoadFailure: Thunk<AppDataModel, CardData, never, StoreModel>
+  registerCardLoadFailure: Thunk<AppDataModel, CardData, never, StoreModel>;
   //listeners
   onUndoHistory: ThunkOn<AppDataModel, never, StoreModel>;
   onRedoHistory: ThunkOn<AppDataModel, never, StoreModel>;
@@ -71,7 +71,7 @@ const appModel: AppDataModel = {
   //managers
   /**Control side effects for altering the view state of the app, and dispatch a setter for the state */
   manageViewModeChange: thunk((actions, viewModeEnum) => {
-    console.log(viewModeEnum);
+    // console.log(viewModeEnum);
     actions.setAppMode(viewModeEnum);
     switch (viewModeEnum) {
       case AppMode.EDIT:
@@ -81,7 +81,7 @@ const appModel: AppDataModel = {
       case AppMode.CYCLE:
         break;
       default:
-        console.log("reached default in set view mode thunk");
+      // console.log("reached default in set view mode thunk");
     }
   }),
   toggleViewMode: thunk((actions, _, { getState }) => {
@@ -97,9 +97,9 @@ const appModel: AppDataModel = {
       case AppMode.CYCLE:
         break;
       default:
-        console.log("reached default in set view mode thunk");
+      // console.log("reached default in set view mode thunk");
     }
-    console.log(getState().appMode);
+    // console.log(getState().appMode);
   }),
   setCurrentLayout: action((state, layoutArray) => {
     state.currentLayout = layoutArray;
@@ -138,9 +138,9 @@ const appModel: AppDataModel = {
         } as RawCardRow;
       });
       const cards = rawCardRowsArray.map((c: RawCardRow) => new CardData(c));
-      console.log(cards);
+      // console.log(cards);
       state.availableCards = cards;
-      console.log(debug(state.availableCards));
+      // console.log(debug(state.availableCards));
     }
   ),
 
@@ -172,20 +172,22 @@ const appModel: AppDataModel = {
       // console.log(activeCards);
     }
   ),
-  registerCardLoadFailure: thunk((actions, failedCard, { getState, getStoreState }) => {
-    console.log("Got card Register Load Failure at Layouts Model");
-    console.log(failedCard);
-    const { activeCards } = getState();
-    const failedId = failedCard.sourceId;
-    let newCards = activeCards.map(c=>{
-      if (c.sourceId === failedId) {
-        console.log("found failed");
-        c.fail();
-      }
-      return c
-    })
-    actions.setActiveCards(newCards);
-  }),
+  registerCardLoadFailure: thunk(
+    (actions, failedCard, { getState, getStoreState }) => {
+      console.log("Got card Register Load Failure at Layouts Model");
+      console.log(failedCard);
+      const { activeCards } = getState();
+      const failedId = failedCard.sourceId;
+      let newCards = activeCards.map((c) => {
+        if (c.sourceId === failedId) {
+          console.log("found failed");
+          c.fail();
+        }
+        return c;
+      });
+      actions.setActiveCards(newCards);
+    }
+  ),
   onSwapCardContent: thunkOn(
     (actions, storeActions) => storeActions.layoutsModel.swapCardContent,
     async (actions, payload, { getState }) => {

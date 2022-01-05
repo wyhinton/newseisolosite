@@ -56,3 +56,9 @@ export const groupBy = (list: any[], key: string): Map<string, Array<any>> => {
   });
   return map;
 };
+
+export const getRandomIntInclusive = (min, max): number => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
+};

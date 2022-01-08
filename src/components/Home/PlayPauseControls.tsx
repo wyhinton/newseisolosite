@@ -21,11 +21,12 @@ const PlayPauseControls = ({ track }: { track: Track }): JSX.Element => {
   return (
     <div
       style={{
-        backgroundColor: "blue",
-        borderRadius: "50%",
+        // backgroundColor: "blue",
+        // borderRadius: "50%",
         width: "fit-content",
         padding: "5px",
         position: "absolute",
+        border: "1px solid black",
         top: 0,
         left: 0,
       }}

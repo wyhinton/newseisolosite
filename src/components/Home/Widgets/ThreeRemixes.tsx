@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import theme from "@static/theme";
 import BigText from "./BigText";
+import { usePlaylist } from "@hooks";
 
 const ThreeRemixes = (): JSX.Element => {
-  return <BigText>3 Remixes</BigText>;
+  const { trackCategory } = usePlaylist();
+
+  return <BigText active={trackCategory === "remix"}>3 Remixes</BigText>;
 };
 
 export default ThreeRemixes;

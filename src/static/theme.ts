@@ -12,6 +12,7 @@ export interface Theme {
   primaryFont: string;
   bigFont: string;
   mediumFont: string;
+  titleFont: string;
 }
 
 const theme = {
@@ -28,8 +29,12 @@ const theme = {
   textDark: "black",
   text: "white",
   shadow: "5px 5px 15px 5px #000000",
-  primaryFont: "Nunito",
+
+  // primaryFont: "Nunito",
+  primaryFont: "NeueMetana-Bold",
+  titleFont: "16rem",
   bigFont: "3.5vw",
+
   mediumFont: "2.5vw",
 };
 

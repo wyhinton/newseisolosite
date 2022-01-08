@@ -1,0 +1,20 @@
+[debug] [2022-01-05T22:51:07.976Z] ----------------------------------------------------------------------
+[debug] [2022-01-05T22:51:07.978Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Primary User\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2022-01-05T22:51:07.979Z] CLI Version:   9.6.1
+[debug] [2022-01-05T22:51:07.979Z] Platform:      win32
+[debug] [2022-01-05T22:51:07.979Z] Node Version:  v14.17.6
+[debug] [2022-01-05T22:51:07.980Z] Time:          Wed Jan 05 2022 17:51:07 GMT-0500 (Eastern Standard Time)
+[debug] [2022-01-05T22:51:07.980Z] ----------------------------------------------------------------------
+[debug] [2022-01-05T22:51:07.980Z] 
+[debug] [2022-01-05T22:51:07.983Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2022-01-05T22:51:08.010Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-01-05T22:51:08.010Z] > authorizing via signed-in user
+[debug] [2022-01-05T22:51:08.011Z] [iam] checking project seisolo-28448 for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2022-01-05T22:51:08.012Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2022-01-05T22:51:08.012Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2022-01-05T22:51:08.151Z] <<< HTTP RESPONSE 200 {"cache-control":"no-cache, no-store, max-age=0, must-revalidate","pragma":"no-cache","date":"Wed, 05 Jan 2022 22:51:07 GMT","expires":"Mon, 01 Jan 1990 00:00:00 GMT","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-01-05T22:51:08.155Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/seisolo-28448:testIamPermissions  
+ {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2022-01-05T22:51:08.202Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2022-01-05T22:51:08.202Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}

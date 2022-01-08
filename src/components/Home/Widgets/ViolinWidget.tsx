@@ -13,7 +13,12 @@ import {
   Color,
   TextureLoader,
 } from "three";
-import { OrbitControls, OrthographicCamera, useGLTF } from "@react-three/drei";
+import {
+  OrbitControls,
+  OrthographicCamera,
+  useGLTF,
+  useProgress,
+} from "@react-three/drei";
 import { GLTF as GLTFThree } from "three/examples/jsm/loaders/GLTFLoader";
 declare module "three-stdlib" {
   export interface GLTF extends GLTFThree {
@@ -60,7 +65,7 @@ const Violin = () => {
 // Lights
 const ViolinWidget = (): JSX.Element => {
   return (
-    <Suspense fallback={<div>hello</div>}>
+    <Suspense fallback={<Loader />}>
       <Canvas className="canvas">
         <OrthographicCamera makeDefault zoom={10.1} position={[0, 0, 20]} />
         <OrbitControls />
@@ -73,3 +78,8 @@ const ViolinWidget = (): JSX.Element => {
 };
 
 export default React.memo(ViolinWidget);
+
+function Loader() {
+  const { active, progress, errors, item, loaded, total } = useProgress();
+  return <section>{progress} % loaded</section>;
+}

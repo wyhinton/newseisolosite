@@ -1,4 +1,12 @@
-import React, { useCallback, useMemo, useRef, useState } from "react";
+// eslint-disable-next-line filenames/match-exported
+import React, {
+  EffectCallback,
+  useCallback,
+  useMemo,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 
 import { StoreModel } from "./model";
 import { ActionCreator, createTypedHooks } from "easy-peasy";
@@ -27,6 +35,7 @@ interface UsePlaylistProps {
   currentAudioRef: React.MutableRefObject<HTMLAudioElement>;
   currentAudio: HTMLAudioElement;
   currentDuration: number;
+  trackCategory: "recital" | "remix";
 }
 
 export function usePlaylist(): UsePlaylistProps {
@@ -64,7 +73,6 @@ export function usePlaylist(): UsePlaylistProps {
       .map((id) => document.getElementById(id) as HTMLAudioElement)
       .filter((e) => e !== null);
 
-    console.log(elems);
     allAudioElems.current = elems;
     allAudioElems.current.forEach((audio) => {
       audio.addEventListener("ended", handleEnd);
@@ -104,9 +112,13 @@ export function usePlaylist(): UsePlaylistProps {
   };
 
   const [currentTrack, setCurrentTrackLocal] = useState(currentTrackState);
+  const [trackCategory, setTrackCategory] = useState(
+    currentTrackState.category
+  );
   const [currentAudio, setCurrentAudio] = useState(
     getTrackAudio(currentTrackState)
   );
+  // const currentTrackCategory = currentTrackState.category;
   const [currentDuration, setCurrentDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -122,6 +134,7 @@ export function usePlaylist(): UsePlaylistProps {
   useEffect(() => {
     // console.log(currentTrackState);
     setCurrentTrackLocal(currentTrackState);
+    setTrackCategory(currentTrackState.category);
     // setCurrentAudio(getTrackAudio(currentTrackState));
     setCurrentAudio(getTrackAudio(currentTrack));
     // setCurrentDuration(currentAudio.duration);
@@ -145,6 +158,7 @@ export function usePlaylist(): UsePlaylistProps {
     currentAudioRef,
     currentAudio,
     currentDuration,
+    trackCategory,
   };
 }
 
@@ -214,26 +228,152 @@ export function useOnClickOutside<T extends HTMLElement = HTMLElement>(
   }, [ref, handler]);
 }
 
-function handlePlay(e: HTMLMediaElement) {
-  // var playPromise = e.play();
-  console.log(e);
-  console.log("GOING TO PLAY ", e.id);
-  var nopromise = {
-    catch: new Function(),
+// export function useAppMode()
+
+type TStatus = "IDLE" | "PROCESSING" | "ERROR" | "SUCCESS";
+
+export function useAsyncTask<T extends any[], R = any>(
+  task: (...args: T) => Promise<R>
+) {
+  const [status, setStatus] = useState<TStatus>("IDLE");
+  const [message, setMessage] = useState("");
+
+  const run = useCallback(async (...arg: T) => {
+    setStatus("PROCESSING");
+    try {
+      const resp: R = await task(...arg);
+      setStatus("SUCCESS");
+      return resp;
+    } catch (error) {
+      let message = error?.response?.data?.error?.message || error.message;
+      setMessage(message);
+      setStatus("ERROR");
+      throw error;
+    }
+  }, []);
+
+  const reset = useCallback(() => {
+    setMessage("");
+    setStatus("IDLE");
+  }, []);
+
+  return {
+    run,
+    status,
+    message,
+    reset,
   };
-  (e.play() || nopromise).catch(function () {});
-  // console.log("HANDLING AUDIO PLAY");
-  // if (playPromise !== undefined) {
-  //   playPromise
-  //     .then((_) => {
-  //       // Automatic playback started!
-  //       // Show playing UI.
-  //     })
-  //     .catch((error) => {
-  //       // Auto-play was prevented
-  //       // Show paused UI.
-  //     });
-  // }
 }
 
-// export function useAppMode()
+// import { useEffect, useReducer, useRef } from "react";
+
+interface State<T> {
+  data?: T;
+  error?: Error;
+}
+
+type Cache<T> = { [url: string]: T };
+
+// discriminated union type
+type Action<T> =
+  | { type: "loading" }
+  | { type: "fetched"; payload: T }
+  | { type: "error"; payload: Error };
+
+export function useFetch<T = unknown>(
+  url?: string,
+  options?: RequestInit
+): State<T> {
+  const cache = useRef<Cache<T>>({});
+
+  // Used to prevent state update if the component is unmounted
+  const cancelRequest = useRef<boolean>(false);
+
+  const initialState: State<T> = {
+    error: undefined,
+    data: undefined,
+  };
+
+  // Keep state logic separated
+  const fetchReducer = (state: State<T>, action: Action<T>): State<T> => {
+    switch (action.type) {
+      case "loading":
+        return { ...initialState };
+      case "fetched":
+        return { ...initialState, data: action.payload };
+      case "error":
+        return { ...initialState, error: action.payload };
+      default:
+        return state;
+    }
+  };
+
+  const [state, dispatch] = useReducer(fetchReducer, initialState);
+
+  useEffect(() => {
+    // Do nothing if the url is not given
+    if (!url) return;
+
+    const fetchData = async () => {
+      dispatch({ type: "loading" });
+
+      // If a cache exists for this url, return it
+      if (cache.current[url]) {
+        dispatch({ type: "fetched", payload: cache.current[url] });
+        return;
+      }
+
+      try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+
+        const data = (await response.json()) as T;
+        cache.current[url] = data;
+        if (cancelRequest.current) return;
+
+        dispatch({ type: "fetched", payload: data });
+      } catch (error) {
+        if (cancelRequest.current) return;
+
+        dispatch({ type: "error", payload: error as Error });
+      }
+    };
+
+    void fetchData();
+
+    // Use the cleanup function for avoiding a possibly...
+    // ...state update after the component was unmounted
+    return () => {
+      cancelRequest.current = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [url]);
+
+  return state;
+}
+
+export default useFetch;
+
+/**
+ * Hook to get the width of a container
+ */
+export function useSize() {
+  const [rect, setRect] = useState(null);
+  const resizer = new ResizeObserver((entries) => {
+    entries && setRect(entries[0].contentRect);
+  });
+  const ref = useCallback((node) => {
+    if (node !== null) {
+      resizer.observe(node);
+      setRect(node.getBoundingClientRect());
+    }
+  }, []);
+  return [rect, ref];
+}
+
+function useEffectOnce(effect: EffectCallback) {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(effect, []);
+}

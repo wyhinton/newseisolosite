@@ -8,6 +8,7 @@ const FlexColumn = ({
   height,
   id,
   className,
+  justifyContent,
 }: {
   children: JSX.Element | JSX.Element[];
   padding?: string;
@@ -15,6 +16,8 @@ const FlexColumn = ({
   width?: string;
   height?: string;
   id?: string;
+  // field: string;
+  justifyContent?: string;
   // width?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
   className?: string;
 }): JSX.Element => {
@@ -30,7 +33,7 @@ const FlexColumn = ({
         display: "flex",
         flexDirection: "column",
         padding: padding,
-        justifyContent: "center",
+        justifyContent: justifyContent ?? "center",
         width,
         height,
         // width:

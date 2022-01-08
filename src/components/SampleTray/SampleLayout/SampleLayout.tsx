@@ -31,6 +31,7 @@ interface SampleLayoutProperties {
   activeTags: string[];
 }
 const gridProps = {};
+
 const SampleLayout = ({ activeTags }: SampleLayoutProperties): JSX.Element => {
   const samples = useStoreState((state) => state.samplesModel.samples);
   const [activeSamples, setActiveSamples] = useState(samples);

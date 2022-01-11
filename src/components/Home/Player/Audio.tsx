@@ -29,11 +29,7 @@ const Audio = ({ track }: { track: Track }): JSX.Element => {
     <FlexRow
       className={songContainerClass}
       style={{
-<<<<<<< HEAD
-        border: "1px solid",
-=======
         border: "2px solid black",
->>>>>>> noclasses
         // borderColor: category === "recital" ? "red" : "",
         // backgroundColor: category === "recital" ? "red" : "",
         paddingLeft: `clamp(${padMin}, 1vw, ${padMax})`,

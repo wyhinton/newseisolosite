@@ -51,11 +51,7 @@ const Grid = (): JSX.Element => {
           backgroundColor: "red",
         } as React.CSSProperties;
 
-<<<<<<< HEAD
-        return <div style={dashStyle}></div>;
-=======
         return <div key={i} style={dashStyle}></div>;
->>>>>>> noclasses
       })}
     </div>
   );

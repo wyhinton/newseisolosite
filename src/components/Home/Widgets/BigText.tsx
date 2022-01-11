@@ -1,16 +1,6 @@
 import React, { useState, useEffect } from "react";
 import FlexRow from "@components/FlexRow";
 import theme from "@static/theme";
-<<<<<<< HEAD
-
-const BigText = ({ children }: { children: React.ReactNode }): JSX.Element => {
-  return (
-    <FlexRow height="100%">
-      <div
-        style={{
-          height: "100%",
-          width: "max-content",
-=======
 import { motion } from "framer-motion";
 
 const BigText = ({
@@ -42,19 +32,10 @@ const BigText = ({
           width: "100%",
           height: "100%",
           // width: "max-content",
->>>>>>> noclasses
           fontFamily: theme.primaryFont,
           fontSize: theme.mediumFont,
           alignItems: "center",
           display: "flex",
-<<<<<<< HEAD
-          // fontSize: "6rem",
-          // fontSize: "6rem",
-        }}
-      >
-        {children}
-      </div>
-=======
           fontWeight: "bold",
           paddingLeft: "1rem",
           backgroundColor: active ? "green" : "",
@@ -64,7 +45,6 @@ const BigText = ({
       >
         {children}
       </motion.div>
->>>>>>> noclasses
     </FlexRow>
   );
 };

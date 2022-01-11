@@ -34,11 +34,8 @@
     "evergreen-ui": "^6.4.0",
     "file-saver": "^2.0.5",
     "framer-motion": "^5.5.5",
-<<<<<<< HEAD
-=======
     "gl-react": "^5.0.0",
     "gl-react-dom": "^5.1.0",
->>>>>>> noclasses
     "google-spreadsheet": "^3.1.15",
     "interpolate-range": "^2.1.0",
     "konva": "^8.2.2",
@@ -48,10 +45,7 @@
     "lodash.shuffle": "^4.2.0",
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",
-<<<<<<< HEAD
-=======
     "ndarray": "^1.0.19",
->>>>>>> noclasses
     "overlayscrollbars": "^1.13.1",
     "overlayscrollbars-react": "^0.2.3",
     "papaparse": "^5.3.1",
@@ -134,10 +128,7 @@
     "@welldone-software/why-did-you-render": "^6.2.0",
     "autoprefixer": "^9",
     "babel-plugin-glsl": "^1.0.0",
-<<<<<<< HEAD
-=======
     "babel-plugin-transform-class-properties": "^6.24.1",
->>>>>>> noclasses
     "better-docs": "^2.3.2",
     "craco-alias": "^3.0.1",
     "eslint-config-xo-react": "^0.25.0",

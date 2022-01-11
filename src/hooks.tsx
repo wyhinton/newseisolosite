@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-import React, { useCallback, useMemo, useRef, useState } from "react";
-=======
 // eslint-disable-next-line filenames/match-exported
 import React, {
   EffectCallback,
@@ -10,7 +7,6 @@ import React, {
   useRef,
   useState,
 } from "react";
->>>>>>> noclasses
 
 import { StoreModel } from "./model";
 import { ActionCreator, createTypedHooks } from "easy-peasy";
@@ -25,12 +21,6 @@ export const useStoreActions = typedHooks.useStoreActions;
 export const useStoreDispatch = typedHooks.useStoreDispatch;
 export const useStoreState = typedHooks.useStoreState;
 
-<<<<<<< HEAD
-const homeTypedHooks = createTypedHooks<HomeModel>();
-export const useHomeActions = homeTypedHooks.useStoreActions;
-export const useHomeDispatch = homeTypedHooks.useStoreDispatch;
-export const useHomeState = homeTypedHooks.useStoreState;
-=======
 const playListHooks = createTypedHooks<HomeModel>();
 export const useHomeActions = playListHooks.useStoreActions;
 export const useHomeDispatch = playListHooks.useStoreDispatch;
@@ -54,7 +44,6 @@ export function useApp(): useAppProps {
   };
 }
 //USE PLAYLIST
->>>>>>> noclasses
 
 interface UsePlaylistProps {
   currentTrack: Track;
@@ -65,12 +54,9 @@ interface UsePlaylistProps {
   currentAudioRef: React.MutableRefObject<HTMLAudioElement>;
   currentAudio: HTMLAudioElement;
   currentDuration: number;
-<<<<<<< HEAD
-=======
   trackCategory: TrackCategory;
   isRecital: boolean;
   startingTrack: Track;
->>>>>>> noclasses
 }
 
 export function usePlaylist(): UsePlaylistProps {
@@ -81,16 +67,6 @@ export function usePlaylist(): UsePlaylistProps {
   const isPlayingState = useHomeState((state) => state.isPlaying);
   const currentAudioRef = useRef<HTMLAudioElement>(null);
 
-<<<<<<< HEAD
-  // const getCurrentAudio = () =>{
-
-  // }
-  // const pauseTrack = useHomeState((state) => state.pause)
-  // const playNextTrack = () =>{
-  //   const nextInd = tracks.findIndex(track)
-  // }
-=======
->>>>>>> noclasses
   const handleEnd = (e: Event) => {
     console.log(e.target);
     const targ = e.target as HTMLAudioElement;
@@ -99,28 +75,14 @@ export function usePlaylist(): UsePlaylistProps {
       tracks.filter((t) => t.title === title)[0]
     );
     playTrack(tracks[endedIndex + 1]);
-<<<<<<< HEAD
-    console.log(endedIndex);
-    console.log(title);
-    // const title = e.target.
   };
 
   useEffect(() => {
-    //TODO: ADD RECITAL TRACKS
-=======
-  };
-
-  useEffect(() => {
->>>>>>> noclasses
     const elems = tracks
       .map((t) => "audio_" + t.title)
       .map((id) => document.getElementById(id) as HTMLAudioElement)
       .filter((e) => e !== null);
 
-<<<<<<< HEAD
-    console.log(elems);
-=======
->>>>>>> noclasses
     allAudioElems.current = elems;
     allAudioElems.current.forEach((audio) => {
       audio.addEventListener("ended", handleEnd);
@@ -160,11 +122,6 @@ export function usePlaylist(): UsePlaylistProps {
   };
 
   const [currentTrack, setCurrentTrackLocal] = useState(currentTrackState);
-<<<<<<< HEAD
-  const [currentAudio, setCurrentAudio] = useState(
-    getTrackAudio(currentTrackState)
-  );
-=======
   const [trackCategory, setTrackCategory] = useState(
     currentTrackState.category
   );
@@ -175,7 +132,6 @@ export function usePlaylist(): UsePlaylistProps {
     getTrackAudio(currentTrackState)
   );
   // const currentTrackCategory = currentTrackState.category;
->>>>>>> noclasses
   const [currentDuration, setCurrentDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -191,11 +147,8 @@ export function usePlaylist(): UsePlaylistProps {
   useEffect(() => {
     // console.log(currentTrackState);
     setCurrentTrackLocal(currentTrackState);
-<<<<<<< HEAD
-=======
     setTrackCategory(currentTrackState.category);
     setIsRecital(currentTrack.category === "recital");
->>>>>>> noclasses
     // setCurrentAudio(getTrackAudio(currentTrackState));
     setCurrentAudio(getTrackAudio(currentTrack));
     // setCurrentDuration(currentAudio.duration);
@@ -210,10 +163,7 @@ export function usePlaylist(): UsePlaylistProps {
     setIsPlaying(isPlayingState);
   }, [isPlayingState]);
 
-<<<<<<< HEAD
-=======
   const startingTrack = tracks[0];
->>>>>>> noclasses
   return {
     currentTrack,
     setCurrentTrack,
@@ -223,12 +173,9 @@ export function usePlaylist(): UsePlaylistProps {
     currentAudioRef,
     currentAudio,
     currentDuration,
-<<<<<<< HEAD
-=======
     trackCategory,
     isRecital,
     startingTrack,
->>>>>>> noclasses
   };
 }
 
@@ -264,13 +211,8 @@ export { useArray };
 const test = "test";
 
 import { RefObject, useEffect } from "react";
-<<<<<<< HEAD
-import { HomeModel } from "model/homeModel";
-import { Track } from "@interfaces/Track";
-=======
 import { HomeModel, SSAppMode } from "model/homeModel";
 import { Track, TrackCategory } from "@interfaces/Track";
->>>>>>> noclasses
 import tracks from "@static/tracks";
 
 type AnyEvent = MouseEvent | TouchEvent;
@@ -301,28 +243,6 @@ export function useOnClickOutside<T extends HTMLElement = HTMLElement>(
 
     // Reload only if ref or handler changes
   }, [ref, handler]);
-}
-
-function handlePlay(e: HTMLMediaElement) {
-  // var playPromise = e.play();
-  console.log(e);
-  console.log("GOING TO PLAY ", e.id);
-  var nopromise = {
-    catch: new Function(),
-  };
-  (e.play() || nopromise).catch(function () {});
-  // console.log("HANDLING AUDIO PLAY");
-  // if (playPromise !== undefined) {
-  //   playPromise
-  //     .then((_) => {
-  //       // Automatic playback started!
-  //       // Show playing UI.
-  //     })
-  //     .catch((error) => {
-  //       // Auto-play was prevented
-  //       // Show paused UI.
-  //     });
-  // }
 }
 
 // export function useAppMode()

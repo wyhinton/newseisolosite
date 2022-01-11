@@ -16,10 +16,7 @@ const ViewCard = ({
     height: "100%",
     // backgroundColor: "red",
     border: border ? "2px solid black" : "",
-<<<<<<< HEAD
-=======
     backgroundColor: theme.primary,
->>>>>>> noclasses
     // border: "2px solid black",
     overflow: "hidden",
     borderRadius: theme.borderRadius,

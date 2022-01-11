@@ -24,6 +24,7 @@ uniform vec2 iResolution;
 uniform float iTime;
 uniform sampler2D matCap;
 uniform sampler2D cloudNoise;
+uniform sampler2D dataBig;
 
 out vec4 fragColor;
 
@@ -55,3 +56,20 @@ void main() {
     // fragColor = vec4(1.0*sin(iTime));
 }
 `;
+
+// void main() {
+//   vec2 uv =  gl_FragCoord.xy/iResolution.xy;
+//   float st = sin(iTime);
+//   // vec2 uv = (-iResolution.xy* gl_FragCoord.xy)/iResolution.y;
+//   // vec2 uv = (gl_FragCoord.xy - 0.5 * iResolution.xy) / iResolution.y;
+//   // vec3 matCapCol = texture(matCap, uv, st*3.).rgb;
+//   float d = 9.;
+//   // float d = st;
+//   vec2 dir = vec2(d, d);
+//   vec3 blur = blur5(matCap, uv, iResolution, dir).rgb;
+//   // fragColor = matCapCol;
+//   // fragColor = vec4(uv.x);
+//   // fragColor = vec4(matCapCol, 1.0);
+//   fragColor = vec4(blur, 1.);
+//   // fragColor = vec4(1.0*sin(iTime));
+// }

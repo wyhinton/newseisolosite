@@ -89,6 +89,7 @@ const SamplingTesting = (): JSX.Element => {
         gl.uniform1f(iTime, tInMs / 1000.0);
         twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
         twgl.drawBufferInfo(gl, bufferInfo);
+
         // gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         // gl.drawElements(gl.TRIANGLE_STRIP, 4, gl.UNSIGNED_SHORT, 0);
       });

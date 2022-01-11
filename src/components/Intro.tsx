@@ -81,6 +81,7 @@ const MenuItem = ({ text }: { text: SSAppMode }): JSX.Element => {
     zIndex: 1000,
     backgroundColor: "yellow",
   } as React.CSSProperties;
+  //   git filter-branch --index-filter 'git rm -r --cached --ignore-unmatch public/Tracks' HEAD
 
   return (
     <div style={containerStyle} ref={hoverRef}>

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import classNames from "classnames";
 import ReactDOM from "react-dom";
 import { motion } from "framer-motion";
-import { useApp, useHover } from "@hooks";
+import { useApp, useHover, usePlaylist } from "@hooks";
 import FlexColumn from "./FlexColumn";
 import theme from "@static/theme";
 import { SSAppMode } from "@model/homeModel";
@@ -65,6 +65,7 @@ const MenuItem = ({ text }: { text: SSAppMode }): JSX.Element => {
   const isHover = useHover(hoverRef);
   const pointer = ">";
   const { setAppMode } = useApp();
+  const { playTrack, pauseTrack, startingTrack } = usePlaylist();
 
   const containerStyle = {
     width: "100%",
@@ -93,8 +94,12 @@ const MenuItem = ({ text }: { text: SSAppMode }): JSX.Element => {
           backgroundColor: "black",
           color: "white",
         }}
+        style={{
+          textAlign: "center",
+        }}
         onClick={(e) => {
           setAppMode(text);
+          playTrack(startingTrack);
         }}
       >
         {text}

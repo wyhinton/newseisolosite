@@ -56,6 +56,7 @@ interface UsePlaylistProps {
   currentDuration: number;
   trackCategory: TrackCategory;
   isRecital: boolean;
+  startingTrack: Track;
 }
 
 export function usePlaylist(): UsePlaylistProps {
@@ -162,6 +163,7 @@ export function usePlaylist(): UsePlaylistProps {
     setIsPlaying(isPlayingState);
   }, [isPlayingState]);
 
+  const startingTrack = tracks[0];
   return {
     currentTrack,
     setCurrentTrack,
@@ -173,6 +175,7 @@ export function usePlaylist(): UsePlaylistProps {
     currentDuration,
     trackCategory,
     isRecital,
+    startingTrack,
   };
 }
 

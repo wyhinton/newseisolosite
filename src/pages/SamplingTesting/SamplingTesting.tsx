@@ -37,6 +37,7 @@ const SamplingTesting = (): JSX.Element => {
       [
         `${process.env.PUBLIC_URL}/Textures/pinkMatcap.png`,
         `${process.env.PUBLIC_URL}/Textures/bunny_thickness.jpg`,
+        `${process.env.PUBLIC_URL}/Textures/dataBig.jpg`,
       ],
       (images) => {
         setImages(images);
@@ -63,6 +64,7 @@ const SamplingTesting = (): JSX.Element => {
       const t = [
         `${process.env.PUBLIC_URL}/Textures/pinkMatcap.png`,
         `${process.env.PUBLIC_URL}/Textures/cloudNoise.png`,
+        `${process.env.PUBLIC_URL}/Textures/dataBig.jpeg`,
       ];
       const textures = t.map((image, i) =>
         makeTexture(gl, {
@@ -71,10 +73,10 @@ const SamplingTesting = (): JSX.Element => {
         })
       );
 
-      const { iResolution, iTime, matCap, cloudNoise } = getUniforms(
+      const { iResolution, iTime, matCap, cloudNoise, dataBig } = getUniforms(
         gl,
         program,
-        ["iResolution", "iTime", "matCap", "cloudNoise"]
+        ["iResolution", "iTime", "matCap", "cloudNoise", "dataBig"]
       );
 
       const { width, height } = cvs.getBoundingClientRect();

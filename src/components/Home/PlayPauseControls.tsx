@@ -60,7 +60,7 @@ const PlayButton = ({
   return (
     <div
       className={"play-button-item"}
-      onMouseUp={(e) => {
+      onClick={(e) => {
         handleClick();
       }}
       style={{

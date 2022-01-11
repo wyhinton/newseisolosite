@@ -7,8 +7,8 @@ const pacificImage = `${process.env.PUBLIC_URL}/Headshots/Pacific.jpg`;
 const contourImage = `${process.env.PUBLIC_URL}/Headshots/Contour.jpg`;
 
 const anjaliTrack = `${process.env.PUBLIC_URL}/Tracks/1.wav`;
-const pacificTrack = `${process.env.PUBLIC_URL}/Tracks/overandunder (infinity).wav`;
-const contourTrack = `${process.env.PUBLIC_URL}/Tracks/Kontour_Remix.wav`;
+const pacificTrack = `${process.env.PUBLIC_URL}/Tracks/overandunder (infinity).mp3`;
+const contourTrack = `${process.env.PUBLIC_URL}/Tracks/Kontour_Remix_16.mp3`;
 const bachTrack = `${process.env.PUBLIC_URL}/Tracks/Bach Mov 2.wav`;
 const bartokTrack = `${process.env.PUBLIC_URL}/Tracks/Bartok Mov 1.wav`;
 const ysaeTrack = `${process.env.PUBLIC_URL}/Tracks/Ysaye_AUDIO.mp3`;

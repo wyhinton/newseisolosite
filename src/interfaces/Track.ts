@@ -15,4 +15,5 @@ export interface Track {
   connections?: Connection[];
   // elementId: string;
   category: "remix" | "recital" | "none";
+  startTime?: number;
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import classNames from "classnames";
 import ReactDOM from "react-dom";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { useApp, useHover, usePlaylist } from "@hooks";
 import FlexColumn from "./FlexColumn";
 import theme from "@static/theme";
@@ -21,8 +21,9 @@ const Intro = (): JSX.Element => {
       transition: {
         duration: 1,
       },
+      pointerEvents: "none",
     },
-  };
+  } as Variants;
 
   const containerStyle = {
     width: "100vw",

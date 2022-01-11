@@ -99,6 +99,7 @@ export function usePlaylist(): UsePlaylistProps {
     if (allAudioElems.current) {
       allAudioElems.current.forEach((element) => {
         if (element.id === "audio_" + track.title) {
+          // if (track.)
           element.play();
         } else {
           element.pause();

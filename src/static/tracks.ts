@@ -22,6 +22,23 @@ const about =
 
 const tracks: Track[] = [
   {
+    artist: "None",
+    title: "No Track",
+    src: "",
+    about: "about none",
+    visualType: "video",
+    visual: "",
+    playing: false,
+    connections: [
+      {
+        target: "Bach",
+        description: "Connects in this way",
+      },
+    ],
+    category: "none",
+    // movements: {}
+  },
+  {
     artist: "Diaspoura",
     title: "Diaspoura Track",
     link: "https://diaspoura.bandcamp.com/",

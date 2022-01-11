@@ -56,40 +56,39 @@ const SamplingTesting = (): JSX.Element => {
       console.log(w, h);
 
       const { gl, program } = initGl(cvs, vs, fs);
-      initVBO(gl);
+      const programInfo = twgl.createProgramInfo(gl, [vs, fs]);
+      const bufferInfo = initVBO(gl);
 
       console.log(htmlImages);
       const t = [
         `${process.env.PUBLIC_URL}/Textures/pinkMatcap.png`,
-        `${process.env.PUBLIC_URL}/Textures/bunny_thickness.jpg`,
+        `${process.env.PUBLIC_URL}/Textures/cloudNoise.png`,
       ];
       const textures = t.map((image, i) =>
         makeTexture(gl, {
-          // image,
-          // width: image.width,
-          // height: image.height,
           unit: i,
           url: image,
         })
       );
-      // program.activateTexture()
 
-      const { iResolution, iTime, matCap } = getUniforms(gl, program, [
-        "iResolution",
-        "iTime",
-        "matCap",
-      ]);
+      const { iResolution, iTime, matCap, cloudNoise } = getUniforms(
+        gl,
+        program,
+        ["iResolution", "iTime", "matCap", "cloudNoise"]
+      );
 
       const { width, height } = cvs.getBoundingClientRect();
       gl.uniform2f(iResolution, width, height);
       gl.uniform1i(matCap, 0);
+      gl.uniform1i(cloudNoise, 0);
       // const uTimeIndex = gl.getUniformLocation(program, "iTime");
 
       const RL = new RenderLoop(function (dt, tInMs) {
         gl.uniform1f(iTime, tInMs / 1000.0);
-
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-        gl.drawElements(gl.TRIANGLE_STRIP, 4, gl.UNSIGNED_SHORT, 0);
+        twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
+        twgl.drawBufferInfo(gl, bufferInfo);
+        // gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        // gl.drawElements(gl.TRIANGLE_STRIP, 4, gl.UNSIGNED_SHORT, 0);
       });
       const startShader = () => {
         RL.start();
@@ -259,11 +258,8 @@ const initGl = (
   return { gl, program };
 };
 
-const initVBO = (gl: WebGL2RenderingContext) => {
+const initVBO = (gl: WebGL2RenderingContext): twgl.BufferInfo => {
   gl.enable(gl.DEPTH_TEST);
-
-  let vertexBuffer = gl.createBuffer();
-  let indexBuffer = gl.createBuffer();
 
   const arrays = {
     position: {
@@ -272,23 +268,37 @@ const initVBO = (gl: WebGL2RenderingContext) => {
       data: [-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1],
     },
   };
-  gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-  gl.bufferData(
-    gl.ARRAY_BUFFER,
-    // new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]),
-    new Float32Array([-1.0, 1.0, -1.0, -1.0, 1.0, -1.0, 1.0, 1.0]),
-    gl.STATIC_DRAW
-  );
-  gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
 
-  gl.enableVertexAttribArray(0);
+  const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
+  return bufferInfo;
 
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-  gl.bufferData(
-    gl.ELEMENT_ARRAY_BUFFER,
-    new Uint16Array([1, 0, 2, 3]),
-    gl.STATIC_DRAW
-  );
+  // let vertexBuffer = gl.createBuffer();
+  // let indexBuffer = gl.createBuffer();
+
+  // const arrays = {
+  //   position: {
+  //     numComponents: 2,
+  //     // data: [-1, -1, 1, -1, -1, 1, 1, -1, 1, -1, 1, 1],
+  //     data: [-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1],
+  //   },
+  // };
+  // gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+  // gl.bufferData(
+  //   gl.ARRAY_BUFFER,
+  //   // new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]),
+  //   new Float32Array([-1.0, 1.0, -1.0, -1.0, 1.0, -1.0, 1.0, 1.0]),
+  //   gl.STATIC_DRAW
+  // );
+  // gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+
+  // gl.enableVertexAttribArray(0);
+
+  // gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+  // gl.bufferData(
+  //   gl.ELEMENT_ARRAY_BUFFER,
+  //   new Uint16Array([1, 0, 2, 3]),
+  //   gl.STATIC_DRAW
+  // );
 };
 
 const getUniforms = (
@@ -349,20 +359,20 @@ const makeTexture = (
       srcType,
       image
     );
-
+    gl.generateMipmap(gl.TEXTURE_2D);
     // WebGL1 has different requirements for power of 2 images
     // vs non power of 2 images so check if the image is a
     // power of 2 in both dimensions.
-    if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
-      // Yes, it's a power of 2. Generate mips.
-      gl.generateMipmap(gl.TEXTURE_2D);
-    } else {
-      // No, it's not a power of 2. Turn off mips and set
-      // wrapping to clamp to edge
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    }
+    // if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
+    //   // Yes, it's a power of 2. Generate mips.
+    //   gl.generateMipmap(gl.TEXTURE_2D);
+    // } else {
+    //   // No, it's not a power of 2. Turn off mips and set
+    //   // wrapping to clamp to edge
+    //   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    //   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    //   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    // }
   };
   image.src = url;
   console.log(image.src);

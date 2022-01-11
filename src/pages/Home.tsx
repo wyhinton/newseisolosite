@@ -47,6 +47,8 @@ import OneRecitalTextWidget from "@components/Home/Widgets/OneRecitalTextWidget"
 import RemixesWidget from "@components/Home/Widgets/RemixesWidget";
 import "@css/Body.scss";
 import ProjectInfo from "@components/Home/Widgets/ProjectInfo";
+import { defaultLayout, recitalLayout } from "@static/gridLayouts";
+import Intro from "@components/Intro";
 const Home = (): JSX.Element => {
   const audio = useRef(null);
 
@@ -54,85 +56,23 @@ const Home = (): JSX.Element => {
     audio.current = new AudioContext();
   }, []);
 
-  const topStyle = {
-    textAlign: "center",
-    zIndex: 10,
-  } as React.CSSProperties;
-
-  const innerGroupStyle = {
-    width: "100%",
-    textAlign: "center",
-    zIndex: 10,
-  } as React.CSSProperties;
-
   const [activeTrack, setTrack] = useState<undefined | Track>(tracks[0]);
   const [progress, setProgress] = useState(0);
-
-  const defaultLayout = [
-    // { i: "artist", x: 0, y: 0, w: 1, h: 1 },
-    { i: "projectInfo", x: 11, y: 0, w: 1, h: 1 },
-    { i: "oneRecitalText", x: 0, y: 2, w: 4, h: 1 },
-    { i: "recitalTracks", x: 0, y: 3, w: 5, h: 2 },
-    { i: "arrow", x: 5, y: 2, w: 1, h: 2 },
-    { i: "threeRemixes", x: 6, y: 2, w: 4, h: 1 },
-    { i: "remixes", x: 6, y: 3, w: 5, h: 2 },
-    { i: "title", x: 0, y: 0, w: 5, h: 1 },
-    { i: "trackInfo", x: 0, y: 5, w: 3, h: 6 },
-    { i: "waveform", x: 3, y: 5, w: 9, h: 6 },
-    // { i: "time", x: 6, y: 0, w: 2, h: 1 },
-    { i: "violin", x: 4, y: 1, w: 1, h: 2 },
-    //REMIXES
-
-    // { i: "about", x: 0, y: 1, w: 2, h: 1 },
-    //BOTTOM ROW
-  ];
-
-  const otherLayout = [
-    { i: "projectInfo", x: 11, y: 0, w: 1, h: 1 },
-    { i: "oneRecitalText", x: 0, y: 2, w: 4, h: 1 },
-    { i: "recitalTracks", x: 0, y: 3, w: 5, h: 2 },
-    { i: "arrow", x: 5, y: 2, w: 1, h: 2 },
-    { i: "threeRemixes", x: 6, y: 2, w: 4, h: 1 },
-    { i: "remixes", x: 6, y: 3, w: 5, h: 2 },
-    { i: "title", x: 0, y: 0, w: 5, h: 1 },
-    { i: "trackInfo", x: 0, y: 5, w: 5, h: 6 },
-    { i: "waveform", x: 5, y: 5, w: 7, h: 6 },
-    { i: "violin", x: 4, y: 1, w: 1, h: 2 },
-  ];
 
   const [curLayout, setCurLayout] = useState<Layout[]>(defaultLayout);
   useEffect(() => {
     setCurLayout(defaultLayout);
   }, []);
   const { trackCategory } = usePlaylist();
-  const tInfoRef = useRef<HTMLDivElement>();
-  const waveFromRef = useRef<HTMLDivElement>();
   useEffect(() => {
-    tInfoRef.current = document.getElementById(
-      "trackInfo_container"
-    ) as HTMLDivElement;
-
-    waveFromRef.current = document.getElementById(
-      "waveform_container"
-    ) as HTMLDivElement;
-
-    // console.log(curLayout);
-    // let newLayout = {};
-    // Object.assign(newLayout, curLayout);
     let newLayout: Layout[] = [...curLayout];
     // defaultLayout[0].w =
     if (trackCategory === "remix") {
-      // const w = parseInt(tInfoRef.current.style.width.split("px")[0]);
-      // tInfoRef.current.style.width = (w * 2).toString() + "px";
+      setCurLayout(defaultLayout);
     }
-    setCurLayout(defaultLayout);
-    if (trackCategory === "recital") {
-      setCurLayout(otherLayout);
-      // const w = parseInt(tInfoRef.current.style.width.split("px")[0]);
-      // tInfoRef.current.style.width = (w * 2).toString() + "px";
 
-      // const w2 = parseInt(waveFromRef.current.style.width.split("px")[0]);
-      // waveFromRef.current.style.width = (w / 4).toString() + "px";
+    if (trackCategory === "recital") {
+      setCurLayout(recitalLayout);
     }
   }, [trackCategory]);
 
@@ -141,6 +81,7 @@ const Home = (): JSX.Element => {
   const TrackContext = createContext(null);
   return (
     <section style={{ width: "100vw" }} className="dot-fill">
+      <Intro />
       <section id="home-body" style={{ width: "100vw" }}>
         {/* <StoreProvider store={homeStore}> */}
         <GridLayout className={"layout"} layout={[...curLayout]}>

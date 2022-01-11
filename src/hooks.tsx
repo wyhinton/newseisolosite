@@ -21,10 +21,29 @@ export const useStoreActions = typedHooks.useStoreActions;
 export const useStoreDispatch = typedHooks.useStoreDispatch;
 export const useStoreState = typedHooks.useStoreState;
 
-const homeTypedHooks = createTypedHooks<HomeModel>();
-export const useHomeActions = homeTypedHooks.useStoreActions;
-export const useHomeDispatch = homeTypedHooks.useStoreDispatch;
-export const useHomeState = homeTypedHooks.useStoreState;
+const playListHooks = createTypedHooks<HomeModel>();
+export const useHomeActions = playListHooks.useStoreActions;
+export const useHomeDispatch = playListHooks.useStoreDispatch;
+export const useHomeState = playListHooks.useStoreState;
+
+interface useAppProps {
+  setAppMode: ActionCreator<SSAppMode>;
+  appMode: SSAppMode;
+}
+export function useApp(): useAppProps {
+  const setAppMode = useHomeActions((actions) => actions.setAppMode);
+  const appModeState = useHomeState((state) => state.appMode);
+  const [appMode, setAppModeLocal] = useState(appModeState);
+  useEffect(() => {
+    console.log(appModeState);
+    setAppModeLocal(appModeState);
+  }, [appModeState]);
+  return {
+    setAppMode,
+    appMode,
+  };
+}
+//USE PLAYLIST
 
 interface UsePlaylistProps {
   currentTrack: Track;
@@ -35,7 +54,8 @@ interface UsePlaylistProps {
   currentAudioRef: React.MutableRefObject<HTMLAudioElement>;
   currentAudio: HTMLAudioElement;
   currentDuration: number;
-  trackCategory: "recital" | "remix";
+  trackCategory: TrackCategory;
+  isRecital: boolean;
 }
 
 export function usePlaylist(): UsePlaylistProps {
@@ -46,13 +66,6 @@ export function usePlaylist(): UsePlaylistProps {
   const isPlayingState = useHomeState((state) => state.isPlaying);
   const currentAudioRef = useRef<HTMLAudioElement>(null);
 
-  // const getCurrentAudio = () =>{
-
-  // }
-  // const pauseTrack = useHomeState((state) => state.pause)
-  // const playNextTrack = () =>{
-  //   const nextInd = tracks.findIndex(track)
-  // }
   const handleEnd = (e: Event) => {
     console.log(e.target);
     const targ = e.target as HTMLAudioElement;
@@ -61,13 +74,9 @@ export function usePlaylist(): UsePlaylistProps {
       tracks.filter((t) => t.title === title)[0]
     );
     playTrack(tracks[endedIndex + 1]);
-    console.log(endedIndex);
-    console.log(title);
-    // const title = e.target.
   };
 
   useEffect(() => {
-    //TODO: ADD RECITAL TRACKS
     const elems = tracks
       .map((t) => "audio_" + t.title)
       .map((id) => document.getElementById(id) as HTMLAudioElement)
@@ -115,6 +124,9 @@ export function usePlaylist(): UsePlaylistProps {
   const [trackCategory, setTrackCategory] = useState(
     currentTrackState.category
   );
+  const [isRecital, setIsRecital] = useState(
+    currentTrackState.category === "recital"
+  );
   const [currentAudio, setCurrentAudio] = useState(
     getTrackAudio(currentTrackState)
   );
@@ -135,6 +147,7 @@ export function usePlaylist(): UsePlaylistProps {
     // console.log(currentTrackState);
     setCurrentTrackLocal(currentTrackState);
     setTrackCategory(currentTrackState.category);
+    setIsRecital(currentTrack.category === "recital");
     // setCurrentAudio(getTrackAudio(currentTrackState));
     setCurrentAudio(getTrackAudio(currentTrack));
     // setCurrentDuration(currentAudio.duration);
@@ -159,6 +172,7 @@ export function usePlaylist(): UsePlaylistProps {
     currentAudio,
     currentDuration,
     trackCategory,
+    isRecital,
   };
 }
 
@@ -194,8 +208,8 @@ export { useArray };
 const test = "test";
 
 import { RefObject, useEffect } from "react";
-import { HomeModel } from "model/homeModel";
-import { Track } from "@interfaces/Track";
+import { HomeModel, SSAppMode } from "model/homeModel";
+import { Track, TrackCategory } from "@interfaces/Track";
 import tracks from "@static/tracks";
 
 type AnyEvent = MouseEvent | TouchEvent;
@@ -376,4 +390,55 @@ export function useSize() {
 function useEffectOnce(effect: EffectCallback) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(effect, []);
+}
+
+export function useHover<T extends HTMLElement = HTMLElement>(
+  elementRef: RefObject<T>
+): boolean {
+  const [value, setValue] = useState<boolean>(false);
+
+  const handleMouseEnter = () => setValue(true);
+  const handleMouseLeave = () => setValue(false);
+
+  useEventListener("mouseenter", handleMouseEnter, elementRef);
+  useEventListener("mouseleave", handleMouseLeave, elementRef);
+
+  return value;
+}
+
+function useEventListener<T extends HTMLElement = HTMLDivElement>(
+  eventName: keyof WindowEventMap | string, // string to allow custom event
+  handler: (event: Event) => void,
+  element?: RefObject<T>
+) {
+  // Create a ref that stores handler
+  const savedHandler = useRef<(event: Event) => void>();
+
+  useEffect(() => {
+    // Define the listening target
+    const targetElement: T | Window = element?.current || window;
+    if (!(targetElement && targetElement.addEventListener)) {
+      return;
+    }
+
+    // Update saved handler if necessary
+    if (savedHandler.current !== handler) {
+      savedHandler.current = handler;
+    }
+
+    // Create event listener that calls handler function stored in ref
+    const eventListener = (event: Event) => {
+      // eslint-disable-next-line no-extra-boolean-cast
+      if (!!savedHandler?.current) {
+        savedHandler.current(event);
+      }
+    };
+
+    targetElement.addEventListener(eventName, eventListener);
+
+    // Remove event listener on cleanup
+    return () => {
+      targetElement.removeEventListener(eventName, eventListener);
+    };
+  }, [eventName, element, handler]);
 }

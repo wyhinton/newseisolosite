@@ -215,11 +215,11 @@ const Geo = ({ track }: { track: Track }): JSX.Element => {
   const audioElem = useRef<HTMLAudioElement>();
 
   const groupRef = useRef<Group>();
-  useEffect(() => {
-    audioElem.current = document.getElementById(
-      "audio_" + track.title
-    ) as HTMLAudioElement;
-  }, [track.title]);
+  // useEffect(() => {
+  //   audioElem.current = document.getElementById(
+  //     "audio_" + track.title
+  //   ) as HTMLAudioElement;
+  // }, [track.title]);
 
   useFrame((state) => {
     const time = state.clock.getElapsedTime();

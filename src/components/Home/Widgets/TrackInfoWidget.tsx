@@ -7,6 +7,7 @@ import FlexColumn from "@components/FlexColumn";
 import theme from "@static/theme";
 import { motion } from "framer-motion";
 import { usePlaylist } from "@hooks";
+import Video from "../Graphics/Video";
 
 const TrackInfoWidget = ({ track }: { track: Track }): JSX.Element => {
   const MainStyle = {
@@ -14,14 +15,23 @@ const TrackInfoWidget = ({ track }: { track: Track }): JSX.Element => {
     position: "relative",
     display: "flex",
   } as React.CSSProperties;
-
-  const { currentTrack, isPlaying } = usePlaylist();
-
+  const [showVideo, setShowVideo] = useState(false);
+  const { currentTrack, isPlaying, isRecital, trackCategory } = usePlaylist();
+  useEffect(() => {
+    setShowVideo(trackCategory === "recital");
+  }, [trackCategory]);
   return (
     <FlexColumn width="100%" height="100%" justifyContent="flex-end">
+      {showVideo && <Video></Video>}
       {/* <div style={MainStyle} id="main-container"> */}
-      <ArtistImage track={currentTrack} />
-      <Info track={currentTrack} />
+      {!showVideo && (
+        <>
+          <ArtistImage track={currentTrack} />
+          <Info track={currentTrack} />
+        </>
+      )}
+      {/* <ArtistImage track={currentTrack} /> */}
+      {/* <Info track={currentTrack} /> */}
       {/* </div> */}
     </FlexColumn>
   );
@@ -103,10 +113,12 @@ const ArtistImage = ({ track }: { track: Track }): JSX.Element => {
     normal: {
       // backgroundColor: theme.primary,
       // clipPath: "circle(100px at center)",
-      height: "100%",
+      height: "200px",
+      width: "200px",
     },
     highlight: {
-      height: "0%",
+      height: "0px",
+      width: "0px",
       // clipPath: " circle(0px at center)",
       transition: {
         duration: duration,
@@ -164,20 +176,29 @@ const ArtistImage = ({ track }: { track: Track }): JSX.Element => {
     >
       <motion.div
         variants={variants}
-        // height={100}
-        // animate={inTransition ? "highlight" : "normal"}
+        // height={200}
+        animate={inTransition ? "highlight" : "normal"}
         style={{
           border: "1px solid red",
           overflow: "hidden",
-          position: "relative",
+          // position: "relative",
           // height: "100%",
-          height: "100",
+          width: "200px",
+          height: "200px",
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          zIndex: 10,
+
+          transform: "translate(-50%,-50%)",
         }}
       >
         <motion.img
           style={{
-            width: "80%",
-            height: "80%",
+            // width: "80%",
+            // height: "80%",
+            width: "180px",
+            height: "180px",
             objectFit: "cover",
             objectPosition: "top",
             zIndex: 10,

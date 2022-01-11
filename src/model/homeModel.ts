@@ -9,19 +9,31 @@ import {
   ThunkOn,
 } from "easy-peasy";
 import History from "@classes/History";
-import { Layouts } from "react-grid-layout";
+import { Layout, Layouts } from "react-grid-layout";
 import tracks from "@static/tracks";
 import { Track } from "@interfaces/Track";
+import { aboutLayout, recitalLayout, remixLayout } from "@static/gridLayouts";
+
+export type HomeLayout = "about" | "remix" | "recital";
+export type SSAppMode = "intro" | "view" | "create";
 
 export interface HomeModel {
+  appMode: SSAppMode;
+  setAppMode: Action<HomeModel, SSAppMode>;
   isPlaying: boolean;
   setIsPlaying: Action<HomeModel, boolean>;
   currentTrackId: string;
   currentTrack: Computed<HomeModel, Track>;
   currentAudioElement: Computed<HomeModel, HTMLAudioElement>;
   setCurrentTrack: Action<HomeModel, string>;
+  currentLayout: Layout[];
+  setCurrentLayout: Action<HomeModel, HomeLayout>;
 }
 const homeModel: HomeModel = {
+  appMode: "intro",
+  setAppMode: action((state, mode) => {
+    state.appMode = mode;
+  }),
   isPlaying: false,
   setCurrentTrack: action((state, payload) => {
     console.log("SETTING CURRENT TRACK TO: " + payload);
@@ -41,6 +53,20 @@ const homeModel: HomeModel = {
     ) as HTMLAudioElement;
     // console.log(el);
     return el;
+  }),
+  currentLayout: remixLayout,
+  setCurrentLayout: action((state, payload) => {
+    console.log("SETTING CURRENT TRACK TO: " + payload);
+    let l: Layout[] = [];
+    if (payload === "about") {
+      l = aboutLayout;
+    } else if (payload === "remix") {
+      l = remixLayout;
+    } else if (payload === "recital") {
+      l = recitalLayout;
+    }
+    // state.currentLayout = payload;
+    state.currentLayout = l;
   }),
 };
 

@@ -1,5 +1,10 @@
 import Connection from "./Connection";
 
+<<<<<<< HEAD
+=======
+export type TrackCategory = "remix" | "recital" | "none";
+
+>>>>>>> noclasses
 export interface Track {
   artist: string;
   title: string;
@@ -12,5 +17,9 @@ export interface Track {
   node?: MediaElementAudioSourceNode;
   connections?: Connection[];
   // elementId: string;
+<<<<<<< HEAD
   category: "remix" | "recital";
+=======
+  category: "remix" | "recital" | "none";
+>>>>>>> noclasses
 }

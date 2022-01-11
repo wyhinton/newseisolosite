@@ -6,6 +6,9 @@ import { useKeyboardShortcut } from "crooks";
 import { Route, BrowserRouter as Router, Switch, Link } from "react-router-dom";
 import Instrument from "./pages/Instrument";
 import Home from "./pages/Home";
+import Testing from "./pages/Testing";
+import { StoreProvider } from "easy-peasy";
+import homeStore from "./stores/homeStore";
 
 const App = (): JSX.Element => {
   const fetchCardDataGoogleSheetThunk = useStoreActions(
@@ -40,7 +43,10 @@ const App = (): JSX.Element => {
   return (
     <Router>
       <Route path="/app" component={Instrument} />
-      <Route path="/" exact component={Home} />
+      <StoreProvider store={homeStore}>
+        <Route path="/" exact component={Home} />
+      </StoreProvider>
+      <Route path="/testing" component={Testing} />
     </Router>
   );
 };

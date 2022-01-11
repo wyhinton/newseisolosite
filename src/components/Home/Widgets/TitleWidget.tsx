@@ -9,12 +9,21 @@ const TitleWidget = (): JSX.Element => {
         height: "100%",
         // width: "fit-content",
         fontSize: theme.mediumFont,
+<<<<<<< HEAD
+=======
+        fontWeight: "bold",
+        // fontSize: theme.titleFont,
+>>>>>>> noclasses
         position: "relative",
         justifyContent: "center",
         margin: "auto",
         display: "flex",
         alignItems: "center",
         width: "100%",
+<<<<<<< HEAD
+=======
+
+>>>>>>> noclasses
         // backgroundColor: theme.secondary,
       }}
     >

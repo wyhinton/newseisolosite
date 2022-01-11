@@ -31,6 +31,14 @@ module.exports = {
     },
   },
   babel: {
+<<<<<<< HEAD
+=======
+    presets: [
+      "@babel/preset-typescript",
+      "@babel/preset-react",
+      "@babel/preset-env",
+    ],
+>>>>>>> noclasses
     plugins: ["glsl"],
   },
 };

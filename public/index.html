@@ -15,7 +15,7 @@
     <title>React App</title>
   </head>
 
-  <body>
+  <body class=".dot-fill">
     <style>
       body {
         max-height: 100vh;
@@ -24,6 +24,11 @@
       @font-face {
         font-family: "Nippo-Regular";
         src: local("Nippo-Regular"), url(./Nippo-Regular.otf) format("opentype");
+      }
+      @font-face {
+        font-family: "NeueMetana-Bold";
+        src: local("NeueMetana-Bold"),
+          url(./Fonts/NeueMetana-Bold.otf) format("opentype");
       }
       html * {
         /* font-size: 16px !important; */
@@ -64,11 +69,12 @@
       }
     </style>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+
     <div id="navigation"></div>
     <div id="dialog-box"></div>
     <div id="draggable"></div>
     <div id="drag-target"></div>
-
+    <div id="intro-modal"></div>
     <div id="root"></div>
   </body>
 </html>

@@ -1,4 +1,16 @@
+<<<<<<< HEAD
 import React, { useCallback, useMemo, useRef, useState } from "react";
+=======
+// eslint-disable-next-line filenames/match-exported
+import React, {
+  EffectCallback,
+  useCallback,
+  useMemo,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
+>>>>>>> noclasses
 
 import { StoreModel } from "./model";
 import { ActionCreator, createTypedHooks } from "easy-peasy";
@@ -13,10 +25,36 @@ export const useStoreActions = typedHooks.useStoreActions;
 export const useStoreDispatch = typedHooks.useStoreDispatch;
 export const useStoreState = typedHooks.useStoreState;
 
+<<<<<<< HEAD
 const homeTypedHooks = createTypedHooks<HomeModel>();
 export const useHomeActions = homeTypedHooks.useStoreActions;
 export const useHomeDispatch = homeTypedHooks.useStoreDispatch;
 export const useHomeState = homeTypedHooks.useStoreState;
+=======
+const playListHooks = createTypedHooks<HomeModel>();
+export const useHomeActions = playListHooks.useStoreActions;
+export const useHomeDispatch = playListHooks.useStoreDispatch;
+export const useHomeState = playListHooks.useStoreState;
+
+interface useAppProps {
+  setAppMode: ActionCreator<SSAppMode>;
+  appMode: SSAppMode;
+}
+export function useApp(): useAppProps {
+  const setAppMode = useHomeActions((actions) => actions.setAppMode);
+  const appModeState = useHomeState((state) => state.appMode);
+  const [appMode, setAppModeLocal] = useState(appModeState);
+  useEffect(() => {
+    console.log(appModeState);
+    setAppModeLocal(appModeState);
+  }, [appModeState]);
+  return {
+    setAppMode,
+    appMode,
+  };
+}
+//USE PLAYLIST
+>>>>>>> noclasses
 
 interface UsePlaylistProps {
   currentTrack: Track;
@@ -27,6 +65,12 @@ interface UsePlaylistProps {
   currentAudioRef: React.MutableRefObject<HTMLAudioElement>;
   currentAudio: HTMLAudioElement;
   currentDuration: number;
+<<<<<<< HEAD
+=======
+  trackCategory: TrackCategory;
+  isRecital: boolean;
+  startingTrack: Track;
+>>>>>>> noclasses
 }
 
 export function usePlaylist(): UsePlaylistProps {
@@ -37,6 +81,7 @@ export function usePlaylist(): UsePlaylistProps {
   const isPlayingState = useHomeState((state) => state.isPlaying);
   const currentAudioRef = useRef<HTMLAudioElement>(null);
 
+<<<<<<< HEAD
   // const getCurrentAudio = () =>{
 
   // }
@@ -44,6 +89,8 @@ export function usePlaylist(): UsePlaylistProps {
   // const playNextTrack = () =>{
   //   const nextInd = tracks.findIndex(track)
   // }
+=======
+>>>>>>> noclasses
   const handleEnd = (e: Event) => {
     console.log(e.target);
     const targ = e.target as HTMLAudioElement;
@@ -52,6 +99,7 @@ export function usePlaylist(): UsePlaylistProps {
       tracks.filter((t) => t.title === title)[0]
     );
     playTrack(tracks[endedIndex + 1]);
+<<<<<<< HEAD
     console.log(endedIndex);
     console.log(title);
     // const title = e.target.
@@ -59,12 +107,20 @@ export function usePlaylist(): UsePlaylistProps {
 
   useEffect(() => {
     //TODO: ADD RECITAL TRACKS
+=======
+  };
+
+  useEffect(() => {
+>>>>>>> noclasses
     const elems = tracks
       .map((t) => "audio_" + t.title)
       .map((id) => document.getElementById(id) as HTMLAudioElement)
       .filter((e) => e !== null);
 
+<<<<<<< HEAD
     console.log(elems);
+=======
+>>>>>>> noclasses
     allAudioElems.current = elems;
     allAudioElems.current.forEach((audio) => {
       audio.addEventListener("ended", handleEnd);
@@ -104,9 +160,22 @@ export function usePlaylist(): UsePlaylistProps {
   };
 
   const [currentTrack, setCurrentTrackLocal] = useState(currentTrackState);
+<<<<<<< HEAD
   const [currentAudio, setCurrentAudio] = useState(
     getTrackAudio(currentTrackState)
   );
+=======
+  const [trackCategory, setTrackCategory] = useState(
+    currentTrackState.category
+  );
+  const [isRecital, setIsRecital] = useState(
+    currentTrackState.category === "recital"
+  );
+  const [currentAudio, setCurrentAudio] = useState(
+    getTrackAudio(currentTrackState)
+  );
+  // const currentTrackCategory = currentTrackState.category;
+>>>>>>> noclasses
   const [currentDuration, setCurrentDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -122,6 +191,11 @@ export function usePlaylist(): UsePlaylistProps {
   useEffect(() => {
     // console.log(currentTrackState);
     setCurrentTrackLocal(currentTrackState);
+<<<<<<< HEAD
+=======
+    setTrackCategory(currentTrackState.category);
+    setIsRecital(currentTrack.category === "recital");
+>>>>>>> noclasses
     // setCurrentAudio(getTrackAudio(currentTrackState));
     setCurrentAudio(getTrackAudio(currentTrack));
     // setCurrentDuration(currentAudio.duration);
@@ -136,6 +210,10 @@ export function usePlaylist(): UsePlaylistProps {
     setIsPlaying(isPlayingState);
   }, [isPlayingState]);
 
+<<<<<<< HEAD
+=======
+  const startingTrack = tracks[0];
+>>>>>>> noclasses
   return {
     currentTrack,
     setCurrentTrack,
@@ -145,6 +223,12 @@ export function usePlaylist(): UsePlaylistProps {
     currentAudioRef,
     currentAudio,
     currentDuration,
+<<<<<<< HEAD
+=======
+    trackCategory,
+    isRecital,
+    startingTrack,
+>>>>>>> noclasses
   };
 }
 
@@ -180,8 +264,13 @@ export { useArray };
 const test = "test";
 
 import { RefObject, useEffect } from "react";
+<<<<<<< HEAD
 import { HomeModel } from "model/homeModel";
 import { Track } from "@interfaces/Track";
+=======
+import { HomeModel, SSAppMode } from "model/homeModel";
+import { Track, TrackCategory } from "@interfaces/Track";
+>>>>>>> noclasses
 import tracks from "@static/tracks";
 
 type AnyEvent = MouseEvent | TouchEvent;
@@ -237,3 +326,202 @@ function handlePlay(e: HTMLMediaElement) {
 }
 
 // export function useAppMode()
+
+type TStatus = "IDLE" | "PROCESSING" | "ERROR" | "SUCCESS";
+
+export function useAsyncTask<T extends any[], R = any>(
+  task: (...args: T) => Promise<R>
+) {
+  const [status, setStatus] = useState<TStatus>("IDLE");
+  const [message, setMessage] = useState("");
+
+  const run = useCallback(async (...arg: T) => {
+    setStatus("PROCESSING");
+    try {
+      const resp: R = await task(...arg);
+      setStatus("SUCCESS");
+      return resp;
+    } catch (error) {
+      let message = error?.response?.data?.error?.message || error.message;
+      setMessage(message);
+      setStatus("ERROR");
+      throw error;
+    }
+  }, []);
+
+  const reset = useCallback(() => {
+    setMessage("");
+    setStatus("IDLE");
+  }, []);
+
+  return {
+    run,
+    status,
+    message,
+    reset,
+  };
+}
+
+// import { useEffect, useReducer, useRef } from "react";
+
+interface State<T> {
+  data?: T;
+  error?: Error;
+}
+
+type Cache<T> = { [url: string]: T };
+
+// discriminated union type
+type Action<T> =
+  | { type: "loading" }
+  | { type: "fetched"; payload: T }
+  | { type: "error"; payload: Error };
+
+export function useFetch<T = unknown>(
+  url?: string,
+  options?: RequestInit
+): State<T> {
+  const cache = useRef<Cache<T>>({});
+
+  // Used to prevent state update if the component is unmounted
+  const cancelRequest = useRef<boolean>(false);
+
+  const initialState: State<T> = {
+    error: undefined,
+    data: undefined,
+  };
+
+  // Keep state logic separated
+  const fetchReducer = (state: State<T>, action: Action<T>): State<T> => {
+    switch (action.type) {
+      case "loading":
+        return { ...initialState };
+      case "fetched":
+        return { ...initialState, data: action.payload };
+      case "error":
+        return { ...initialState, error: action.payload };
+      default:
+        return state;
+    }
+  };
+
+  const [state, dispatch] = useReducer(fetchReducer, initialState);
+
+  useEffect(() => {
+    // Do nothing if the url is not given
+    if (!url) return;
+
+    const fetchData = async () => {
+      dispatch({ type: "loading" });
+
+      // If a cache exists for this url, return it
+      if (cache.current[url]) {
+        dispatch({ type: "fetched", payload: cache.current[url] });
+        return;
+      }
+
+      try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+
+        const data = (await response.json()) as T;
+        cache.current[url] = data;
+        if (cancelRequest.current) return;
+
+        dispatch({ type: "fetched", payload: data });
+      } catch (error) {
+        if (cancelRequest.current) return;
+
+        dispatch({ type: "error", payload: error as Error });
+      }
+    };
+
+    void fetchData();
+
+    // Use the cleanup function for avoiding a possibly...
+    // ...state update after the component was unmounted
+    return () => {
+      cancelRequest.current = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [url]);
+
+  return state;
+}
+
+export default useFetch;
+
+/**
+ * Hook to get the width of a container
+ */
+export function useSize() {
+  const [rect, setRect] = useState(null);
+  const resizer = new ResizeObserver((entries) => {
+    entries && setRect(entries[0].contentRect);
+  });
+  const ref = useCallback((node) => {
+    if (node !== null) {
+      resizer.observe(node);
+      setRect(node.getBoundingClientRect());
+    }
+  }, []);
+  return [rect, ref];
+}
+
+function useEffectOnce(effect: EffectCallback) {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(effect, []);
+}
+
+export function useHover<T extends HTMLElement = HTMLElement>(
+  elementRef: RefObject<T>
+): boolean {
+  const [value, setValue] = useState<boolean>(false);
+
+  const handleMouseEnter = () => setValue(true);
+  const handleMouseLeave = () => setValue(false);
+
+  useEventListener("mouseenter", handleMouseEnter, elementRef);
+  useEventListener("mouseleave", handleMouseLeave, elementRef);
+
+  return value;
+}
+
+function useEventListener<T extends HTMLElement = HTMLDivElement>(
+  eventName: keyof WindowEventMap | string, // string to allow custom event
+  handler: (event: Event) => void,
+  element?: RefObject<T>
+) {
+  // Create a ref that stores handler
+  const savedHandler = useRef<(event: Event) => void>();
+
+  useEffect(() => {
+    // Define the listening target
+    const targetElement: T | Window = element?.current || window;
+    if (!(targetElement && targetElement.addEventListener)) {
+      return;
+    }
+
+    // Update saved handler if necessary
+    if (savedHandler.current !== handler) {
+      savedHandler.current = handler;
+    }
+
+    // Create event listener that calls handler function stored in ref
+    const eventListener = (event: Event) => {
+      // eslint-disable-next-line no-extra-boolean-cast
+      if (!!savedHandler?.current) {
+        savedHandler.current(event);
+      }
+    };
+
+    targetElement.addEventListener(eventName, eventListener);
+
+    // Remove event listener on cleanup
+    return () => {
+      targetElement.removeEventListener(eventName, eventListener);
+    };
+  }, [eventName, element, handler]);
+}

@@ -2,6 +2,9 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "paths": {
+      "@pages": ["./pages/*"],
+      "@store/*": ["./stores/*"],
+      "@model/*": ["./model/*"],
       "@hooks": ["./hooks.tsx"],
       "@enums": ["./enums.ts"],
       "@classes/*": ["./classes/*"],

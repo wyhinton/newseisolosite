@@ -9,6 +9,7 @@ import BigText from "./BigText";
 import TrackItem from "./TrackItem";
 
 const RemixesWidget = (): JSX.Element => {
+<<<<<<< HEAD
   // const parts = Array.from(Array(3).keys());
   // const { currentTrack, currentAudioElement } = useHomeState((state) => state);
   // const { setCurrentTrack } = useHomeActions((actions) => actions);
@@ -18,6 +19,9 @@ const RemixesWidget = (): JSX.Element => {
   // // }, []);
   const remixParts = tracks.filter((track) => track.category === "remix");
   // const colors = ["#363537", "#ef2d56", "#ed7d3a", "#8cd867", "#2fbf71"];
+=======
+  const remixParts = tracks.filter((track) => track.category === "remix");
+>>>>>>> noclasses
 
   return (
     <div
@@ -29,16 +33,23 @@ const RemixesWidget = (): JSX.Element => {
         display: "flex",
       }}
     >
+<<<<<<< HEAD
       {/* <BigText>3 Remixes</BigText> */}
       <FlexRow>
         {remixParts.map((track, i) => {
           return <TrackItem key={i} track={track} />;
         })}
       </FlexRow>
+=======
+      {remixParts.map((track, i) => {
+        return <TrackItem key={i} track={track} />;
+      })}
+>>>>>>> noclasses
     </div>
   );
 };
 
+<<<<<<< HEAD
 {
   /* <svg
           id="Layer_1"
@@ -444,3 +455,6 @@ export default RemixesWidget;
 // // };
 
 // // export default Player;
+=======
+export default RemixesWidget;
+>>>>>>> noclasses

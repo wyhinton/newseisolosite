@@ -97,6 +97,7 @@ const AudioForm = ({ track }: { track: Track }) => {
 
   const [audioPoints, setAudioPoints] = useState<Vector2[]>([]);
 
+<<<<<<< HEAD
   useEffect(() => {
     // console.log(data);
     const pm = data.demo.map((p: [number, number], i) => {
@@ -109,6 +110,20 @@ const AudioForm = ({ track }: { track: Track }) => {
     setAudioPoints(pm);
     // console.log(pm);
   }, [data]);
+=======
+  // useEffect(() => {
+  //   // console.log(data);
+  //   const pm = data.demo.map((p: [number, number], i) => {
+  //     // const y = mapRange(p[0], 0, 2.5, 0, 3000);
+  //     const y = i * 10;
+  //     const x = mapRange(p[1], -6000, 12638, 50, 100);
+  //     return new Vector2(x, y);
+  //   });
+  //   // console.log(pm);
+  //   setAudioPoints(pm);
+  //   // console.log(pm);
+  // }, [data]);
+>>>>>>> noclasses
 
   //   const scene = useAsset(
   //     () =>
@@ -119,7 +134,11 @@ const AudioForm = ({ track }: { track: Track }) => {
   //     [params.id],
   //   )
 
+<<<<<<< HEAD
   const latheGeo = new LatheGeometry(audioPoints, 10);
+=======
+  const latheGeo = new LatheGeometry(points, 10);
+>>>>>>> noclasses
   // console.log(latheGeo);
   // https://codesandbox.io/s/cc-1-iso-simple-custom-shader-kksbs?file=/src/IsoScene.tsx
   // https://codesandbox.io/s/iridescent-shader-material-l1vdv?file=/src/App.js:433-438
@@ -127,6 +146,7 @@ const AudioForm = ({ track }: { track: Track }) => {
   // https://codesandbox.io/s/github/onion2k/r3f-by-example/tree/develop/examples/materials/glowing-torus
   // https://codesandbox.io/s/earth-day-night-i79md?file=/src/models/Halo.jsx
   // https://codesandbox.io/s/custom-material-shader-with-r3f-w170k?file=/src/ShaderObject.tsx
+<<<<<<< HEAD
   const opts = useControls({
     red: {
       min: -1,
@@ -150,6 +170,31 @@ const AudioForm = ({ track }: { track: Track }) => {
     },
     animate: true,
   });
+=======
+  // const opts = useControls({
+  //   red: {
+  //     min: -1,
+  //     max: 1,
+  //     value: 0.3,
+  //   },
+  //   green: {
+  //     min: -1,
+  //     max: 1,
+  //     value: 0.2,
+  //   },
+  //   blue: {
+  //     min: -1,
+  //     max: 1,
+  //     value: -0.2,
+  //   },
+  //   shade: {
+  //     min: 3,
+  //     max: 30,
+  //     value: 20,
+  //   },
+  //   animate: true,
+  // });
+>>>>>>> noclasses
 
   //   useFrame(() => {
   //     if (opts.animate) {

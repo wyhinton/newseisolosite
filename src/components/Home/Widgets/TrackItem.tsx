@@ -9,7 +9,11 @@ const TrackItem = ({ track }: { track: Track }): JSX.Element => {
   // const { setCurrentTrack } = useHomeActions((actions) => actions);
 
   const isPlaying = useIsPlaying(track);
+<<<<<<< HEAD
 
+=======
+  // const {trackCategory} = usePl
+>>>>>>> noclasses
   const variants: Variants = {
     paused: { opacity: 1, x: 0 },
     active: {
@@ -33,17 +37,30 @@ const TrackItem = ({ track }: { track: Track }): JSX.Element => {
         fontFamily: theme.primaryFont,
         fontSize: "2rem",
         position: "relative",
+<<<<<<< HEAD
+=======
+        marginRight: "2rem",
+>>>>>>> noclasses
         // backgroundColor: "",
         // backgroundColor: "rgba(0,0,0,0)",
         // backgroundColor: colors[i],
         // backgroundColor: theme.primaryMedium,
         // backgroundColor: "grey",
         justifyContent: "center",
+<<<<<<< HEAD
         margin: "auto",
         display: "flex",
         flexDirection: "column",
         border: "2px solid",
         borderColor: theme.secondary,
+=======
+        // margin: "auto",
+        display: "flex",
+        flexDirection: "column",
+        // border: "2px solid",
+        // borderColor: theme.secondary,
+        // borderColor: "black",
+>>>>>>> noclasses
       }}
       animate={isPlaying ? "active" : "paused"}
       variants={variants}

@@ -5,31 +5,15 @@ import React, {
   createContext,
   useRef,
 } from "react";
-import { Route, BrowserRouter as Router, Switch, Link } from "react-router-dom";
-import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import Stats from "three/examples/jsm/libs/stats.module";
-import { GUI } from "three/examples/jsm/libs/dat.gui.module";
-import Video from "../components/Home/Graphics/Video";
-import FlexRow from "@components/FlexRow";
-import FlexColumn from "@components/FlexColumn";
-import theme from "@static/theme";
-import AudioDataContainer from "@components/Home/Player/EQ/AudioDataContainer";
-import { TrackSelection } from "@interfaces/TrackSelection";
-import Viewer from "@components/Home/Player/Viewer";
+
 import tracks from "@static/tracks";
 import { Track } from "@interfaces/Track";
-import { usePlaylist, useToggle } from "@hooks";
-import { useKeyboardShortcut } from "crooks";
-import { motion } from "framer-motion";
+import { useApp, usePlaylist, useToggle } from "@hooks";
 import "@css/blockquote.scss";
-import Model from "@components/Home/Model";
-import Waveform3d from "@components/Home/Waveform3d";
 import Time from "@components/Home/Player/Time";
 import { Layout, Responsive, WidthProvider } from "react-grid-layout";
 import "@css/Layout.scss";
 import ViewCard from "@components/Home/ViewCard";
-export type HomeMode = "player" | "notes" | "about";
 import "@css/react-grid-layout.scss";
 import "@css/react-resizable.css";
 import GridLayout from "@components/Home/GridLayout";
@@ -47,8 +31,13 @@ import OneRecitalTextWidget from "@components/Home/Widgets/OneRecitalTextWidget"
 import RemixesWidget from "@components/Home/Widgets/RemixesWidget";
 import "@css/Body.scss";
 import ProjectInfo from "@components/Home/Widgets/ProjectInfo";
-import { defaultLayout, recitalLayout } from "@static/gridLayouts";
-import Intro from "@components/Intro";
+import { aboutLayout, defaultLayout, recitalLayout } from "@static/gridLayouts";
+import Intro from "@components/IntroModal";
+import { WidgetGrid } from "@components/Editor/WidgetGrid";
+import HomeWidgetGrid from "@components/Home/HomeWidgetGrid";
+import AboutModal from "@components/AboutModal";
+import ReturnButton from "@components/ReturnButton";
+export type HomeMode = "player" | "notes" | "about";
 const Home = (): JSX.Element => {
   const audio = useRef(null);
 
@@ -58,14 +47,14 @@ const Home = (): JSX.Element => {
 
   const [activeTrack, setTrack] = useState<undefined | Track>(tracks[0]);
   const [progress, setProgress] = useState(0);
-
+  const { appMode } = useApp();
   const [curLayout, setCurLayout] = useState<Layout[]>(defaultLayout);
   useEffect(() => {
     setCurLayout(defaultLayout);
   }, []);
   const { trackCategory } = usePlaylist();
   useEffect(() => {
-    let newLayout: Layout[] = [...curLayout];
+    const newLayout: Layout[] = [...curLayout];
     // defaultLayout[0].w =
     if (trackCategory === "remix") {
       setCurLayout(defaultLayout);
@@ -74,71 +63,24 @@ const Home = (): JSX.Element => {
     if (trackCategory === "recital") {
       setCurLayout(recitalLayout);
     }
-  }, [trackCategory]);
+    // if (appMode === "projectInfo"){
+    //   setCurLayout(aboutLayout)
+    // }
+  }, [trackCategory, appMode]);
 
   // export default React.memo(CardGrid);
   console.log(curLayout);
   const TrackContext = createContext(null);
   return (
+    <StoreProvider store = {homeStore}>
     <section style={{ width: "100vw" }} className="dot-fill">
       <Intro />
-      <section id="home-body" style={{ width: "100vw" }}>
-        {/* <StoreProvider store={homeStore}> */}
-        <GridLayout className={"layout"} layout={[...curLayout]}>
-          {/* <GridLayout className={"layout"} layout={defaultLayout}> */}
-          {/* <About key="about" track={activeTrack} /> */}
-          <ProjectInfo key="projectInfo" />
-          <OneRecitalTextWidget key="oneRecitalText" />
-          <RecitalWidgets key="recitalTracks" />
+       <ReturnButton/>
+       <AboutModal/>
+      <HomeWidgetGrid/>
 
-          <ArrowWidget key="arrow" />
-          <ThreeRemixes key="threeRemixes" />
-          <RemixesWidget
-            key="remixes"
-            // appMode={appMode}
-          />
-          <TitleWidget key="title" />
-          {/* <AboutWidget key="about" track={activeTrack} /> */}
-          <TrackInfoWidget key="trackInfo" track={activeTrack} />
-          {/* <Time key="time" progress={progress} track={activeTrack} /> */}
-          <WaveformWidget
-            key="waveform"
-            progress={progress}
-            track={activeTrack}
-          />
-          <ViolinWidget key="violin" />
-          {/* <Bar audioElem={audioElem} /> */}
-
-          {/* <FlexColumn style={innerGroupStyle}>
-          <div>Seisolo.io</div>
-          {activeTrack && (
-          <h1 style={{ fontSize: "3vh" }}>{activeTrack.about}</h1>
-        )}
-
-          <InfoContainer
-            setHomeMode={setHomeMode}
-            track={activeTrack}
-            visible={true}
-            toggle={() => {
-              console.log("hello");
-            }}
-          />
-        </FlexColumn> */}
-          {/* </TrackContext.Provider> */}
-
-          {/* <Video /> */}
-          {/* <Link to="/app">
-          <img
-            style={imageStyle}
-            src={`${process.env.PUBLIC_URL}/MVNT Logo 1.svg`}
-          ></img>
-        </Link> */}
-          {/* </div> */}
-          {/* </FlexRow> */}
-        </GridLayout>
-        {/* </StoreProvider> */}
-      </section>
     </section>
+    </StoreProvider>
   );
 };
 
@@ -146,29 +88,11 @@ export default Home;
 
 type LayoutPos = Pick<Layout, "x" | "y" | "w" | "h">;
 
-const DoGrid = ({ layout, activeTrack, progress }): JSX.Element => {
-  return (
-    <GridLayout className={"layout"} layout={layout}>
-      {/* <About key="about" track={activeTrack} /> */}
-      <RecitalWidgets key="recitalTracks" />
-      <OneRecitalTextWidget key="oneRecitalText" />
-      <ArrowWidget key="arrow" />
-      <ThreeRemixes key="threeRemixes" />
-      <TitleWidget key="title" />
-      {/* <AboutWidget key="about" track={activeTrack} /> */}
-      <TrackInfoWidget key="trackInfo" track={activeTrack} />
-      {/* <Time key="time" progress={progress} track={activeTrack} /> */}
-      <WaveformWidget key="waveform" progress={progress} track={activeTrack} />
-      <ViolinWidget key="violin" />
-      {/* <Bar audioElem={audioElem} /> */}
-      <RemixesWidget key="remixes" />
-    </GridLayout>
-  );
-};
+
 
 function alterLayout(id: string, layout: Layout[], newLayout: LayoutPos) {
   console.log(layout);
-  const toGet = layout.filter((l) => l.i === id)[0];
+  const toGet = layout.find((l) => l.i === id);
   const ind = layout.indexOf(toGet);
   // layout[ind] = { i: id, ...newLayout };
 }

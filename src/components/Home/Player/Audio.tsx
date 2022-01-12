@@ -8,7 +8,7 @@ import "@css/Player/PlayBody.scss";
 import { Track } from "@interfaces/Track";
 import classNames from "classnames";
 import "@css/PlayButton.scss";
-import PlayPauseControls from "../PlayPauseControls";
+import PlayPauseControls from "../Widgets/TrackItem/PlayPauseControls";
 
 const Audio = ({ track }: { track: Track }): JSX.Element => {
   const songContainerClass = classNames("play-body", {

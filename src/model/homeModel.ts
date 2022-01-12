@@ -14,8 +14,8 @@ import tracks from "@static/tracks";
 import { Track } from "@interfaces/Track";
 import { aboutLayout, recitalLayout, remixLayout } from "@static/gridLayouts";
 
-export type HomeLayout = "about" | "remix" | "recital";
-export type SSAppMode = "intro" | "view" | "create";
+export type HomeLayout = "about" | "remix" | "recital" | "projectInfo";
+export type SSAppMode = "intro" | "view" | "create" | "projectInfo";
 
 export interface HomeModel {
   appMode: SSAppMode;

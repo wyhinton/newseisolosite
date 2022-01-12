@@ -23,7 +23,7 @@ const theme = {
   secondaryHover: "#b38900",
   primaryInactive: "#4c4c4c",
   transparent: "#0000",
-  stroke: "black",
+  stroke: "rgba(0,0,0,0)",
   border: "2px solid black",
   borderRadius: 10,
   textDark: "black",

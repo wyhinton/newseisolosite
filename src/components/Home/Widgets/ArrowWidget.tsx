@@ -133,30 +133,3 @@ const ArrowWidget = (): JSX.Element => {
 
 export default React.memo(ArrowWidget);
 
-// const ArrowWidget = (): JSX.Element => {
-//   return (
-//     <div
-//       style={{
-//         height: "100%",
-//         width: "100%",
-//         display: "flex",
-//       }}
-//     >
-//       <svg
-//         id="Layer_1"
-//         data-name="Layer 1"
-//         xmlns="http://www.w3.org/2000/svg"
-//         viewBox="0 0 72.9 83"
-//         style={{ margin: "auto", height: "100%" }}
-//       >
-//         <path
-//           fill="yellow"
-//           d="M70.8,38.8L5.2,0.9C3.1-0.3,0.5,1.2,0.5,3.6v75.8c0,2.4,2.6,3.9,4.7,2.7l65.6-37.9C72.9,43,72.9,40,70.8,38.8z"
-//           // transform="translate(-106.09 -141)"
-//         />
-//       </svg>{" "}
-//     </div>
-//   );
-// };
-
-// export default ArrowWidget;

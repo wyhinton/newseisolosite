@@ -17,20 +17,11 @@ interface MyData {
   [key: string]: TrackData;
 }
 
-const BasidAudioSetup = (): JSX.Element => {
+const BasicAudioSetup = (): JSX.Element => {
   // "use strict";
   const sampleCount = 1024 * 2;
   const canvasRef = useRef<HTMLCanvasElement>();
   const buttonRef = useRef<HTMLButtonElement>();
-  console.log(data);
-  const tdata = data as unknown as MyData;
-  const kontourData = tdata.Kontour_Remix_16.data;
-  const slice = tdata.Kontour_Remix_16.data.slice(0, sampleCount);
-  console.log(slice);
-  console.log(slice.length);
-  const width = window.innerWidth;
-  const height = window.innerHeight;
-  const [imagesLoaded, setImagesLoaded] = useState(false);
   const [images, setImages] = useState<HTMLImageElement[]>();
 
   useEffect(() => {
@@ -67,7 +58,6 @@ const BasidAudioSetup = (): JSX.Element => {
         for (var ii = 0; ii < 2; ++ii) {
           var texture = gl.createTexture();
           gl.bindTexture(gl.TEXTURE_2D, texture);
-
           // Set the parameters so we can render any size image.
           gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
           gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
@@ -91,24 +81,7 @@ const BasidAudioSetup = (): JSX.Element => {
         // compiles shaders, link program, look up locations
         const programInfo = twgl.createProgramInfo(gl, [vs, fs]);
 
-        const tex = gl.createTexture();
-        gl.bindTexture(gl.TEXTURE_2D, tex);
-        gl.texImage2D(
-          gl.TEXTURE_2D,
-          0, // level
-          gl.LUMINANCE, // internal format
-          numPoints, // width
-          1, // height
-          0, // border
-          gl.LUMINANCE, // format
-          gl.UNSIGNED_BYTE, // type
-          null
-        );
-
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-
+        const tex = createLuminanceTexture(gl, numPoints);
         const arrays = {
           position: {
             numComponents: 2,
@@ -170,7 +143,7 @@ const BasidAudioSetup = (): JSX.Element => {
 
         // call `handleCanplay` when it music can be played
         audio.addEventListener("canplay", handleCanplay);
-        audio.src = `${process.env.PUBLIC_URL}/Tracks/Kontour_Remix.wav`;
+        audio.src = `${process.env.PUBLIC_URL}/Tracks/1.wav`;
         //   "https://twgljs.org/examples/sounds/DOCTOR%20VOX%20-%20Level%20Up.mp3";
         audio.load();
 
@@ -201,14 +174,14 @@ const BasidAudioSetup = (): JSX.Element => {
       >
         Press To Start
       </button>
-      <BasicSdf />
+      {/* <BasicSdf /> */}
     </section>
     // </Suspense>
     // </ErrorBoundary>
   );
 };
 
-export default BasidAudioSetup;
+export default BasicAudioSetup;
 
 const vs = /*glsl*/ `
 attribute vec4 position;
@@ -309,4 +282,28 @@ function loadImage2(url, callback) {
   image.src = url;
   image.onload = callback;
   return image;
+}
+
+function createLuminanceTexture(
+  gl: WebGL2RenderingContext,
+  width: number
+): WebGLTexture {
+  const tex = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, tex);
+  gl.texImage2D(
+    gl.TEXTURE_2D,
+    0, // level
+    gl.LUMINANCE, // internal format
+    width, // width
+    1, // height
+    0, // border
+    gl.LUMINANCE, // format
+    gl.UNSIGNED_BYTE, // type
+    null
+  );
+
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  return tex;
 }

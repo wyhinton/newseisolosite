@@ -1,5 +1,5 @@
-const audioFragShader = /*glsl*/ `
-// #version 300 es
+const audioFragShaderV2 = /*glsl*/ `
+#version 300 es
 precision highp float;
 uniform vec2 u_resolution;
 uniform sampler2D audioData;
@@ -134,7 +134,7 @@ void main(){
 
 `;
 
-export default audioFragShader;
+export default audioFragShaderV2;
 
 // const audioFragShader = /*glsl*/ `
 // precision mediump float;

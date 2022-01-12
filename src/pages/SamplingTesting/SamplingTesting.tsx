@@ -8,6 +8,7 @@ import audioFragShader from "@components/Testing/audioFragShader";
 import { GLSL } from "gl-react";
 import RenderLoop from "./RenderLoop";
 import { vs, fs } from "./shaders";
+// import audioFragShader from "@components/Testing/audioFragShader";
 
 interface TrackData {
   duration: number;
@@ -48,7 +49,18 @@ const SamplingTesting = (): JSX.Element => {
   }, []);
 
   useEffect(() => {
+    console.log("DOING THIS USE EFFECT");
     if (canvasRef.current && buttonRef.current && wrapperRef.current) {
+      const textureCanvas = document.getElementsByClassName(
+        "gradient-canvas"
+      )[0].firstChild.firstChild as HTMLCanvasElement;
+      var textureContext = textureCanvas.getContext("2d");
+
+      const textureWidth = textureCanvas.height;
+      const textureHeight = textureCanvas.width;
+
+      console.log(textureCanvas);
+
       const wrapper = wrapperRef.current;
       const { width: w, height: h } = wrapper.getBoundingClientRect();
       const cvs = canvasRef.current;
@@ -60,7 +72,9 @@ const SamplingTesting = (): JSX.Element => {
       const programInfo = twgl.createProgramInfo(gl, [vs, fs]);
       const bufferInfo = initVBO(gl);
 
-      console.log(htmlImages);
+      const textCanv = createCanvasTexture(gl, textureContext);
+
+      // console.log(htmlImages);
       const t = [
         `${process.env.PUBLIC_URL}/Textures/pinkMatcap.png`,
         `${process.env.PUBLIC_URL}/Textures/cloudNoise.png`,
@@ -73,22 +87,34 @@ const SamplingTesting = (): JSX.Element => {
         })
       );
 
-      const { iResolution, iTime, matCap, cloudNoise, dataBig } = getUniforms(
+      // var textureCanvas = document.getElementById("texture");
+
+      const { iResolution, iTime, matCap, cloudNoise, canvas } = getUniforms(
         gl,
         program,
-        ["iResolution", "iTime", "matCap", "cloudNoise", "dataBig"]
+        ["iResolution", "iTime", "matCap", "cloudNoise", "canvas"]
       );
 
       const { width, height } = cvs.getBoundingClientRect();
       gl.uniform2f(iResolution, width, height);
       gl.uniform1i(matCap, 0);
-      gl.uniform1i(cloudNoise, 0);
+      gl.uniform1i(cloudNoise, 1);
+      gl.uniform1i(canvas, 2);
+
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, textures[0]);
+      gl.activeTexture(gl.TEXTURE1);
+      gl.bindTexture(gl.TEXTURE_2D, textures[1]);
+      gl.activeTexture(gl.TEXTURE2);
+      gl.bindTexture(gl.TEXTURE_2D, textCanv);
       // const uTimeIndex = gl.getUniformLocation(program, "iTime");
 
       const RL = new RenderLoop(function (dt, tInMs) {
         gl.uniform1f(iTime, tInMs / 1000.0);
+        // gl.uni
         twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
         twgl.drawBufferInfo(gl, bufferInfo);
+        updateTexture(gl, textCanv, textureCanvas);
 
         // gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         // gl.drawElements(gl.TRIANGLE_STRIP, 4, gl.UNSIGNED_SHORT, 0);
@@ -118,6 +144,26 @@ const SamplingTesting = (): JSX.Element => {
 };
 
 export default SamplingTesting;
+
+function updateTexture(
+  gl: WebGL2RenderingContext,
+  texture: WebGLTexture,
+  canvas: HTMLCanvasElement
+) {
+  const level = 0;
+  const internalFormat = gl.RGBA;
+  const srcFormat = gl.RGBA;
+  const srcType = gl.UNSIGNED_BYTE;
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+  gl.texImage2D(
+    gl.TEXTURE_2D,
+    level,
+    internalFormat,
+    srcFormat,
+    srcType,
+    canvas
+  );
+}
 
 function loadTexture(gl, url) {
   const texture = gl.createTexture();
@@ -159,28 +205,14 @@ function loadTexture(gl, url) {
       srcType,
       image
     );
-
-    // WebGL1 has different requirements for power of 2 images
-    // vs non power of 2 images so check if the image is a
-    // power of 2 in both dimensions.
-    if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
-      // Yes, it's a power of 2. Generate mips.
-      gl.generateMipmap(gl.TEXTURE_2D);
-    } else {
-      // No, it's not a power of 2. Turn off mips and set
-      // wrapping to clamp to edge
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    }
+    gl.generateMipmap(gl.TEXTURE_2D);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
   };
   image.src = url;
 
   return texture;
-}
-
-function isPowerOf2(value) {
-  return (value & (value - 1)) == 0;
 }
 
 function loadImages(
@@ -274,34 +306,6 @@ const initVBO = (gl: WebGL2RenderingContext): twgl.BufferInfo => {
 
   const bufferInfo = twgl.createBufferInfoFromArrays(gl, arrays);
   return bufferInfo;
-
-  // let vertexBuffer = gl.createBuffer();
-  // let indexBuffer = gl.createBuffer();
-
-  // const arrays = {
-  //   position: {
-  //     numComponents: 2,
-  //     // data: [-1, -1, 1, -1, -1, 1, 1, -1, 1, -1, 1, 1],
-  //     data: [-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1],
-  //   },
-  // };
-  // gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-  // gl.bufferData(
-  //   gl.ARRAY_BUFFER,
-  //   // new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]),
-  //   new Float32Array([-1.0, 1.0, -1.0, -1.0, 1.0, -1.0, 1.0, 1.0]),
-  //   gl.STATIC_DRAW
-  // );
-  // gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
-
-  // gl.enableVertexAttribArray(0);
-
-  // gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-  // gl.bufferData(
-  //   gl.ELEMENT_ARRAY_BUFFER,
-  //   new Uint16Array([1, 0, 2, 3]),
-  //   gl.STATIC_DRAW
-  // );
 };
 
 const getUniforms = (
@@ -338,6 +342,7 @@ const makeTexture = (
   const srcFormat = gl.RGBA;
   const srcType = gl.UNSIGNED_BYTE;
   const pixel = new Uint8Array([0, 0, 255, 255]); // opaque blue
+
   gl.texImage2D(
     gl.TEXTURE_2D,
     level,
@@ -352,10 +357,11 @@ const makeTexture = (
 
   const image = new Image();
   image.onload = function () {
-    console.log("LOADED TEXTURE");
+    console.log("LOADED TEXTURE", image.src);
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.texImage2D(
       gl.TEXTURE_2D,
+      // unit,
       level,
       internalFormat,
       srcFormat,
@@ -363,56 +369,50 @@ const makeTexture = (
       image
     );
     gl.generateMipmap(gl.TEXTURE_2D);
-    // WebGL1 has different requirements for power of 2 images
-    // vs non power of 2 images so check if the image is a
-    // power of 2 in both dimensions.
-    // if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
-    //   // Yes, it's a power of 2. Generate mips.
-    //   gl.generateMipmap(gl.TEXTURE_2D);
-    // } else {
-    //   // No, it's not a power of 2. Turn off mips and set
-    //   // wrapping to clamp to edge
-    //   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    //   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    //   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    // }
   };
   image.src = url;
   console.log(image.src);
-  // console.log(image.ur);
-  // const { width, height, image, unit } = props;
-
-  // const texture = gl.createTexture();
-
-  // const level = 0;
-  // const internalFormat = gl.RGB;
-  // // const internalFormat = gl.RGBA;
-  // const border = 0;
-  // const format = gl.RGBA;
-  // const type = gl.UNSIGNED_BYTE;
-
-  // const pixels = new Uint8Array([0, 0, 255]); // opaque blue
-  // gl.activeTexture(gl.TEXTURE0 + unit);
-  // gl.bindTexture(gl.TEXTURE_2D, texture);
-  // // gl.texImage2D(gl.TEXTURE_2D, level, internalFormat, format, type, pixel);
-
-  // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-  // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-  // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-  // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-  // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-  // //@ts-ignore
-  // gl.texImage2D(
-  //   gl.TEXTURE_2D,
-  //   level,
-  //   internalFormat,
-  //   width,
-  //   height,
-  //   format,
-  //   type,
-  //   pixels
-  // );
-  // gl.bindTexture(gl.TEXTURE_2D, null);
 
   return texture;
 };
+
+function createCanvasTexture(
+  gl: WebGL2RenderingContext,
+  canvContext: CanvasRenderingContext2D
+) {
+  const texture = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, texture);
+
+  // Because video has to be download over the internet
+  // they might take a moment until it's ready so
+  // put a single pixel in the texture so we can
+  // use it immediately.
+  const level = 0;
+  const internalFormat = gl.RGBA;
+  const width = 1;
+  const height = 1;
+  const border = 0;
+  const srcFormat = gl.RGBA;
+  const srcType = gl.UNSIGNED_BYTE;
+  const pixel = new Uint8Array([0, 0, 255, 255]); // opaque blue
+  gl.texImage2D(
+    gl.TEXTURE_2D,
+    level,
+    internalFormat,
+    width,
+    height,
+    border,
+    srcFormat,
+    srcType,
+    pixel
+  );
+
+  // Turn off mips and set  wrapping to clamp to edge so it
+  // will work regardless of the dimensions of the video.
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  // gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+
+  return texture;
+}

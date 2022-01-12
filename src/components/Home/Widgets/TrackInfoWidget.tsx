@@ -126,10 +126,11 @@ const ArtistImage = ({ track }: { track: Track }): JSX.Element => {
       },
     },
   };
-
+  const size = 150; 
+  const border = 10;
   const containerStyle = {
-    width: 200,
-    height: 200,
+    width: size,
+    height: size,
     margin: "auto",
     position: "absolute",
     top: 0,
@@ -142,17 +143,31 @@ const ArtistImage = ({ track }: { track: Track }): JSX.Element => {
   const [image, setImage] = useState(track.visual);
   const [inTransition, setInTransition] = useState(false);
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   // console.log(track);
+  //   setInTransition(true);
+  //   const timer = setTimeout(() => {
+  //     console.log("This will run after 1 second!");
+  //     setImage(track.visual);
+  //     setInTransition(false);
+  //   }, 1000);
+  //   // }, duration * 100);
+  //   return () => clearTimeout(timer);
+  // }, [track.title]);
+
+    useEffect(() => {
     // console.log(track);
-    setInTransition(true);
-    const timer = setTimeout(() => {
-      console.log("This will run after 1 second!");
-      setImage(track.visual);
-      setInTransition(false);
-    }, 1000);
-    // }, duration * 100);
-    return () => clearTimeout(timer);
+    setImage(track.visual);
+    // setInTransition(true);
+    // const timer = setTimeout(() => {
+    //   console.log("This will run after 1 second!");
+
+    //   setInTransition(false);
+    // }, 1000);
+    // // }, duration * 100);
+    // return () => clearTimeout(timer);
   }, [track.title]);
+
 
   // useEffect(() => {
   //   console.log(inTransition);
@@ -183,8 +198,8 @@ const ArtistImage = ({ track }: { track: Track }): JSX.Element => {
           overflow: "hidden",
           // position: "relative",
           // height: "100%",
-          width: "200px",
-          height: "200px",
+          width: size,
+          height: size,
           position: "absolute",
           top: "50%",
           left: "50%",
@@ -197,8 +212,8 @@ const ArtistImage = ({ track }: { track: Track }): JSX.Element => {
           style={{
             // width: "80%",
             // height: "80%",
-            width: "180px",
-            height: "180px",
+            width: size - border,
+            height: size -border, 
             objectFit: "cover",
             objectPosition: "top",
             zIndex: 10,
@@ -224,3 +239,152 @@ const ArtistImage = ({ track }: { track: Track }): JSX.Element => {
     // </div>
   );
 };
+
+
+// const ArrowWidget = (): JSX.Element => {
+//   return (
+//     <div
+//       style={{
+//         height: "100%",
+//         width: "100%",
+//         display: "flex",
+//       }}
+//     >
+//       <svg
+//         id="Layer_1"
+//         data-name="Layer 1"
+//         xmlns="http://www.w3.org/2000/svg"
+//         viewBox="0 0 72.9 83"
+//         style={{ margin: "auto", height: "100%" }}
+//       >
+//         <path
+//           fill="yellow"
+//           d="M70.8,38.8L5.2,0.9C3.1-0.3,0.5,1.2,0.5,3.6v75.8c0,2.4,2.6,3.9,4.7,2.7l65.6-37.9C72.9,43,72.9,40,70.8,38.8z"
+//           // transform="translate(-106.09 -141)"
+//         />
+//       </svg>{" "}
+//     </div>
+//   );
+// };
+
+// export default ArrowWidget;
+
+
+// const ArtistImage = ({ track }: { track: Track }): JSX.Element => {
+//   const duration = 0.5;
+
+//   const variants = {
+//     normal: {
+//       // backgroundColor: theme.primary,
+//       // clipPath: "circle(100px at center)",
+//       height: "200px",
+//       width: "200px",
+//     },
+//     highlight: {
+//       height: "0px",
+//       width: "0px",
+//       // clipPath: " circle(0px at center)",
+//       transition: {
+//         duration: duration,
+//         // delayChildren: 0.5,
+//       },
+//     },
+//   };
+
+//   const containerStyle = {
+//     width: 200,
+//     height: 200,
+//     margin: "auto",
+//     position: "absolute",
+//     top: 0,
+//     left: "50%",
+//     // top: "50%",
+//     transform: "translate(-50%, 10%)",
+//     overflow: "hidden",
+//     // border: "1px solid yellow",
+//   } as React.CSSProperties;
+//   const [image, setImage] = useState(track.visual);
+//   const [inTransition, setInTransition] = useState(false);
+
+//   useEffect(() => {
+//     // console.log(track);
+//     setInTransition(true);
+//     const timer = setTimeout(() => {
+//       console.log("This will run after 1 second!");
+//       setImage(track.visual);
+//       setInTransition(false);
+//     }, 1000);
+//     // }, duration * 100);
+//     return () => clearTimeout(timer);
+//   }, [track.title]);
+
+//   // useEffect(() => {
+//   //   console.log(inTransition);
+//   // }, [inTransition]);
+//   const imageStyle = {
+//     width: "100%",
+//     height: "100%",
+//     position: "absolute",
+//     left: "50%",
+//     top: "50%",
+//     transform: "translate(-50%,-50%)",
+//   } as React.CSSProperties;
+
+//   return (
+//     // <div style={containerStyle}>
+//     <motion.div
+//       // variants={variants}
+//       className={"artist-image"}
+//       style={containerStyle}
+//       // animate={inTransition ? "highlight" : "normal"}
+//     >
+//       <motion.div
+//         variants={variants}
+//         // height={200}
+//         animate={inTransition ? "highlight" : "normal"}
+//         style={{
+//           border: "1px solid red",
+//           overflow: "hidden",
+//           // position: "relative",
+//           // height: "100%",
+//           width: "200px",
+//           height: "200px",
+//           position: "absolute",
+//           top: "50%",
+//           left: "50%",
+//           zIndex: 10,
+
+//           transform: "translate(-50%,-50%)",
+//         }}
+//       >
+//         <motion.img
+//           style={{
+//             // width: "80%",
+//             // height: "80%",
+//             width: "180px",
+//             height: "180px",
+//             objectFit: "cover",
+//             objectPosition: "top",
+//             zIndex: 10,
+//             position: "absolute",
+//             borderRadius: "50%",
+//             // overflow: "hidden",
+//             left: "50%",
+//             top: "50%",
+//             transform: "translate(-50%,-50%)",
+//           }}
+//           // animate={inTransition ? "highlight" : "normal"}
+//           // variants={variants}
+//           src={image}
+//         ></motion.img>
+//       </motion.div>
+//       <img
+//         src={`${process.env.PUBLIC_URL}/SVG/FrameTest.svg`}
+//         style={imageStyle}
+//       ></img>
+
+//       {/* {innerContent()} */}
+//     </motion.div>
+//     // </div>
+//   );
+// };

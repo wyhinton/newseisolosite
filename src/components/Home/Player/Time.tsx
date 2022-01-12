@@ -4,7 +4,6 @@ import theme from "@static/theme";
 import tracks from "@static/tracks";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useHomeActions, useHomeState, usePlaylist } from "@hooks";
-import useAudioPlayer from "../useAudioPlayer";
 
 const Time = ({
   track,

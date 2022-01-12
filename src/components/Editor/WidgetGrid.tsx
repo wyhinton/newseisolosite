@@ -13,17 +13,8 @@ import { useStoreActions, useStoreState } from "@hooks";
 
 import CardData from "@classes/CardData";
 import type { GridPosition } from "@interfaces/GridPosition";
-// import IXDrop from "@components/IXDrop";
 import ViewCard from "./ViewCard/ViewCard";
 import defaultLayouts from "@static/defaultLayouts";
-
-// import "../css/cardLayout.css";
-
-/**
- * Responsible for managing the layout of card components. Accesses a list of available card data from the store, then maps them into Card Components
- * @component
- *
- */
 
 interface WidgetGridProperties {
   width?: number;
@@ -36,7 +27,8 @@ export const WidgetGrid = ({
 }: WidgetGridProperties): JSX.Element => {
   const rows = 1;
   const cols = 4;
-  const viewModeState = useStoreState((state) => state.appModel.appMode);
+  // const viewModeState = useStoreState((state) => state.appModel.appMode);
+  const viewModeState = AppMode.EDIT
   const setBufferLayoutAction = useStoreActions(
     (actions) => actions.layoutsModel.setBufferLayout
   );

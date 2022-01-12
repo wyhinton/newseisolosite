@@ -44,8 +44,8 @@ import AudioForm from "./Widgets/WaveformWidget/AudioForm";
 // import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 // import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 // import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
-import { OrbitControls as CustomControls } from "./CustomControls";
-import { NewControls } from "./NewControls";
+import { OrbitControls as CustomControls } from "./Graphics/CameraControls/CustomControls";
+import { NewControls } from "./Graphics/CameraControls/NewControls";
 import { useRenderRoot } from "leva/dist/declarations/src/components/Leva";
 
 declare module "three-stdlib" {

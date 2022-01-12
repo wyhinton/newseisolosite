@@ -28,7 +28,7 @@ const Intro = (): JSX.Element => {
   const containerStyle = {
     width: "100vw",
     height: "100vh",
-    backgroundColor: "red",
+    backgroundColor: theme.primary,
     position: "absolute",
     zIndex: 10,
     display: "flex",
@@ -71,7 +71,8 @@ const MenuItem = ({ text }: { text: SSAppMode }): JSX.Element => {
   const containerStyle = {
     width: "100%",
     position: "relative",
-    backgroundColor: "blue",
+    // backgroundColor: "blue",
+    border: "1px solid red",
     fontSize: theme.mediumFont,
   } as React.CSSProperties;
 
@@ -86,14 +87,15 @@ const MenuItem = ({ text }: { text: SSAppMode }): JSX.Element => {
   //   git filter-branch --index-filter 'git rm -r --cached --ignore-unmatch public/Tracks' HEAD
 
   return (
+    // <div style={containerStyle}>
     <div style={containerStyle} ref={hoverRef}>
       {isHover && <div style={pointerStyle}>{pointer}</div>}
       <motion.div
         whileHover={{
           scale: 1.1,
           textShadow: "0px 0px 4px gray",
-          backgroundColor: "black",
-          color: "white",
+          backgroundColor: "rgba(0,0,0,0)",
+          color: "rgba(255, 255, 255, 255)",
         }}
         style={{
           textAlign: "center",

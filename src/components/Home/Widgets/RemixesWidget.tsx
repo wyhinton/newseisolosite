@@ -3,7 +3,7 @@ import theme from "@static/theme";
 import FlexRow from "@components/FlexRow";
 import tracks from "@static/tracks";
 import { useHomeActions, useHomeState } from "@hooks";
-import PlayPauseControls from "../PlayPauseControls";
+import PlayPauseControls from "./TrackItem/PlayPauseControls";
 import Audio from "../Player/Audio";
 import BigText from "./BigText";
 import TrackItem from "./TrackItem";

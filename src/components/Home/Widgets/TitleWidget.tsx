@@ -8,7 +8,7 @@ const TitleWidget = (): JSX.Element => {
         padding: ".5rem",
         height: "100%",
         // width: "fit-content",
-        fontSize: theme.mediumFont,
+        fontSize: theme.titleFont,
         fontWeight: "bold",
         // fontSize: theme.titleFont,
         position: "relative",

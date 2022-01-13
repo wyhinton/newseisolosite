@@ -2,13 +2,13 @@ const path = require("path");
 const CracoAlias = require("craco-alias");
 
 module.exports = {
-    babel: {
+  babel: {
     presets: [
       // "@babel/preset-typescript",
       // "@babel/preset-react",
       "@babel/preset-env",
     ],
-    plugins: [["glsl", {"loose": true}]],
+    plugins: [["glsl", { loose: true }]],
   },
   webpack: {
     configure: {
@@ -33,5 +33,4 @@ module.exports = {
       },
     },
   ],
-
 };

@@ -30,7 +30,7 @@ import homeStore from "../stores/homeStore";
 import OneRecitalTextWidget from "@components/Home/Widgets/OneRecitalTextWidget";
 import RemixesWidget from "@components/Home/Widgets/RemixesWidget";
 import "@css/Body.scss";
-import ProjectInfo from "@components/Home/Widgets/ProjectInfo";
+import AboutTriggerWidget from "@components/Home/Widgets/ProjectInfo";
 import { aboutLayout, defaultLayout, recitalLayout } from "@static/gridLayouts";
 import Intro from "@components/IntroModal";
 import { WidgetGrid } from "@components/Editor/WidgetGrid";
@@ -72,14 +72,13 @@ const Home = (): JSX.Element => {
   console.log(curLayout);
   const TrackContext = createContext(null);
   return (
-    <StoreProvider store = {homeStore}>
-    <section style={{ width: "100vw" }} className="dot-fill">
-      <Intro />
-       <ReturnButton/>
-       <AboutModal/>
-      <HomeWidgetGrid/>
-
-    </section>
+    <StoreProvider store={homeStore}>
+      <section style={{ width: "100vw" }} className="dot-fill">
+        <Intro />
+        <ReturnButton />
+        <AboutModal />
+        <HomeWidgetGrid />
+      </section>
     </StoreProvider>
   );
 };
@@ -87,8 +86,6 @@ const Home = (): JSX.Element => {
 export default Home;
 
 type LayoutPos = Pick<Layout, "x" | "y" | "w" | "h">;
-
-
 
 function alterLayout(id: string, layout: Layout[], newLayout: LayoutPos) {
   console.log(layout);

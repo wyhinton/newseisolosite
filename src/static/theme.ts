@@ -32,7 +32,7 @@ const theme = {
 
   // primaryFont: "Nunito",
   primaryFont: "NeueMetana-Bold",
-  titleFont: "16rem",
+  titleFont: "5vw",
   bigFont: "3.5vw",
 
   mediumFont: "2.5vw",

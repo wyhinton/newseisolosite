@@ -15,7 +15,7 @@ const TrackItem = ({ track }: { track: Track }): JSX.Element => {
     active: {
       //   opacity: 0,
       //   x: "-100%",
-      backgroundColor: "rgba(255, 242, 0, 150)",
+      // backgroundColor: "rgba(255, 242, 0, 150)",
       transition: {
         ease: "linear",
         duration: 2,
@@ -34,6 +34,7 @@ const TrackItem = ({ track }: { track: Track }): JSX.Element => {
         fontSize: "2rem",
         position: "relative",
         marginRight: "2rem",
+        borderRadius: theme.borderRadius,
         // backgroundColor: "",
         // backgroundColor: "rgba(0,0,0,0)",
         // backgroundColor: colors[i],
@@ -43,6 +44,7 @@ const TrackItem = ({ track }: { track: Track }): JSX.Element => {
         // margin: "auto",
         display: "flex",
         flexDirection: "column",
+        overflow: "hidden",
         // border: "2px solid",
         // borderColor: theme.secondary,
         // borderColor: "black",
@@ -51,7 +53,7 @@ const TrackItem = ({ track }: { track: Track }): JSX.Element => {
       variants={variants}
       //   animat
       whileHover={{
-        // scale: 1.1,
+        scale: 1.1,
         // textShadow: "0px 0px 4px gray",
         backgroundColor: theme.primaryMedium,
         // backgroundColor: "rgba(255, 242, 0, 150)",

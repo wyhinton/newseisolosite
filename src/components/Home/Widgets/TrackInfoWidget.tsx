@@ -44,7 +44,7 @@ const Info = ({ track }: { track: Track }): JSX.Element => {
     width: "100%",
     height: "100%",
     backgroundColor: "white",
-    marginTop: "12em",
+    // marginTop: "12em",
     borderRadius: theme.borderRadius,
     // paddingLeft: "7rem",
     padding: "1rem",
@@ -66,11 +66,12 @@ const Info = ({ track }: { track: Track }): JSX.Element => {
 
   return (
     <FlexColumn style={InfoContainerStyle}>
-      <ul>
-        <li style={{ textAlign: "center", fontSize: "x-large" }}>{t}</li>
-        <li style={{ textAlign: "center", fontSize: "medium" }}>
+      <motion.div>
+        {/* <ul> */}
+        <div style={{ textAlign: "left", fontSize: "x-large" }}>{t}</div>
+        <div style={{ textAlign: "left", fontSize: "medium" }}>
           {track.about}
-        </li>
+        </div>
         {/* {infoArray.map((info, i) => {
           const formatted = info[0] + ":" + info[1];
           return (
@@ -101,7 +102,8 @@ const Info = ({ track }: { track: Track }): JSX.Element => {
             </motion.div>
           );
         })} */}
-      </ul>
+        {/* </ul> */}
+      </motion.div>
     </FlexColumn>
   );
 };
@@ -126,7 +128,7 @@ const ArtistImage = ({ track }: { track: Track }): JSX.Element => {
       },
     },
   };
-  const size = 150; 
+  const size = 150;
   const border = 10;
   const containerStyle = {
     width: size,
@@ -155,7 +157,7 @@ const ArtistImage = ({ track }: { track: Track }): JSX.Element => {
   //   return () => clearTimeout(timer);
   // }, [track.title]);
 
-    useEffect(() => {
+  useEffect(() => {
     // console.log(track);
     setImage(track.visual);
     // setInTransition(true);
@@ -167,7 +169,6 @@ const ArtistImage = ({ track }: { track: Track }): JSX.Element => {
     // // }, duration * 100);
     // return () => clearTimeout(timer);
   }, [track.title]);
-
 
   // useEffect(() => {
   //   console.log(inTransition);
@@ -213,7 +214,7 @@ const ArtistImage = ({ track }: { track: Track }): JSX.Element => {
             // width: "80%",
             // height: "80%",
             width: size - border,
-            height: size -border, 
+            height: size - border,
             objectFit: "cover",
             objectPosition: "top",
             zIndex: 10,
@@ -239,7 +240,6 @@ const ArtistImage = ({ track }: { track: Track }): JSX.Element => {
     // </div>
   );
 };
-
 
 // const ArrowWidget = (): JSX.Element => {
 //   return (
@@ -268,7 +268,6 @@ const ArtistImage = ({ track }: { track: Track }): JSX.Element => {
 // };
 
 // export default ArrowWidget;
-
 
 // const ArtistImage = ({ track }: { track: Track }): JSX.Element => {
 //   const duration = 0.5;

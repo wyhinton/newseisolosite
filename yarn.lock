@@ -11745,6 +11745,11 @@ react-resizable@^3.0.4:
     prop-types "15.x"
     react-draggable "^4.0.3"
 
+react-responsive-canvas@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-responsive-canvas/-/react-responsive-canvas-1.0.2.tgz#f58b8f296b0c45d66c2fbc26f04f71b8c2f500a1"
+  integrity sha512-r1cV0LPsxlMDdeJ53u0obUIxFPKCCD7/T3XJ/5wj0XmJi/u3qO27h0RZ3uZowSgVg+bilEKosDKxVtEr76v/JA==
+
 react-router-dom@^5.3.0:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-5.3.0.tgz#da1bfb535a0e89a712a93b97dd76f47ad1f32363"

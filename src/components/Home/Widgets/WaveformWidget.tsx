@@ -19,7 +19,7 @@ const WaveformWidget = ({
   return (
     <div style={containerStyle}>
       <Waveform3d progress={progress} track={track} />
-      <Grid></Grid>
+      {/* <Grid></Grid> */}
     </div>
   );
 };

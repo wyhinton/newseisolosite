@@ -2,7 +2,7 @@ import Konva from "konva";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { render } from "react-dom";
 import { Stage, Layer, Star, Text, Rect } from "react-konva";
-import THREE, {Vector3} from "three";
+import THREE, { Vector3 } from "three";
 
 function generateShapes() {
   return [...Array(10)].map((_, i) => ({
@@ -30,7 +30,7 @@ const CanvasGradient = (): JSX.Element => {
       const anchorsPos = [];
       anchorsPos.push({
         x: rect.x + rect.width / 2,
-        y: rect.y
+        y: rect.y,
       });
       setAnchorPoints(anchorsPos);
     }
@@ -66,7 +66,7 @@ const CanvasGradient = (): JSX.Element => {
 
         const mousePointTo = {
           x: stage.getPointerPosition().x / oldScale - stage.x() / oldScale,
-          y: stage.getPointerPosition().y / oldScale - stage.y() / oldScale
+          y: stage.getPointerPosition().y / oldScale - stage.y() / oldScale,
         };
 
         const unboundedNewScale = oldScale - event.evt.deltaY * 0.01;
@@ -83,7 +83,7 @@ const CanvasGradient = (): JSX.Element => {
             newScale,
           y:
             -(mousePointTo.y - stage.getPointerPosition().y / newScale) *
-            newScale
+            newScale,
         };
 
         setScale(newScale);
@@ -92,7 +92,7 @@ const CanvasGradient = (): JSX.Element => {
         const dragDistanceScale = 0.75;
         const newPosition = {
           x: position.x - dragDistanceScale * event.evt.deltaX,
-          y: position.y - dragDistanceScale * event.evt.deltaY
+          y: position.y - dragDistanceScale * event.evt.deltaY,
         };
 
         setPosition(newPosition);
@@ -117,16 +117,13 @@ const CanvasGradient = (): JSX.Element => {
     setRelativePosText(JSON.stringify(pos));
   }
 
-
-  useEffect(()=>{
-    const textureCanvas = document.getElementsByClassName(
-      "gradient-canvas"
-    )[0].firstChild.firstChild as HTMLCanvasElement;
-    if (textureCanvas){
+  useEffect(() => {
+    const textureCanvas = document.getElementsByClassName("gradient-canvas")[0]
+      .firstChild.firstChild as HTMLCanvasElement;
+    if (textureCanvas) {
       // const controls = new CanvasControls(new Vector3(0, 0, 0), textureCanvas)
     }
-   
-  },[])
+  }, []);
 
   const height = 200;
   const width = window.innerWidth;
@@ -176,9 +173,15 @@ const CanvasGradient = (): JSX.Element => {
   return (
     <Stage
       width={window.innerWidth}
-      height={281}
+      height={height}
       id={"gradient-canvas"}
       className="gradient-canvas"
+      onWheel={handleWheel}
+      ref={stageRef}
+      x={position.x}
+      y={position.y}
+      scaleX={scale}
+      scaleY={scale}
     >
       <Layer id={"gradient-canvas"}>
         <Rect
@@ -193,7 +196,7 @@ const CanvasGradient = (): JSX.Element => {
           scaleX={30}
           //   fill="#89b717"
           opacity={0.8}
-          draggable
+          //   draggable
           shadowColor="black"
           shadowBlur={10}
           shadowOpacity={0.6}

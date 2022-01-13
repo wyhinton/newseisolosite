@@ -45,7 +45,7 @@ import AudioForm from "./Widgets/WaveformWidget/AudioForm";
 // import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 // import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 import { OrbitControls as CustomControls } from "./Graphics/CameraControls/CustomControls";
-import { NewControls } from "./Graphics/CameraControls/NewControls";
+// import { NewControls } from "./Graphics/CameraControls/NewControls";
 import { useRenderRoot } from "leva/dist/declarations/src/components/Leva";
 
 declare module "three-stdlib" {
@@ -179,7 +179,8 @@ const Waveform3d = ({
           // scale={3}
           position={[0, 0, 100]}
         />
-        <NewControls
+        <OrbitControls/>
+        {/* <NewControls
           ref={orbitControlsRef}
           minX={-100}
           maxX={100}
@@ -189,7 +190,7 @@ const Waveform3d = ({
           // enableRotate={false}
           minZoom={0}
           maxZoom={1}
-        />
+        /> */}
         <Geo track={track} />
         {/* </EffectComposer> */}
       </Canvas>

@@ -69,6 +69,9 @@ const SamplingTesting = (): JSX.Element => {
       console.log(w, h);
 
       const { gl, program } = initGl(cvs, vs, fs);
+      // gl.enable(gl.SAMPLE_ALPHA_TO_COVERAGE);
+      // gl.enable(gl.SAMPLE_COVERAGE);
+      // gl.sampleCoverage(1.5, false);
       const programInfo = twgl.createProgramInfo(gl, [vs, fs]);
       const bufferInfo = initVBO(gl);
 

@@ -63,8 +63,8 @@ float sdf(vec3 p){
   vec2 translate = vec2(-0.5, -0.5);
   uv+=translate;
   vec4 displacement = texture(canvas, uv-translate);
-  // float sdCapsule = sdCapsule(p, vec3(-1., -0., -0.), vec3(1., 0., 0.), sin(uv.x*10.));
-  float sdCapsule = sdCapsule(p, vec3(-1., -0., -0.), vec3(1., 0., 0.), (displacement.x+.3)*.4);
+  // float sdCapsule = sdCapsule(p, vec3(-1., -0., -0.), vec3(1., 0., 0.), sin(pow(uv.x, 2.)));
+  float sdCapsule = sdCapsule(p, vec3(-1., -0., -0.), vec3(1., 0., 0.), (pow(displacement.x+.01, .6)+.05*.2));
   return sdCapsule;
 }
 
@@ -82,7 +82,7 @@ void main() {
     vec2 uv =  gl_FragCoord.xy/iResolution.xy;
     vec2 translate = vec2(-0.5, -0.5);
     uv+=translate;
-    vec3 col = vec3(0.);
+    vec3 col = vec3(100., 100., 100.);
     vec3 camPos = vec3(0., 0., 2.);
     vec3 ray = normalize(vec3(uv, -1.));
     float tMax = 5.;
@@ -92,7 +92,7 @@ void main() {
     vec2 Coord = uv;
     
     float dist= length(uv);
-    vec3 bg = mix(vec3(0.), vec3(0.3), dist);
+    vec3 bg = mix(vec3(5.), vec3(0.5), dist);
     float grid = min(
         smoothstep(0.1, 0.25, abs(sin(uv.x * divisor))),
         smoothstep(0.1, 0.25, abs(sin(uv.y * divisor)))
@@ -118,10 +118,12 @@ void main() {
       col = vec3(diff);
       col = vec3(matcapUV, 0.);
       col = texture(matCap, matcapUV).rgb;
-      // vec3 f = vec3(fresnel(ray, normal, 3.));
-      // col = mix(col, bg, f);
+      vec3 f = vec3(fresnel(ray, normal, 3.));
+      col = mix(col, bg, f);
   }
   fragColor = vec4(col, 1.0);
+  // fragColor = vec4(uv.x);
+  // fragColor = vec4(uv.y);
   // fragColor = texture(canvas, uv);
   // fragColor = tex
 

@@ -45,7 +45,6 @@
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",
     "ndarray": "^1.0.19",
-    "node-sass": "7.0.1",
     "overlayscrollbars": "^1.13.1",
     "overlayscrollbars-react": "^0.2.3",
     "papaparse": "^5.3.1",
@@ -139,6 +138,7 @@
     "jsdoc-plugin-typescript": "^2.0.6",
     "jsdoc-to-markdown": "^7.0.1",
     "postcss": "^7",
-    "react-loader-spinner": "^4.0.0"
+    "react-loader-spinner": "^4.0.0",
+    "sass": "^1.48.0"
   }
 }

@@ -3,7 +3,7 @@ import classNames from "classnames";
 import ReactDOM from "react-dom";
 import { motion, Variants } from "framer-motion";
 import { useApp, useHover, usePlaylist } from "@hooks";
-import FlexColumn from "./FlexColumn";
+import FlexColumn from "../../UI/FlexColumn";
 import theme from "@static/theme";
 import { SSAppMode } from "@model/homeModel";
 
@@ -34,11 +34,8 @@ const IntroModal = (): JSX.Element => {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    flexDirection: "column",
   } as React.CSSProperties;
-
-  //   const listContainerStyle = {
-  //       width: "auto",
-  //   } as React.CSSProperties
 
   return ReactDOM.createPortal(
     <motion.div
@@ -47,6 +44,9 @@ const IntroModal = (): JSX.Element => {
       animate={appMode === "intro" ? "visible" : "hidden"}
       style={containerStyle}
     >
+      <div style = {{fontSize: theme.mediumFont, height: "fit-content"}}>
+        One violin recital turned into 3 remixes, and 500 samples. 
+      </div>
       <FlexColumn>
         <MenuItem text={"create"} />
         <MenuItem text={"view"} />
@@ -59,6 +59,8 @@ const IntroModal = (): JSX.Element => {
 // portal
 export default IntroModal;
 
+
+
 const MenuItem = ({ text }: { text: SSAppMode }): JSX.Element => {
   const hoverRef = useRef(null);
   const isHover = useHover(hoverRef);
@@ -70,7 +72,7 @@ const MenuItem = ({ text }: { text: SSAppMode }): JSX.Element => {
     width: "100%",
     position: "relative",
     // backgroundColor: "blue",
-    // border: "1px solid red",
+    border: "1px solid red",
     fontSize: theme.mediumFont,
   } as React.CSSProperties;
 
@@ -88,6 +90,7 @@ const MenuItem = ({ text }: { text: SSAppMode }): JSX.Element => {
     // <div style={containerStyle}>
     <div style={containerStyle} ref={hoverRef}>
       {isHover && <div style={pointerStyle}>{pointer}</div>}
+      {/* {isHover && <div style={pointerStyle}>{pointer}</div>} */}
       <motion.div
         whileHover={{
           scale: 1.1,

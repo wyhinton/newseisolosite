@@ -1,7 +1,7 @@
 import FlexRow from "@components/FlexRow";
 import React from "react";
 import "@css/Player/Song.scss";
-import FlexColumn from "@components/FlexColumn";
+import FlexColumn from "@components/UI/FlexColumn";
 
 const Song = ({
   songName,

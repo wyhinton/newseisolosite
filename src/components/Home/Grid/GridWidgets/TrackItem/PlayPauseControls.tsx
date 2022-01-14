@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from "react";
-
-import FlexRow from "@components/FlexRow";
 import "@css/Player/PlayBody.scss";
 import { TrackSelection } from "@interfaces/TrackSelection";
 import { Track } from "@interfaces/Track";
-import classNames from "classnames";
 import "@css/PlayButton.scss";
 import {
-  useHomeActions,
-  useHomeState,
   useIsPlaying,
   usePlaylist,
 } from "@hooks";
@@ -80,7 +75,7 @@ const PlayButton = ({
         style={{ margin: "auto" }}
       >
         <path
-          fill="yellow"
+        fill="yellow"
           d="M170.45,173l-53.71-31a7.1,7.1,0,0,0-10.65,6.15v62a7.1,7.1,0,0,0,10.65,6.14l53.71-31A7.1,7.1,0,0,0,170.45,173Z"
           transform="translate(-106.09 -141)"
         />
@@ -115,10 +110,12 @@ const PauseButton = ({
         viewBox="0 0 67.91 76.24"
         style={{ margin: "auto" }}
       >
+        
         <path
           fill="yellow"
           d="M51.24,0h0c4.64,0,8.41,4.18,8.41,9.34V66.9c0,5.16-3.77,9.34-8.41,9.34h0c-4.65,0-8.42-4.18-8.42-9.34V9.34C42.82,4.18,46.59,0,51.24,0Z"
           // transform="translate(-106.09 -141)"
+          //TODO: USE THEME COLORS FOR FILL
         />
         <path
           fill="yellow"

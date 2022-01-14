@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import FlexRow from "@components/FlexRow";
+import FlexRow from "@UI/FlexRow";
 import theme from "@static/theme";
 import { motion } from "framer-motion";
 

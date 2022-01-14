@@ -3,7 +3,7 @@ import classNames from "classnames";
 import ReactDOM from "react-dom";
 import { motion, Variants } from "framer-motion";
 import { useApp, useHover, usePlaylist } from "@hooks";
-import FlexColumn from "./FlexColumn";
+import FlexColumn from "../../UI/FlexColumn";
 import theme from "@static/theme";
 import { SSAppMode } from "@model/homeModel";
 

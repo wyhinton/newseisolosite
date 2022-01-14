@@ -1,4 +1,4 @@
-import { usePlaylist, useSize } from "@hooks";
+import { usePlaylist, useSize, useWindowSize } from "@hooks";
 import theme from "@static/theme";
 import { motion } from "framer-motion";
 import React, { useEffect, useMemo, useRef, useState } from "react";
@@ -23,9 +23,16 @@ const GridLayout = ({
   const l = layout.map((l) => {
     return { ...l };
   });
-  const [animate, setaAnimate] = useState(false);
+  const padding = 26;
+  const rows = 12;
+  const {width, height} = useWindowSize()
+  const trueRowHeight = (height - 25 * rows) / 12;
 
-  const wrapped = useMemo(
+  const [animate, setaAnimate] = useState(false);
+  const [rowHeight, setRowHeight] = useState((height - 25 * rows) / 12)
+
+
+  const wrappedWidgets = useMemo(
     () =>
       layout.map((c, i) => {
         const noBorderArray = ["arrow", "recitalTracks", "remixes"];
@@ -69,6 +76,14 @@ const GridLayout = ({
       }),
     [layout]
   );
+  useEffect(()=>{
+    const ratio = height/screen.height;
+    const minRatioWindowToScreen = .61; 
+    if (ratio>minRatioWindowToScreen){
+      setRowHeight((height - 25 * rows) / 12)
+    }
+  },[height])
+  
 
   let layouts: Layouts = {
     lg: layout,
@@ -77,10 +92,9 @@ const GridLayout = ({
     xxs: layout,
   };
 
-  const padding = 26;
-  const rows = 12;
-  const trueRowHeight = (window.innerHeight - 25 * rows) / 12;
-  // const trueRowHeight = (window.innerHeight - 20 * rows) / 12;
+
+
+  
   // https://github.com/react-grid-layout/react-grid-layout/issues/233#issuecomment-319995357
   return (
     <ResponsiveGridLayout
@@ -94,15 +108,15 @@ const GridLayout = ({
       // layouts={ll}
       useCSSTransforms={animate}
       margin={[padding, padding]}
-      compactType={null}
+      compactType={undefined}
       width={window.innerWidth}
-      rowHeight={trueRowHeight}
+      rowHeight={rowHeight}
       cols={{ lg: 12, md: 12, sm: 12, xxs: 12 }}
       containerPadding={[padding, padding]}
       verticalCompact={false}
       // onLayoutChange={function () {}}
     >
-      {wrapped}
+      {wrappedWidgets}
     </ResponsiveGridLayout>
   );
 };

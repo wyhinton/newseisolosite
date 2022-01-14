@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import classNames from "classnames";
 import "@css/Viewer/Viewer.scss";
-import FlexColumn from "@components/FlexColumn";
+import FlexColumn from "@components/UI/FlexColumn";
 import { Track } from "@interfaces/Track";
 import theme from "@static/theme";
 import { useOnClickOutside, useToggle } from "@hooks";

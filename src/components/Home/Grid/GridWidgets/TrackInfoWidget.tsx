@@ -3,11 +3,11 @@ import classNames from "classnames";
 import { Track } from "@interfaces/Track";
 import tracks from "@static/tracks";
 import FlexRow from "@components/FlexRow";
-import FlexColumn from "@components/FlexColumn";
+import FlexColumn from "@components/UI/FlexColumn";
 import theme from "@static/theme";
 import { motion } from "framer-motion";
 import { usePlaylist } from "@hooks";
-import Video from "../Graphics/Video";
+import Video from "../../Graphics/Video";
 
 const TrackInfoWidget = ({ track }: { track: Track }): JSX.Element => {
   const MainStyle = {

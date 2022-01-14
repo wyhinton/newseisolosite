@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import classNames from "classnames";
-import Waveform3d from "../Waveform3d";
+import Waveform3d from "./WaveformWidget/Waveform3d";
 import { Track } from "@interfaces/Track";
 
 const WaveformWidget = ({

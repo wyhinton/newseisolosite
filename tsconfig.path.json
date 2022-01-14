@@ -3,6 +3,7 @@
     "baseUrl": "./src",
     "paths": {
       "@pages": ["./pages/*"],
+      "@UI":["./components/UI/*"],
       "@store/*": ["./stores/*"],
       "@model/*": ["./model/*"],
       "@hooks": ["./hooks.tsx"],

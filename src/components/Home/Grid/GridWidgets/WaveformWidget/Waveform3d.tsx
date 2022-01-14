@@ -39,12 +39,12 @@ import THREE, {
 import { useControls } from "leva";
 import { OrbitControls as OC } from "three/examples/jsm/controls/OrbitControls";
 import { Track } from "@interfaces/Track";
-import AudioForm from "./Widgets/WaveformWidget/AudioForm";
+import AudioForm from "./AudioForm";
 // https://codesandbox.io/s/yoga-r3f-lgl0j
 // import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 // import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 // import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
-import { OrbitControls as CustomControls } from "./Graphics/CameraControls/CustomControls";
+import { OrbitControls as CustomControls } from "../../../Graphics/CameraControls/CustomControls";
 // import { NewControls } from "./Graphics/CameraControls/NewControls";
 import { useRenderRoot } from "leva/dist/declarations/src/components/Leva";
 

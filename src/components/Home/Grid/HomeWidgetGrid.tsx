@@ -19,34 +19,34 @@ import { useKeyboardShortcut } from "crooks";
 import { motion } from "framer-motion";
 import "@css/blockquote.scss";
 import Model from "@components/Home/Model";
-import Waveform3d from "@components/Home/Waveform3d";
+import Waveform3d from "@components/Home/Grid/GridWidgets/WaveformWidget/Waveform3d";
 import Time from "@components/Home/Player/Time";
 import { Layout, Responsive, WidthProvider } from "react-grid-layout";
 import "@css/Layout.scss";
-import ViewCard from "@components/Home/ViewCard";
+import ViewCard from "@components/Home/Grid/GridLayoutTools/ViewCard";
 export type HomeMode = "player" | "notes" | "about";
 import "@css/react-grid-layout.scss";
 import "@css/react-resizable.css";
-import GridLayout from "@components/Home/GridLayout";
-import TrackInfoWidget from "@components/Home/Widgets/TrackInfoWidget";
-import AboutWidget from "@components/Home/Widgets/AboutWidget";
-import ViolinWidget from "@components/Home/Widgets/ViolinWidget";
-import WaveformWidget from "@components/Home/Widgets/WaveformWidget";
-import TitleWidget from "@components/Home/Widgets/TitleWidget";
-import RecitalWidgets from "@components/Home/Widgets/RecitalWidgets";
-import ThreeRemixes from "@components/Home/Widgets/ThreeRemixes";
-import ArrowWidget from "@components/Home/Widgets/ArrowWidget";
-import OneRecitalTextWidget from "@components/Home/Widgets/OneRecitalTextWidget";
-import RemixesWidget from "@components/Home/Widgets/RemixesWidget";
+import GridLayout from "@components/Home/Grid/GridLayoutTools/GridLayout";
+import TrackInfoWidget from "@components/Home/Grid/GridWidgets/TrackInfoWidget";
+import AboutWidget from "@components/Home/Grid/GridWidgets/AboutWidget";
+import ViolinWidget from "@components/Home/Grid/GridWidgets/ViolinWidget";
+import WaveformWidget from "@components/Home/Grid/GridWidgets/WaveformWidget";
+import TitleWidget from "@components/Home/Grid/GridWidgets/TitleWidget";
+import RecitalWidgets from "@components/Home/Grid/GridWidgets/RecitalWidgets";
+import ThreeRemixes from "@components/Home/Grid/GridWidgets/ThreeRemixes";
+import ArrowWidget from "@components/Home/Grid/GridWidgets/ArrowWidget";
+import OneRecitalTextWidget from "@components/Home/Grid/GridWidgets/OneRecitalTextWidget";
+import RemixesWidget from "@components/Home/Grid/GridWidgets/RemixesWidget";
 import "@css/Body.scss";
-import AboutTriggerWidget from "@components/Home/Widgets/AboutTriggerWidget";
+import AboutTriggerWidget from "@components/Home/Grid/GridWidgets/AboutTriggerWidget";
 import {
   aboutLayout,
   defaultLayout,
   recitalLayout,
   remixLayout,
 } from "@static/gridLayouts";
-import IntroModal from "@components/IntroModal";
+import IntroModal from "@components/Home/Modals/IntroModal";
 
 const HomeWidgetGrid = (): JSX.Element => {
   const audio = useRef(null);

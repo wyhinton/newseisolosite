@@ -26,7 +26,7 @@ const PlayPauseControls = ({ track }: { track: Track }): JSX.Element => {
         width: "fit-content",
         padding: "5px",
         position: "absolute",
-        border: "1px solid black",
+        // border: "1px solid black",
         top: 0,
         left: 0,
       }}

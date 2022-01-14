@@ -29,9 +29,11 @@ const GridLayout = ({
     () =>
       layout.map((c, i) => {
         const noBorderArray = ["arrow", "recitalTracks", "remixes"];
+        const showOverflowArray  = ["oneRecitalText", "threeRemixes", "projectInfo"];
         console.log("wrapping child");
         // console.log(c.i === "arrow_container");
         const border = !noBorderArray.includes(c.i as string);
+        const overflowHidden = showOverflowArray.includes(c.i as string);
         console.log(border, c.i);
         const id = c.i;
         return (
@@ -60,7 +62,7 @@ const GridLayout = ({
               id={id}
               style={cardContainerStyle}
             >
-              <ViewCard border={border}>{children[i]}</ViewCard>
+              <ViewCard border={border} overflowHidden={overflowHidden} >{children[i]}</ViewCard>
             </motion.div>
           </div>
         );

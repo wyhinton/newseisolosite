@@ -21,7 +21,7 @@ const TitleWidget = (): JSX.Element => {
         // backgroundColor: theme.secondary,
       }}
     >
-      Seisolo.io Remixing the Recital
+      Seisolo.io: Remixing the Recital
     </div>
   );
 };

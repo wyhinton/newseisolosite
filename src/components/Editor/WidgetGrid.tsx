@@ -129,7 +129,8 @@ export const WidgetGrid = ({
             localLayout.current = newLayout;
             setBufferLayoutAction(localLayout.current);
           }}
-          isDraggable={true}
+          // isDraggable={true}
+          isDraggable={false}
           // isDraggable={testViewMode}
           isResizable={false}
         >

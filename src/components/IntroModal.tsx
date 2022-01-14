@@ -7,7 +7,7 @@ import FlexColumn from "./FlexColumn";
 import theme from "@static/theme";
 import { SSAppMode } from "@model/homeModel";
 
-const Intro = (): JSX.Element => {
+const IntroModal = (): JSX.Element => {
   const { appMode } = useApp();
 
   const variants = {
@@ -50,8 +50,6 @@ const Intro = (): JSX.Element => {
       <FlexColumn>
         <MenuItem text={"create"} />
         <MenuItem text={"view"} />
-        {/* <MenuItem text={"hello"} /> */}
-        {/* <MenuItem text={"hello"} /> */}
       </FlexColumn>
     </motion.div>,
     document.getElementById("intro-modal") as HTMLDivElement
@@ -59,7 +57,7 @@ const Intro = (): JSX.Element => {
 };
 
 // portal
-export default Intro;
+export default IntroModal;
 
 const MenuItem = ({ text }: { text: SSAppMode }): JSX.Element => {
   const hoverRef = useRef(null);
@@ -72,7 +70,7 @@ const MenuItem = ({ text }: { text: SSAppMode }): JSX.Element => {
     width: "100%",
     position: "relative",
     // backgroundColor: "blue",
-    border: "1px solid red",
+    // border: "1px solid red",
     fontSize: theme.mediumFont,
   } as React.CSSProperties;
 
@@ -96,6 +94,7 @@ const MenuItem = ({ text }: { text: SSAppMode }): JSX.Element => {
           textShadow: "0px 0px 4px gray",
           backgroundColor: "rgba(0,0,0,0)",
           color: "rgba(255, 255, 255, 255)",
+          fontFamily: theme.primaryFont,
         }}
         style={{
           textAlign: "center",

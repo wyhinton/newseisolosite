@@ -39,6 +39,7 @@ const BigText = ({
           fontWeight: "bold",
           paddingLeft: "1rem",
           backgroundColor: active ? "green" : "",
+          overflow: "visible",
         }}
         variants={variants}
         animate={active ? "highlight" : "normal"}

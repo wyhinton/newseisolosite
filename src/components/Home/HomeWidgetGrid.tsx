@@ -39,14 +39,14 @@ import ArrowWidget from "@components/Home/Widgets/ArrowWidget";
 import OneRecitalTextWidget from "@components/Home/Widgets/OneRecitalTextWidget";
 import RemixesWidget from "@components/Home/Widgets/RemixesWidget";
 import "@css/Body.scss";
-import AboutTriggerWidget from "@components/Home/Widgets/ProjectInfo";
+import AboutTriggerWidget from "@components/Home/Widgets/AboutTriggerWidget";
 import {
   aboutLayout,
   defaultLayout,
   recitalLayout,
   remixLayout,
 } from "@static/gridLayouts";
-import Intro from "@components/IntroModal";
+import IntroModal from "@components/IntroModal";
 
 const HomeWidgetGrid = (): JSX.Element => {
   const audio = useRef(null);
@@ -112,25 +112,7 @@ export default HomeWidgetGrid;
 
 type LayoutPos = Pick<Layout, "x" | "y" | "w" | "h">;
 
-const DoGrid = ({ layout, activeTrack, progress }): JSX.Element => {
-  return (
-    <GridLayout className={"layout"} layout={layout}>
-      {/* <About key="about" track={activeTrack} /> */}
-      <RecitalWidgets key="recitalTracks" />
-      <OneRecitalTextWidget key="oneRecitalText" />
-      <ArrowWidget key="arrow" />
-      <ThreeRemixes key="threeRemixes" />
-      <TitleWidget key="title" />
-      {/* <AboutWidget key="about" track={activeTrack} /> */}
-      <TrackInfoWidget key="trackInfo" track={activeTrack} />
-      {/* <Time key="time" progress={progress} track={activeTrack} /> */}
-      <WaveformWidget key="waveform" progress={progress} track={activeTrack} />
-      <ViolinWidget key="violin" />
-      {/* <Bar audioElem={audioElem} /> */}
-      <RemixesWidget key="remixes" />
-    </GridLayout>
-  );
-};
+
 
 function alterLayout(id: string, layout: Layout[], newLayout: LayoutPos) {
   console.log(layout);

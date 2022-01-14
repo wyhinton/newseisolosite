@@ -17,7 +17,7 @@ const Song = ({
   return (
     <FlexColumn className="song">
       {/* <div className="song-artist">{`${index + 1}. ` + songArtist + " - "}</div> */}
-      <div className="song-title" style={{ margin: "auto" }}>
+      <div className="song-title" style={{ margin: "auto", whiteSpace: "normal", textAlign: "center"}}>
         {songName}
       </div>
     </FlexColumn>

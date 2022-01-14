@@ -30,9 +30,9 @@ const theme = {
   text: "white",
   shadow: "5px 5px 15px 5px #000000",
 
-  // primaryFont: "Nunito",
-  primaryFont: "NeueMetana-Bold",
-  titleFont: "5vw",
+  primaryFont: "Nunito",
+  // primaryFont: "NeueMetana-Bold",
+  titleFont: "4vw",
   bigFont: "3.5vw",
 
   mediumFont: "2.5vw",

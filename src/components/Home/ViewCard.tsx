@@ -5,9 +5,11 @@ import theme from "@static/theme";
 const ViewCard = ({
   children,
   border,
+  overflowHidden, 
 }: {
   children: JSX.Element | JSX.Element[];
   border: boolean;
+  overflowHidden: boolean;
 }): JSX.Element => {
   const noBorderArray = ["arrow"];
 
@@ -18,7 +20,7 @@ const ViewCard = ({
     border: border ? "2px solid black" : "",
     backgroundColor: theme.primary,
     // border: "2px solid black",
-    overflow: "visible",
+    overflow: overflowHidden?"hidden":"visible",
     borderRadius: theme.borderRadius,
   } as React.CSSProperties;
 

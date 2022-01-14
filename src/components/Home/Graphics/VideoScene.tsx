@@ -1,28 +1,34 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { useAspect } from "@react-three/drei";
+import THREE, {VideoTexture} from "three";
 
 function VideoScene() {
   const size = useAspect(550, 850);
   const videoRef = useRef<HTMLVideoElement>();
-
+  // const vidTexture 
   const [video] = useState(() => {
     const vid = document.createElement("video");
+    vid.id = "current-video"
     vid.src = `${process.env.PUBLIC_URL}/Videos/ROTOSCOPE_TEST_1.mp4`;
     vid.crossOrigin = "Anonymous";
     vid.loop = true;
     vid.muted = true;
     return vid;
   });
+      {/* <mesh scale={size * 0.5}> */}
+  // const vidTexture = new VideoTexture(document.getElementById("current-video") as HTMLVideoElement)
   // Keep in mind videos can only play once the user has interacted with the site ...
   useEffect(() => void video.play(), [video]);
   return (
     <mesh scale={[size[0] * 0.5, size[1] * 0.5, size[2] * 0.5]}>
-      {/* <mesh scale={size * 0.5}> */}
-      <shaderMaterial args={[shaderArgs]} />
+      {/* <shaderMaterial args={[shaderArgs]}> */}
+
+      {/* </shaderMaterial> */}
       <planeBufferGeometry />
       <meshBasicMaterial>
-        <videoTexture attach="map" args={[video]} />
+      <videoTexture attach="map" args={[video]} />
+
       </meshBasicMaterial>
     </mesh>
   );
@@ -31,12 +37,13 @@ function VideoScene() {
 export default VideoScene;
 // https://codesandbox.io/s/webglmaterialsenvmapsparallax-react-three-fiber-shadermaterial-7qh2w?from-embed
 
-export const shaderArgs = {
+
+const shaderArgs = {
     //   extensions: {
     //     derivatives: "#extension GL_OES_standard_derivatives : enable",
     //   },
     uniforms: {
-        map: { type: t, value:}
+        map: { value:  undefined}
     //   uTime: { value: 0 },
     //   uColor: { value: new Vector3(opts.red, opts.green, opts.blue) }, // Color Correction
     //   uShade: { value: opts.shade },

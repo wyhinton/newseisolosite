@@ -11,7 +11,7 @@ const AboutTriggerWidget = (): JSX.Element => {
       style={{
         width: "100%",
         height: "100%",
-        backgroundColor: "red",
+        // backgroundColor: "red",
         textAlign: "center",
         display: "flex",
         flexDirection: "column",

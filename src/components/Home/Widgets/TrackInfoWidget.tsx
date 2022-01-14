@@ -26,7 +26,7 @@ const TrackInfoWidget = ({ track }: { track: Track }): JSX.Element => {
       {/* <div style={MainStyle} id="main-container"> */}
       {!showVideo && (
         <>
-          <ArtistImage track={currentTrack} />
+          {/* <ArtistImage track={currentTrack} /> */}
           <Info track={currentTrack} />
         </>
       )}
@@ -43,11 +43,13 @@ const Info = ({ track }: { track: Track }): JSX.Element => {
   const InfoContainerStyle = {
     width: "100%",
     height: "100%",
-    backgroundColor: "white",
+    backgroundColor: theme.primaryDark,
+    color: "white",
     // marginTop: "12em",
     borderRadius: theme.borderRadius,
     // paddingLeft: "7rem",
     padding: "1rem",
+    overflowY: "scroll"
     // fontSize: 20,
   } as React.CSSProperties;
   // const infoArray = [track.artist, track.link, track.link, track.category];
@@ -69,7 +71,7 @@ const Info = ({ track }: { track: Track }): JSX.Element => {
       <motion.div>
         {/* <ul> */}
         <div style={{ textAlign: "left", fontSize: "x-large" }}>{t}</div>
-        <div style={{ textAlign: "left", fontSize: "medium" }}>
+        <div style={{ textAlign: "left", fontSize: "1vw", overflowY:"scroll"}}>
           {track.about}
         </div>
         {/* {infoArray.map((info, i) => {
@@ -134,7 +136,7 @@ const ArtistImage = ({ track }: { track: Track }): JSX.Element => {
     width: size,
     height: size,
     margin: "auto",
-    position: "absolute",
+    // position: "absolute",
     top: 0,
     left: "50%",
     // top: "50%",

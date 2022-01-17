@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import Testing from "./pages/Testing";
 import { StoreProvider } from "easy-peasy";
 import homeStore from "./stores/homeStore";
+import FXAADemoPage from "./pages/FXAADemoPage";
 
 const App = (): JSX.Element => {
   const fetchCardDataGoogleSheetThunk = useStoreActions(
@@ -47,6 +48,7 @@ const App = (): JSX.Element => {
         <Route path="/" exact component={Home} />
       </StoreProvider>
       <Route path="/testing" component={Testing} />
+      <Route path="/fxaa" component={FXAADemoPage} />
     </Router>
   );
 };

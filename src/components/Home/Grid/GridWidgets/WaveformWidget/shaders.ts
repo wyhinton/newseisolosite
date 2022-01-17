@@ -11,6 +11,7 @@ import { GLSL } from "gl-react";
 
 export const vs = GLSL`
 #version 300 es    
+precision mediump float;
 in vec4 position;
 void main() {
   gl_Position = position;
@@ -18,25 +19,16 @@ void main() {
 `;
 
 export const fs = GLSL`
-#version 300 es    
+#version 300 es
 precision highp float;
 uniform vec2 iResolution;
 uniform float iTime;
 uniform sampler2D matCap;
 uniform sampler2D cloudNoise;
 uniform sampler2D canvas;
+uniform float Speed;
 
 out vec4 fragColor;
-
-
-vec4 blur5(sampler2D image, vec2 uv, vec2 resolution, vec2 direction) {
-  vec4 color = vec4(0.0);
-  vec2 off1 = vec2(1.3333333333333333) * direction;
-  color += texture(image, uv) * 0.29411764705882354;
-  color += texture(image, uv + (off1 / resolution)) * 0.35294117647058826;
-  color += texture(image, uv - (off1 / resolution)) * 0.35294117647058826;
-  return color; 
-}
 
 vec2 matcap(vec3 eye, vec3 normal) {
   vec3 reflected = reflect(eye, normal);
@@ -55,7 +47,6 @@ float sdCapsule( vec3 p, vec3 a, vec3 b, float r )
   return length( pa - ba*h ) - r;
 }
 
-
 float sdf(vec3 p){
   // vec3 p1 = rotate(p, vec3(1.), iTime/5.);
   // vec2 uv =  (-iResolution.xy + 2.0 * gl_FragCoord.xy)/iResolution.y;
@@ -63,11 +54,9 @@ float sdf(vec3 p){
   vec2 translate = vec2(-0.5, -0.5);
   uv+=translate;
   vec4 displacement = texture(canvas, uv-translate);
-  // float sdCapsule = sdCapsule(p, vec3(-1., -0., -0.), vec3(1., 0., 0.), sin(pow(uv.x, 2.)));
-  float sdCapsule = sdCapsule(p, vec3(-1., -0., -0.), vec3(1., 0., 0.), (pow(displacement.x+.01, .6)+.05*.2));
+  float sdCapsule = sdCapsule(p, vec3(-1., -0., -0.), vec3(1., 0., 0.), (pow(displacement.x+.01, .6)+.05*1.2));
   return sdCapsule;
 }
-
 
 vec3 calcNormal( in vec3 p ) // for function f(p)
 {
@@ -78,25 +67,30 @@ vec3 calcNormal( in vec3 p ) // for function f(p)
                            sdf(p+h.yyx) - sdf(p-h.yyx) ) );
 }
 
+float grid(vec2 uv, float width, float steps){
+  float gridX =       smoothstep(width, 0., abs(sin((uv.x+Speed*iTime) * steps )));
+float gridX2 =       smoothstep(width, 0., abs(sin((uv.x+Speed*iTime) * steps*2. )));
+return gridX + gridX2;
+}
+
 void main() {
     vec2 uv =  gl_FragCoord.xy/iResolution.xy;
     vec2 translate = vec2(-0.5, -0.5);
     uv+=translate;
-    vec3 col = vec3(100., 100., 100.);
+    vec3 col = vec3(0.);
+    // vec3 col = vec3(100., 100., 100.);
     vec3 camPos = vec3(0., 0., 2.);
     vec3 ray = normalize(vec3(uv, -1.));
     float tMax = 5.;
     //GRID
-    float gridLineWidth = 0.05; 
+    float gridLineWidth = 0.05;
     float divisor = 30.;
     vec2 Coord = uv;
-    
+    // float Speed = .1;
+
     float dist= length(uv);
     vec3 bg = mix(vec3(5.), vec3(0.5), dist);
-    float grid = min(
-        smoothstep(0.1, 0.25, abs(sin(uv.x * divisor))),
-        smoothstep(0.1, 0.25, abs(sin(uv.y * divisor)))
-    );
+    col += grid(uv, gridLineWidth, divisor);
     //ADD SECOND GRID
 
     vec3 rayPos = camPos;
@@ -121,50 +115,13 @@ void main() {
       vec3 f = vec3(fresnel(ray, normal, 3.));
       col = mix(col, bg, f);
   }
+
   fragColor = vec4(col, 1.0);
+  // fragColor = vec4(1.);
   // fragColor = vec4(uv.x);
   // fragColor = vec4(uv.y);
   // fragColor = texture(canvas, uv);
   // fragColor = tex
 
-
 }
 `;
-
-// export const fs = GLSL`
-// #version 300 es
-// precision highp float;
-// uniform vec2 iResolution;
-// uniform float iTime;
-// uniform sampler2D matCap;
-// uniform sampler2D cloudNoise;
-// uniform sampler2D dataBig;
-
-// out vec4 fragColor;
-
-// vec4 blur5(sampler2D image, vec2 uv, vec2 resolution, vec2 direction) {
-//   vec4 color = vec4(0.0);
-//   vec2 off1 = vec2(1.3333333333333333) * direction;
-//   color += texture(image, uv) * 0.29411764705882354;
-//   color += texture(image, uv + (off1 / resolution)) * 0.35294117647058826;
-//   color += texture(image, uv - (off1 / resolution)) * 0.35294117647058826;
-//   return color;
-// }
-
-// void main() {
-//     vec2 uv =  gl_FragCoord.xy/iResolution.xy;
-//     float st = sin(iTime);
-//     // vec2 uv = (-iResolution.xy* gl_FragCoord.xy)/iResolution.y;
-//     // vec2 uv = (gl_FragCoord.xy - 0.5 * iResolution.xy) / iResolution.y;
-//     // vec3 matCapCol = texture(matCap, uv, st*3.).rgb;
-//     float d = 9.;
-//     // float d = st;
-//     vec2 dir = vec2(d, d);
-//     vec3 blur = blur5(matCap, uv, iResolution, dir).rgb;
-//     // fragColor = matCapCol;
-//     // fragColor = vec4(uv.x);
-//     // fragColor = vec4(matCapCol, 1.0);
-//     fragColor = vec4(blur, 1.);
-//     // fragColor = vec4(1.0*sin(iTime));
-// }
-// `;

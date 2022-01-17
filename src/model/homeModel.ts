@@ -12,7 +12,7 @@ import History from "@classes/History";
 import { Layout, Layouts } from "react-grid-layout";
 import tracks from "@static/tracks";
 import { Track } from "@interfaces/Track";
-import { aboutLayout, recitalLayout, remixLayout } from "@static/gridLayouts";
+import { recitalLayout, remixLayout } from "@static/gridLayouts";
 
 export type HomeLayout = "about" | "remix" | "recital" | "projectInfo";
 export type SSAppMode = "intro" | "view" | "create" | "projectInfo";
@@ -27,6 +27,7 @@ export interface HomeModel {
   currentAudioElement: Computed<HomeModel, HTMLAudioElement>;
   setCurrentTrack: Action<HomeModel, string>;
   currentLayout: Layout[];
+  // currentLayoutName: Computed<HomeModel, string>;
   setCurrentLayout: Action<HomeModel, HomeLayout>;
 }
 const homeModel: HomeModel = {
@@ -58,9 +59,7 @@ const homeModel: HomeModel = {
   setCurrentLayout: action((state, payload) => {
     console.log("SETTING CURRENT TRACK TO: " + payload);
     let l: Layout[] = [];
-    if (payload === "about") {
-      l = aboutLayout;
-    } else if (payload === "remix") {
+    if (payload === "remix") {
       l = remixLayout;
     } else if (payload === "recital") {
       l = recitalLayout;

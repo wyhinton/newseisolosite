@@ -6,7 +6,7 @@ import EqualizerIcon from "@material-ui/icons/Equalizer";
 import { makeStyles } from "@material-ui/core/styles";
 // import '../stylesheets/App.scss';
 import "@css/Player/EQ.scss";
-import FlexRow from "@components/FlexRow";
+import FlexRow from "@components/UI/FlexRow";
 import theme from "@static/theme";
 import { Track } from "@interfaces/Track";
 import { propertyOf } from "lodash";

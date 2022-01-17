@@ -6,8 +6,11 @@ import data from "@static/TRACKS_DATA.json";
 import BasicSdf from "@components/Testing/BasicSdf";
 import audioFragShader from "@components/Testing/audioFragShader";
 import { GLSL } from "gl-react";
-import RenderLoop from "./RenderLoop";
-import { vs, fs } from "./shaders";
+import RenderLoop from "../../classes/RenderLoop";
+import {
+  vs,
+  fs,
+} from "../../components/Home/Grid/GridWidgets/WaveformWidget/shaders";
 // import audioFragShader from "@components/Testing/audioFragShader";
 
 interface TrackData {

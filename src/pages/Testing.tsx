@@ -6,8 +6,9 @@ import data from "@static/TRACKS_DATA.json";
 import BasicSdf from "@components/Testing/BasicSdf";
 import audioFragShader from "@components/Testing/audioFragShader";
 import SamplingTesting from "./SamplingTesting/SamplingTesting";
-import CanvasGradient from "./CanvasGradient";
+import CanvasGradient from "../components/Testing/CanvasGradient";
 import BasicAudioSetup from "./BasicAudioSetup";
+import SphereSDF from "./SphereSDF";
 
 interface TrackData {
   duration: number;
@@ -25,6 +26,7 @@ const Testing = (): JSX.Element => {
     <section>
       <SamplingTesting />
       {/* <BasicAudioSetup /> */}
+      <SphereSDF />
       <CanvasGradient />
     </section>
   );
@@ -38,3 +40,7 @@ void main() {
   gl_Position = position;
 }
 `;
+
+const AATesting = (): JSX.Element => {
+  return <div>hello</div>;
+};

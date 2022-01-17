@@ -1,7 +1,6 @@
 {
   "extends": "./tsconfig.path.json",
   "compilerOptions": {
-    "target": "es5",
     "lib": [
       "dom",
       "dom.iterable",
@@ -26,7 +25,8 @@
     "typeRoots": [
       "node_modules/@types",
       "custom_typings/"
-    ]
+    ],
+    "target": "es5"
   },
   "include": [
     "src",

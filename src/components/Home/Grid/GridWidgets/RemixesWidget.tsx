@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import theme from "@static/theme";
-import FlexRow from "@components/FlexRow";
+import FlexRow from "@components/UI/FlexRow";
 import tracks from "@static/tracks";
 import { useHomeActions, useHomeState } from "@hooks";
 import PlayPauseControls from "./TrackItem/PlayPauseControls";

@@ -25,23 +25,23 @@ const GridLayout = ({
   });
   const padding = 26;
   const rows = 12;
-  const {width, height} = useWindowSize()
+  const { width, height } = useWindowSize();
   const trueRowHeight = (height - 25 * rows) / 12;
 
   const [animate, setaAnimate] = useState(false);
-  const [rowHeight, setRowHeight] = useState((height - 25 * rows) / 12)
-
+  const [rowHeight, setRowHeight] = useState((height - 25 * rows) / 12);
 
   const wrappedWidgets = useMemo(
     () =>
       layout.map((c, i) => {
         const noBorderArray = ["arrow", "recitalTracks", "remixes"];
-        const showOverflowArray  = ["oneRecitalText", "threeRemixes", "projectInfo"];
-        console.log("wrapping child");
-        // console.log(c.i === "arrow_container");
+        const showOverflowArray = [
+          "oneRecitalText",
+          "threeRemixes",
+          "projectInfo",
+        ];
         const border = !noBorderArray.includes(c.i as string);
         const overflowHidden = showOverflowArray.includes(c.i as string);
-        console.log(border, c.i);
         const id = c.i;
         return (
           <div key={id} id={id}>
@@ -69,21 +69,22 @@ const GridLayout = ({
               id={id}
               style={cardContainerStyle}
             >
-              <ViewCard border={border} overflowHidden={overflowHidden} >{children[i]}</ViewCard>
+              <ViewCard border={border} overflowHidden={overflowHidden}>
+                {children[i]}
+              </ViewCard>
             </motion.div>
           </div>
         );
       }),
     [layout]
   );
-  useEffect(()=>{
-    const ratio = height/screen.height;
-    const minRatioWindowToScreen = .61; 
-    if (ratio>minRatioWindowToScreen){
-      setRowHeight((height - 25 * rows) / 12)
+  useEffect(() => {
+    const ratio = height / screen.height;
+    const minRatioWindowToScreen = 0.61;
+    if (ratio > minRatioWindowToScreen) {
+      setRowHeight((height - 25 * rows) / 12);
     }
-  },[height])
-  
+  }, [height]);
 
   let layouts: Layouts = {
     lg: layout,
@@ -92,9 +93,6 @@ const GridLayout = ({
     xxs: layout,
   };
 
-
-
-  
   // https://github.com/react-grid-layout/react-grid-layout/issues/233#issuecomment-319995357
   return (
     <ResponsiveGridLayout
@@ -113,7 +111,7 @@ const GridLayout = ({
       rowHeight={rowHeight}
       cols={{ lg: 12, md: 12, sm: 12, xxs: 12 }}
       containerPadding={[padding, padding]}
-      verticalCompact={false}
+      // verticalCompact={false}
       // onLayoutChange={function () {}}
     >
       {wrappedWidgets}

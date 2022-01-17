@@ -1,8 +1,9 @@
 import Konva from "konva";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { render } from "react-dom";
-import { Stage, Layer, Star, Text, Rect } from "react-konva";
+import { Stage, Layer, Star, Text, Rect, Image } from "react-konva";
 import THREE, { Vector3 } from "three";
+import useImage from "use-image";
 
 function generateShapes() {
   return [...Array(10)].map((_, i) => ({
@@ -20,7 +21,9 @@ const CanvasGradient = (): JSX.Element => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [anchorPoints, setAnchorPoints] = useState([]);
   const [relativePosText, setRelativePosText] = useState(null);
-
+  const [image] = useImage(`${process.env.PUBLIC_URL}/Textures/dataLong.jpeg`);
+  console.log(image);
+  // const [image] = useImage(`${process.env.PUBLIC_URL}/Textures/dataLong.jpg`);
   const secondRectRef = useRef(null);
   const stageRef = useRef(null);
 
@@ -205,6 +208,7 @@ const CanvasGradient = (): JSX.Element => {
           fillLinearGradientColorStops={stops}
           //   fillLinearGradientColorStops={[0, "red", 1, "black"]}
         />
+        <Image x={0} y={0} image={image} scaleY={200}></Image>
       </Layer>
     </Stage>
   );

@@ -18,7 +18,7 @@ import { useApp, usePlaylist, useToggle, useWindowSize } from "@hooks";
 import { useKeyboardShortcut } from "crooks";
 import { motion } from "framer-motion";
 import "@css/blockquote.scss";
-import Model from "@components/Home/Model";
+// import Model from "@components/Home/Model";
 import Waveform3d from "@components/Home/Grid/GridWidgets/WaveformWidget/Waveform3d";
 import Time from "@components/Home/Player/Time";
 import { Layout, Responsive, WidthProvider } from "react-grid-layout";
@@ -40,12 +40,7 @@ import OneRecitalTextWidget from "@components/Home/Grid/GridWidgets/OneRecitalTe
 import RemixesWidget from "@components/Home/Grid/GridWidgets/RemixesWidget";
 import "@css/Body.scss";
 import AboutTriggerWidget from "@components/Home/Grid/GridWidgets/AboutTriggerWidget";
-import {
-  aboutLayout,
-  defaultLayout,
-  recitalLayout,
-  remixLayout,
-} from "@static/gridLayouts";
+import { defaultLayout, recitalLayout, remixLayout } from "@static/gridLayouts";
 import IntroModal from "@components/Home/Modals/IntroModal";
 
 const HomeWidgetGrid = (): JSX.Element => {
@@ -68,15 +63,12 @@ const HomeWidgetGrid = (): JSX.Element => {
   useEffect(() => {
     let newLayout: Layout[] = [...curLayout];
     // defaultLayout[0].w =
-    if (trackCategory === "remix") {
-      setCurLayout(remixLayout);
-    }
+    // if (trackCategory === "remix") {
+    //   setCurLayout(remixLayout);
+    // }
 
-    if (trackCategory === "recital") {
-      setCurLayout(recitalLayout);
-    }
-    // if (appMode === "projectInfo") {
-    //   setCurLayout(aboutLayout);
+    // if (trackCategory === "recital") {
+    //   setCurLayout(recitalLayout);
     // }
   }, [trackCategory, appMode]);
 
@@ -84,6 +76,7 @@ const HomeWidgetGrid = (): JSX.Element => {
     <section id="home-body" style={{ width: "100vw" }}>
       <GridLayout className={"layout"} layout={[...curLayout]}>
         <AboutTriggerWidget key="projectInfo" />
+        <AboutWidget key="about" track={activeTrack} />
         <OneRecitalTextWidget key="oneRecitalText" />
         <RecitalWidgets key="recitalTracks" />
 
@@ -94,7 +87,7 @@ const HomeWidgetGrid = (): JSX.Element => {
           // appMode={appMode}
         />
         <TitleWidget key="title" />
-        {/* <AboutWidget key="about" track={activeTrack} /> */}
+
         <TrackInfoWidget key="trackInfo" track={activeTrack} />
         {/* <Time key="time" progress={progress} track={activeTrack} /> */}
         <WaveformWidget
@@ -111,8 +104,6 @@ const HomeWidgetGrid = (): JSX.Element => {
 export default HomeWidgetGrid;
 
 type LayoutPos = Pick<Layout, "x" | "y" | "w" | "h">;
-
-
 
 function alterLayout(id: string, layout: Layout[], newLayout: LayoutPos) {
   console.log(layout);

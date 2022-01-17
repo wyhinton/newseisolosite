@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
-import classNames from "classnames";
 import { Track } from "@interfaces/Track";
-import tracks from "@static/tracks";
-import FlexRow from "@components/FlexRow";
 import FlexColumn from "@components/UI/FlexColumn";
 import theme from "@static/theme";
 import { motion } from "framer-motion";
@@ -22,14 +19,14 @@ const TrackInfoWidget = ({ track }: { track: Track }): JSX.Element => {
   }, [trackCategory]);
   return (
     <FlexColumn width="100%" height="100%" justifyContent="flex-end">
-      {showVideo && <Video></Video>}
+      {/* {showVideo && <Video></Video>} */}
       {/* <div style={MainStyle} id="main-container"> */}
-      {!showVideo && (
-        <>
-          {/* <ArtistImage track={currentTrack} /> */}
-          <Info track={currentTrack} />
-        </>
-      )}
+      {/* {!showVideo && ( */}
+      {/* <> */}
+      {/* <ArtistImage track={currentTrack} /> */}
+      <Info track={currentTrack} />
+      {/* </> */}
+      {/* )} */}
       {/* <ArtistImage track={currentTrack} /> */}
       {/* <Info track={currentTrack} /> */}
       {/* </div> */}
@@ -45,11 +42,12 @@ const Info = ({ track }: { track: Track }): JSX.Element => {
     height: "100%",
     backgroundColor: theme.primaryDark,
     color: "white",
+
     // marginTop: "12em",
     borderRadius: theme.borderRadius,
     // paddingLeft: "7rem",
     padding: "1rem",
-    overflowY: "scroll"
+    // overflowY: "scroll",
     // fontSize: 20,
   } as React.CSSProperties;
   // const infoArray = [track.artist, track.link, track.link, track.category];
@@ -67,11 +65,26 @@ const Info = ({ track }: { track: Track }): JSX.Element => {
   // }, [track]);
 
   return (
-    <FlexColumn style={InfoContainerStyle}>
+    <FlexColumn style={InfoContainerStyle} justifyContent={"flex-start"}>
       <motion.div>
         {/* <ul> */}
-        <div style={{ textAlign: "left", fontSize: "x-large" }}>{t}</div>
-        <div style={{ textAlign: "left", fontSize: "1vw", overflowY:"scroll"}}>
+        <div
+          style={{
+            textAlign: "left",
+            fontSize: "x-large",
+            borderBottom: "1px solid white",
+          }}
+        >
+          {t}
+        </div>
+        <div
+          style={{
+            textAlign: "left",
+            fontSize: "1vw",
+            overflowY: "scroll",
+            overflow: "hidden",
+          }}
+        >
           {track.about}
         </div>
         {/* {infoArray.map((info, i) => {

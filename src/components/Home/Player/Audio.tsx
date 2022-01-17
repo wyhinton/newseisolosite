@@ -1,9 +1,8 @@
 import React from "react";
 
 import Song from "./Song";
-import Bar from "./Bar";
 
-import FlexRow from "@components/FlexRow";
+import FlexRow from "@components/UI/FlexRow";
 import "@css/Player/PlayBody.scss";
 import { Track } from "@interfaces/Track";
 import classNames from "classnames";

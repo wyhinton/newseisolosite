@@ -125,7 +125,12 @@ void main(){
 
     // col = displacement;
         // col = vec3(uv2.x);
-    gl_FragColor = vec4(col, 1.0);
+    if (Speed < 0.1){
+        col=vec3(0.);
+    } else {
+        gl_FragColor = vec4(col, 1.0);
+    }
+
     // gl_FragColor= vec4(1.);
 
 }

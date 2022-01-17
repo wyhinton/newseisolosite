@@ -69,7 +69,7 @@ export function usePlaylist(): UsePlaylistProps {
   const currentAudioRef = useRef<HTMLAudioElement>(null);
 
   const handleEnd = (e: Event) => {
-    console.log(e.target);
+    // console.log(e.target);
     const targ = e.target as HTMLAudioElement;
     const title = targ.id.split("_")[1];
     const endedIndex = tracks.indexOf(
@@ -102,6 +102,7 @@ export function usePlaylist(): UsePlaylistProps {
         if (element.id === "audio_" + track.title) {
           // if (track.)
           element.play();
+          setCurrentAudio(element);
         } else {
           element.pause();
         }
@@ -151,8 +152,9 @@ export function usePlaylist(): UsePlaylistProps {
     setCurrentTrackLocal(currentTrackState);
     setTrackCategory(currentTrackState.category);
     setIsRecital(currentTrack.category === "recital");
-    // setCurrentAudio(getTrackAudio(currentTrackState));
-    setCurrentAudio(getTrackAudio(currentTrack));
+    // setCurrentAudio(getTrackAudio(currentTrackState))
+    const curAuidoGet = getTrackAudio(currentTrack);
+    setCurrentAudio(curAuidoGet);
     // setCurrentDuration(currentAudio.duration);
     currentAudioRef.current = getTrackAudio(currentTrack);
     if (currentAudioRef.current) {
@@ -197,6 +199,10 @@ export const useIsPlaying = (track: Track) => {
 };
 
 const getTrackAudio = (track: Track): HTMLMediaElement => {
+  const test = document.getElementById(
+    "audio_" + track.title
+  ) as HTMLMediaElement;
+  // console.log(test);
   return document.getElementById("audio_" + track.title) as HTMLMediaElement;
 };
 
@@ -448,32 +454,77 @@ function useEventListener<T extends HTMLElement = HTMLDivElement>(
   }, [eventName, element, handler]);
 }
 
-
 interface WindowSize {
-  width: number
-  height: number
+  width: number;
+  height: number;
 }
 
 export function useWindowSize(): WindowSize {
   const [windowSize, setWindowSize] = useState<WindowSize>({
     width: 0,
     height: 0,
-  })
+  });
 
   const handleSize = () => {
     setWindowSize({
       width: window.innerWidth,
       height: window.innerHeight,
-    })
-  }
+    });
+  };
 
-  useEventListener('resize', handleSize)
+  useEventListener("resize", handleSize);
 
   // Set size at the first client-side load
   useLayoutEffect(() => {
-    handleSize()
+    handleSize();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
 
-  return windowSize
+  return windowSize;
+}
+
+interface Size {
+  width: number;
+  height: number;
+}
+
+export function useElementSize<T extends HTMLElement = HTMLDivElement>(): [
+  (node: T | null) => void,
+  Size
+] {
+  // Mutable values like 'ref.current' aren't valid dependencies
+  // because mutating them doesn't re-render the component.
+  // Instead, we use a state as a ref to be reactive.
+  const [ref, setRef] = useState<T | null>(null);
+  const [size, setSize] = useState<Size>({
+    width: 0,
+    height: 0,
+  });
+
+  // Prevent too many rendering using useCallback
+  const handleSize = useCallback(() => {
+    setSize({
+      width: ref?.offsetWidth || 0,
+      height: ref?.offsetHeight || 0,
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ref?.offsetHeight, ref?.offsetWidth]);
+
+  useEventListener("resize", handleSize);
+
+  useLayoutEffect(() => {
+    handleSize();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ref?.offsetHeight, ref?.offsetWidth]);
+
+  return [setRef, size];
+}
+
+export function usePrevious(value) {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
 }

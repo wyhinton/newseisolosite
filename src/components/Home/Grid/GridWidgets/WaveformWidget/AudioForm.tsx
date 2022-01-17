@@ -255,13 +255,14 @@ const AudioForm = ({ track }: { track: Track }) => {
           //     0
         }}
       >
-        {/* <meshPhongMaterial
+        <meshPhongMaterial
           attach="material"
           color="#f3f3f3"
           emissive={new Color(1, 0, 0)}
           shininess={100}
           specular={new Color(0, 0.5, 0)}
-        /> */}
+          // wireframe={true}
+        />
         {/* <meshNormalMaterial /> */}
         {/* <shaderMaterial
           attach="material"
@@ -269,7 +270,7 @@ const AudioForm = ({ track }: { track: Track }) => {
           args={[ColorMaterial]}
         /> */}
         {/* <colorMaterial color="#FF0000" /> */}
-        <shaderMaterial args={[shaderArgs]} />
+        {/* <shaderMaterial args={[shaderArgs]} /> */}
         {/* <shaderMaterial args={[sShader]} /> */}
         {/* <shaderMaterial args={[shaderArgs]} /> */}
         {/* <shaderMaterial args={[ColorMaterial]} /> */}

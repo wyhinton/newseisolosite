@@ -6,7 +6,7 @@ import { usePlaylist } from "@hooks";
 const ThreeRemixes = (): JSX.Element => {
   const { trackCategory } = usePlaylist();
 
-  return <BigText active={trackCategory === "remix"}>3 Remixes</BigText>;
+  return <BigText active={trackCategory === "remix"}>Remixes</BigText>;
 };
 
 export default ThreeRemixes;

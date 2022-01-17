@@ -117,9 +117,9 @@ void main() {
     // col += .02/length(vec2(uv.x*2., uv.y));
     // float center = .02/length(vec2(uv.x*2., uv.y*.2));
     // col = mix(col, col2, center);
-  if (Speed < 0.1){
-      col*=col*.5;
-  } 
+  // if (Speed < 0.1){
+  //     col*=col*.5;
+  // } 
   // gl_FragColor = vec4(col, 1.0);
   fragColor = vec4(col, 1.0);
   // fragColor = vec4(col*1.1, 1.0);

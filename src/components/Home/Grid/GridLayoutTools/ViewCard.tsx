@@ -5,7 +5,7 @@ import theme from "@static/theme";
 const ViewCard = ({
   children,
   border,
-  overflowHidden, 
+  overflowHidden,
 }: {
   children: JSX.Element | JSX.Element[];
   border: boolean;
@@ -16,11 +16,9 @@ const ViewCard = ({
   const containerStyle = {
     width: "100%",
     height: "100%",
-    // backgroundColor: "red",
     border: border ? "2px solid black" : "",
     backgroundColor: theme.primary,
-    // border: "2px solid black",
-    overflow: overflowHidden?"hidden":"visible",
+    overflow: overflowHidden ? "hidden" : "visible",
     borderRadius: theme.borderRadius,
   } as React.CSSProperties;
 

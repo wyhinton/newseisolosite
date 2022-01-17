@@ -27,10 +27,10 @@ const WaveformWidget = ({
   return (
     <div style={containerStyle} ref={containerRef}>
       {/* <WaveformSDF /> */}
-      <RGLWaveform width={width} height={height} />
-      <AudioDataCanvas width={width} />
-      <Canvas id="sdf-canvas" />
-      {/* <Waveform3d progress={progress} track={track} /> */}
+      {/* <RGLWaveform width={width} height={height} /> */}
+      {/* <AudioDataCanvas width={width} /> */}
+      {/* <Canvas id="sdf-canvas" /> */}
+      <Waveform3d progress={progress} track={track} />
       {/* <Grid></Grid> */}
     </div>
   );

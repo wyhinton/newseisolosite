@@ -12,7 +12,7 @@ import React, {
 import { StoreModel } from "./model";
 import { ActionCreator, createTypedHooks } from "easy-peasy";
 import { useArray } from "react-hanger";
-
+import usePrevious, { usePreviousNumber } from "react-hooks-use-previous";
 const typedHooks = createTypedHooks<StoreModel>();
 
 // We export the hooks from our store as they will contain the
@@ -49,8 +49,9 @@ export function useApp(): useAppProps {
 interface UsePlaylistProps {
   currentTrack: Track;
   setCurrentTrack: ActionCreator<string>;
-  playTrack: (Track) => void;
-  pauseTrack: (Track) => void;
+  previousTrack: Track | undefined;
+  playTrack: (t: Track) => void;
+  pauseTrack: (t: Track) => void;
   isPlaying: boolean;
   currentAudioRef: React.MutableRefObject<HTMLAudioElement>;
   currentAudio: HTMLAudioElement;
@@ -125,6 +126,7 @@ export function usePlaylist(): UsePlaylistProps {
   };
 
   const [currentTrack, setCurrentTrackLocal] = useState(currentTrackState);
+  const previousTrack = usePrevious<Track | undefined>(currentTrack, undefined);
   const [trackCategory, setTrackCategory] = useState(
     currentTrackState.category
   );
@@ -171,6 +173,7 @@ export function usePlaylist(): UsePlaylistProps {
   return {
     currentTrack,
     setCurrentTrack,
+    previousTrack,
     playTrack,
     pauseTrack,
     isPlaying,
@@ -521,10 +524,10 @@ export function useElementSize<T extends HTMLElement = HTMLDivElement>(): [
   return [setRef, size];
 }
 
-export function usePrevious(value) {
-  const ref = useRef();
-  useEffect(() => {
-    ref.current = value;
-  });
-  return ref.current;
-}
+// export function usePrevious(value) {
+//   const ref = useRef();
+//   useEffect(() => {
+//     ref.current = value;
+//   });
+//   return ref.current;
+// }

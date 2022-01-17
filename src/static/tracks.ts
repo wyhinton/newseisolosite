@@ -2,13 +2,14 @@ import { Track } from "@interfaces/Track";
 
 const src = `${process.env.PUBLIC_URL}/overandunder (infinity).wav`;
 
-const anjaliImage = `${process.env.PUBLIC_URL}/Headshots/Diaspoura.jpg`;
-const pacificImage = `${process.env.PUBLIC_URL}/Headshots/Pacific.jpg`;
-const contourImage = `${process.env.PUBLIC_URL}/Headshots/Contour.jpg`;
+const anjaliImage = `${process.env.PUBLIC_URL}/Headshots/DIASPOURA_HS.png`;
+const pacificImage = `${process.env.PUBLIC_URL}/Headshots/PACIFIC_YEW_HS.png`;
+const contourImage = `${process.env.PUBLIC_URL}/Headshots/CONTOUR_HS.png`;
 
 const anjaliTrack = `${process.env.PUBLIC_URL}/Tracks/demo.wav`;
 const pacificTrack = `${process.env.PUBLIC_URL}/Tracks/overandunder (infinity).wav`;
 const contourTrack = `${process.env.PUBLIC_URL}/Tracks/Kontour_Remix_16.mp3`;
+
 const bachTrack = `${process.env.PUBLIC_URL}/Tracks/Bach Mov 2.wav`;
 const bartokTrack = `${process.env.PUBLIC_URL}/Tracks/Bartok Mov 1.wav`;
 const ysaeTrack = `${process.env.PUBLIC_URL}/Tracks/Ysaye_AUDIO.mp3`;
@@ -17,6 +18,9 @@ const bachVideo = `${process.env.PUBLIC_URL}/Videos/Recital/Vivek Menon - JS Bac
 const ysayeVideo = `${process.env.PUBLIC_URL}/Videos/Recital/Vivek Menon - Sonate n3 - Eugene Ysaye_Rev02.mov`;
 const bartokVideo = `${process.env.PUBLIC_URL}/Videos/Recital/Vivek_Menon_Bartok_Sonata_for_Violin_Solo_rev01.mov`;
 
+const anjaliAbout = `I worked with Vivek’s performance of Movement 1 of Allemande by Bach to write Believe. When I listened through, one small section caught my ear as an interesting loop. I built layers around this loop and tried my best intuitively to match synth sounds with the clear and smooth violin. The pace of the violin sample encouraged me to explore writing at 140bpm. When I told Vivek I was working with Allemande, he anticipated a perhaps brooding and mysterious energy to be built. I have a much different perception of the energy the harmonies create. I thought this could be from my exposure to old South Asian folk and pop songs, many of which are based in a minor pentatonic scale and sing of love and desire.
+It feels exciting to me that the violin can sound so in the mix with a bunch of synthesizers. And that I could integrate Bach’s music into my sound. Thanks for the challenge sei.solo.`;
+
 const lorem =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam pulvinar lorem ipsum, at suscipit nibh finibus sed. Donec dignissim erat sed nunc consequat molestie. In arcu urna, eleifend vitae nisi vel, dignissim efficitur odio. Suspendisse hendrerit odio feugiat nulla suscipit posuere. Nulla scelerisque, urna in euismod dictum, mi elit fermentum nisi, et porttitor ipsum massa auctor tellus. Sed a sem vitae quam volutpat ultricies ac ac odio. Maecenas sit amet felis varius massa tempor porta. Quisque eu tristique massa.";
 // const pacificAbout = `It's been a while since I've had a chance to experiment with sampling, and to be honest my sound as of late has been geared to more of an analog/live nature, so it was very interesting getting back into the more electronic sound. I'm finding my new setup is a lot more equipped for the task than I was aware of. I feel like I landed on a nice balance of electronic and live/acoustic with this one. Going through the files I found myself wanting to keep their integrity as much as possible, and as a result found myself playing with very subtle pitch corrections, and spending time finding phrases and bits that felt organic in reference to a melody I wrote on rhodes piano. Pulling samples from two completely different pieces was a really interesting experiment. I found Ysaé's "Ballade" and Bartók's "Presto" to have the most favorable parts for the comp. Their usage of such abstract melody and the players spotless technique made them resonate in a way that gave me all the inspiration I needed to write the progression. Towards the end I tried my hand at a solo using only phrasing from the violin audio. Although the overall placement of the violin alongside the other instruments in the piece throughout tends to be a more supportive role, I wanted to give it a way to stand out. It never fails to blow my mind when creating circumstances around the musical process produces such beautiful and bizarre results. I feel I may have never attempted such a thing, had this opportunity not been present. This will most certainly have lasting effects on my creative process.`;
@@ -24,7 +28,7 @@ const pacificAbout = `Going through the files I found myself wanting to keep the
 // const pacificAbout = `Going through the files I found myself wanting to keep their integrity as much as possible, and as a result found myself playing with very subtle pitch corrections, and spending time finding phrases and bits that felt organic in reference to a melody I wrote on rhodes piano. Pulling samples from two completely different pieces was a really interesting experiment. I found Ysaé's "Ballade" and Bartók's "Presto" to have the most favorable parts for the comp. Their usage of such abstract melody and the players spotless technique made them resonate in a way that gave me all the inspiration I needed to write the progression. Towards the end I tried my hand at a solo using only phrasing from the violin audio. Although the overall placement of the violin alongside the other instruments in the piece throughout tends to be a more supportive role, I wanted to give it a way to stand out. It never fails to blow my mind when creating circumstances around the musical process produces such beautiful and bizarre results. I feel I may have never attempted such a thing, had this opportunity not been present. This will most certainly have lasting effects on my creative process.`;
 
 const vVideo = `${process.env.PUBLIC_URL}/Headshots/ROTOSCOPE_TEST_1.mp4`;
-const about =
+const contourAbout =
   "*A young Jeronimo gets a fly caught in his eye and spends the week at home. Each morning he wakes, left eye patched and crusted shut with pus, to the sound of parents knocking at the door with a fresh set of tweezers, towels, and medic grade eye solution. He lies in bed struggling to open his left eye as he dreads the coming pry of the lid for removal of yet another fly limb. These songs track Jeronimo's journey back to dual-eyed sight*";
 
 const tracks: Track[] = [
@@ -33,7 +37,7 @@ const tracks: Track[] = [
     title: "Diaspoura Track",
     link: "https://diaspoura.bandcamp.com/",
     src: anjaliTrack,
-    about: about,
+    about: anjaliAbout,
     visualType: "image",
     visual: anjaliImage,
     playing: false,
@@ -67,8 +71,7 @@ const tracks: Track[] = [
     title: "Revolving Melody",
     link: "https://diaspoura.bandcamp.com/",
     src: contourTrack,
-    about:
-      "The way i approached the track was finding a melodic section of one of the pieces to build around to create a full piece that plays with repetition as a vehicle of composition while also facilitating space for improvisation. I chose the melodia movement of the Bartók piece because the balance of dissonance/harmony in that particular one stood out to me. I used delay and looping to kind of simulate the idea of an ensemble playing the section i chose and play with the intersection of production/affectation and composing in the traditional sense and then worked from there.",
+    about: contourAbout,
     visualType: "image",
     visual: contourImage,
     playing: false,

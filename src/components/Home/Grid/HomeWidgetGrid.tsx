@@ -75,7 +75,7 @@ const HomeWidgetGrid = (): JSX.Element => {
   return (
     <section id="home-body" style={{ width: "100vw" }}>
       <GridLayout className={"layout"} layout={[...curLayout]}>
-        <AboutTriggerWidget key="projectInfo" />
+        {/* <AboutTriggerWidget key="projectInfo" /> */}
         <AboutWidget key="about" track={activeTrack} />
         <OneRecitalTextWidget key="oneRecitalText" />
         <RecitalWidgets key="recitalTracks" />

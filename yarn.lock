@@ -11661,6 +11661,11 @@ react-hanger@^2.4.4:
   resolved "https://registry.yarnpkg.com/react-hanger/-/react-hanger-2.4.4.tgz#daf72b5aac2a247dc04cfbfd4140f10a6e1da28c"
   integrity sha512-2sHrQBw8TrWsthby9aofhmYrg/ovva9zQXEROmEoQASWYAlwQvJdrJ7EfBZ1NddKzHm8CUM4RiPvMRkhWFsi/A==
 
+react-hooks-use-previous@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-hooks-use-previous/-/react-hooks-use-previous-1.1.1.tgz#2a83c6cebf45b7e11a2d7389ba2e2a936c31aae1"
+  integrity sha512-UNUDGZYC+pHOxHJcTb1dgYs1+GK7SHQszSs+h78O1vjtNe8BaHzXSv12M7PmSUGhuFaVyHqeTCXHX8m/M0ivhg==
+
 react-is@^16.12.0, react-is@^16.13.1, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"

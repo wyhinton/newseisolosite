@@ -19,6 +19,7 @@ import HomeWidgetGrid from "@components/Home/Grid/HomeWidgetGrid";
 import AboutModal from "@components/Home/Modals/AboutModal";
 import ReturnButton from "@components/ReturnButton";
 import appConfig from "@static/appConfig";
+import AboutButton from "@components/Home/AboutButton";
 export type HomeMode = "player" | "notes" | "about";
 
 const Home = (): JSX.Element => {
@@ -51,6 +52,7 @@ const Home = (): JSX.Element => {
     <StoreProvider store={homeStore}>
       <section style={{ width: "100vw" }} className="dot-fill">
         {appConfig.showIntro && <IntroModal />}
+        <AboutButton />
         <ReturnButton />
         <AboutModal />
         <HomeWidgetGrid />

@@ -10,6 +10,7 @@ export interface Theme {
   textDark: string;
   shadow: string;
   primaryFont: string;
+  titleFontFamily: string;
   bigFont: string;
   mediumFont: string;
   titleFont: string;
@@ -25,13 +26,20 @@ const theme = {
   transparent: "#0000",
   stroke: "rgba(0,0,0,0)",
   border: "2px solid black",
+  // borderRadius: 0,
   borderRadius: 10,
   textDark: "black",
   text: "white",
   shadow: "5px 5px 15px 5px #000000",
-
+  titleFontFamily: "Nunito",
+  // titleFontFamily: "Mimoid",
+  // titleFontFamily: "OTR type",
+  // titleFontFamily: "Hoover",
+  // titleFontFamily: "Aber-Mono",
+  primaryFont: "OTR type",
   // primaryFont: "Nunito",
-  primaryFont: "NeueMetana-Bold",
+  // primaryFont: "NeueMetana-Bold",
+  // primaryFont: "Aber-Mono",
   titleFont: "4vw",
   bigFont: "3.5vw",
 

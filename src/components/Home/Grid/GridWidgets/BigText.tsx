@@ -32,7 +32,7 @@ const BigText = ({
           width: "100%",
           height: "100%",
           // width: "max-content",
-          fontFamily: theme.primaryFont,
+          // fontFamily: theme.primaryFont,
           fontSize: theme.mediumFont,
           alignItems: "center",
           display: "flex",

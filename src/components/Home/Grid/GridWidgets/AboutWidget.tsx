@@ -7,7 +7,8 @@ import {
   useHomeActions,
   useHomeState,
   usePlaylist,
-  usePrevious,
+  useWindowSize,
+  // usePrevious,
 } from "@hooks";
 import { LinearCopy } from "gl-react";
 import { Surface } from "gl-react-dom";
@@ -16,46 +17,50 @@ import GLTransitions from "gl-transitions";
 import useImage from "use-image";
 import raf from "raf";
 import VideoTexture from "./VideoTexture";
+import aboutTransition from "./AboutWidget/aboutTransition";
+import theme from "@static/theme";
+import { opacity } from "ui-box";
 
 const AboutWidget = ({ track }: { track: Track }): JSX.Element => {
-  const { currentTrack } = usePlaylist();
+  // const { currentTrack } = usePlaylist();
 
   const aboutTextContainerStyle = {
     width: "100%",
     height: "100%",
     fontSize: "3vh",
-    border: "1px solid black",
   } as React.CSSProperties;
 
   return (
     <motion.div className={"track-about-text"} style={aboutTextContainerStyle}>
-      <ArtistImage track={currentTrack} />
+      <ArtistImage />
     </motion.div>
   );
 };
 
 export default AboutWidget;
 
-const ArtistImage = ({ track }: { track: Track }): JSX.Element => {
+const ArtistImage = (): JSX.Element => {
   const containerStyle = {
     width: "100%",
     height: "100%",
     margin: "auto",
     top: 0,
     overflow: "hidden",
+    borderRadius: theme.borderRadius,
   } as React.CSSProperties;
-  const [image, setImage] = useState(track.visual);
-  const { currentTrack } = usePlaylist();
+  const { currentTrack, previousTrack } = usePlaylist();
+  const [image, setImage] = useState(currentTrack.visual);
 
   useEffect(() => {
-    setImage(track.visual);
+    setImage(currentTrack.visual);
   }, [currentTrack.title]);
-  const [curTrack, setCurTrack] = useState(track);
+  const [curTrack, setCurTrack] = useState(currentTrack);
 
   useEffect(() => {
-    setCurTrack(track);
-  }, [track]);
-  const prevTrack: Track = usePrevious(curTrack);
+    setCurTrack(currentTrack);
+  }, [currentTrack]);
+  // const prevTrack: Track = usePrevious(curTrack);
+  // const [windowSize] = useWindowSize();
 
   const [containerRef, { width, height }] = useElementSize();
 
@@ -67,12 +72,31 @@ const ArtistImage = ({ track }: { track: Track }): JSX.Element => {
       style={containerStyle}
       // animate={inTransition ? "highlight" : "normal"}
     >
-      {/* <ArtistTrans
-        width={width}
-        height={height}
-        track={curTrack}
-        prevTrack={prevTrack}
-      /> */}
+      {currentTrack.category === "remix" && (
+        <ArtistTrans
+          // width={width}
+          // height={height}
+          track={currentTrack}
+          prevTrack={previousTrack}
+        />
+      )}
+      {currentTrack.category === "recital" && (
+        <>
+          <video
+            style={{
+              objectFit: "cover",
+              objectPosition: "top",
+              zIndex: 10,
+              width: "100%",
+              height: "100%",
+            }}
+            autoPlay
+            src={image}
+          ></video>
+          <FullScreenIcon />
+        </>
+      )}
+
       {/* <img
         style={{
           objectFit: "cover",
@@ -83,7 +107,7 @@ const ArtistImage = ({ track }: { track: Track }): JSX.Element => {
         }}
         src={image}
       ></img> */}
-      {track.visualType === "image" ? (
+      {/* {track.visualType === "image" ? (
         <img
           style={{
             objectFit: "cover",
@@ -106,7 +130,7 @@ const ArtistImage = ({ track }: { track: Track }): JSX.Element => {
           autoPlay
           src={image}
         ></video>
-      )}
+      )} */}
     </div>
   );
 };
@@ -114,18 +138,34 @@ const ArtistImage = ({ track }: { track: Track }): JSX.Element => {
 const ArtistTrans = ({
   prevTrack,
   track,
-  width,
-  height,
-}: {
+}: // width,
+// height,
+{
   prevTrack: Track;
   track: Track;
-  width: number;
-  height: number;
-}): JSX.Element => (
-  <Surface width={width} height={height}>
-    <Slideshow prevTrack={prevTrack} track={track} />
-  </Surface>
-);
+  // width: number;
+  // height: number;
+}): JSX.Element => {
+  const [containerRef, { width, height }] = useElementSize();
+  const [w, setW] = useState(width);
+  const [h, setH] = useState(height);
+  const ww = useWindowSize();
+
+  useEffect(() => {
+    setW(width);
+    setH(height);
+    console.log(w);
+    console.log(h);
+  }, [width, height]);
+
+  return (
+    <div ref={containerRef} style={{ width: "100%", height: "100%" }}>
+      <Surface width={w} height={h}>
+        <Slideshow prevTrack={prevTrack} track={track} />
+      </Surface>
+    </div>
+  );
+};
 
 const Slideshow = ({
   track,
@@ -134,77 +174,94 @@ const Slideshow = ({
   prevTrack: Track;
   track: Track;
 }): JSX.Element => {
-  // const index = Math.floor(time / (delay + duration));
-  // const from = { uri: "https://i.imgur.com/wxqlQkh.jpg" };
-  // const to = { uri: "https://i.imgur.com/G2Whuq3.jpg" };
-  // const [from] = useImage("https://i.imgur.com/wxqlQkh.jpg");
-  // const [to] = useImage("https://i.imgur.com/G2Whuq3.jpg");
-  const from = prevTrack.visual;
-  const to = track.visual;
-  const base = `${process.env.PUBLIC_URL}/Textures/pinkMatcap.png`;
+  const [fromTexture, setFromTexture] = useState<string>(track.visual);
+  const [toTexture, setToTexture] = useState<string>(track.visual);
+  useEffect(() => {
+    if (prevTrack) {
+      setFromTexture(prevTrack.visual);
+    }
+  }, [prevTrack]);
+  useEffect(() => {
+    if (prevTrack) {
+      setToTexture(track.visual);
+    }
+  }, [track]);
 
-  const fromSrc = prevTrack.visual;
-  const toSrc = prevTrack.visual;
-  const [fromTexture, setFromTexture] = useState<string | HTMLVideoElement>(
-    base
-  );
-  const [toTexture, setToTexture] = useState<string | Element>(base);
-
-  // useEffect(() => {
-  //   console.log(fromSrc);
-  //   if (track.visualType === "image") {
-  //     setFromTexture(track.visual);
-  //   } else {
-  //   //   const el =  <video
-  //   //   type="video/mp4"
-  //   //   src={`${process.env.PUBLIC_URL}/Videos/ROTOSCOPE_TEST_1.mp4`}
-  //   // />
-  //     setFromTexture(
-
-  //     );
-  //   }
-  // }, [track, prevTrack]);
-
-  // const from = "https://i.imgur.com/wxqlQkh.jpg";
-  // const to = "https://i.imgur.com/G2Whuq3.jpg";
-  // const to = slides[(index + 1) % slides.length];
-  // const transition = GLTransitions[index % GLTransitions.length];
-  // const total = delay + duration;
-  const x = useSpring(0);
+  const x = useSpring(0, { damping: 20 });
   const [progress, setProgres] = useState(0);
-  const [doTransition, setdoTransition] = useState(false);
-  // const [visual, set]
-  const transition = GLTransitions.filter((t) => t.name === "perlin")[0];
-  // console.log(GLTransitions);
 
   useEffect(
     () =>
       x.onChange((latest) => {
         setProgres(latest);
-        // console.log(latest);
+        if (latest == 1) {
+          setProgres(0);
+          x.set(0, false);
+        }
       }),
     []
   );
   useEffect(() => {
-    setdoTransition(!doTransition);
-    if (doTransition) {
-      x.set(1);
-    } else {
-      x.set(0);
-    }
+    x.set(1);
   }, [track]);
 
-  // const progress = (time - index * total - delay) / duration;
-
-  return progress > 0 ? (
+  return progress > 0.0 ? (
     <GLTransition
-      from={from}
-      to={to}
+      from={fromTexture}
+      to={toTexture}
       progress={progress}
-      transition={transition}
+      transition={aboutTransition}
     />
   ) : (
-    <LinearCopy>{from}</LinearCopy>
+    <LinearCopy>{toTexture}</LinearCopy>
+  );
+};
+
+const ViolinVideo = () => {};
+
+const FullScreenIcon = (): JSX.Element => {
+  const size = 30;
+  const containerStyle = {
+    width: size,
+    height: size,
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    // bottom: size,
+    // right: size,
+    backgroundColor: theme.secondary,
+    zIndex: 100,
+    opacity: 0,
+    padding: 3,
+    borderRadius: 5,
+    overflow: "hidden",
+  } as React.CSSProperties;
+
+  return (
+    <motion.div
+      animate={{
+        opacity: 1,
+        transition: {
+          ease: "linear",
+          duration: 0.5,
+          // repeat: Infinity,
+          // repeatType: "mirror",
+        },
+      }}
+      style={containerStyle}
+    >
+      <svg
+        style={{
+          width: size,
+          height: size,
+        }}
+      >
+        <path
+          fill={theme.secondary}
+          d="M3.41 2H6c.55 0 1-.45 1-1s-.45-1-1-1H1C.45 0 0 .45 0 1v5c0 .55.45 1 1 1s1-.45 1-1V3.41L7.29 8.7c.18.19.43.3.71.3a1.003 1.003 0 00.71-1.71L3.41 2zM8 11c-.28 0-.53.11-.71.29L2 16.59V14c0-.55-.45-1-1-1s-1 .45-1 1v5c0 .55.45 1 1 1h5c.55 0 1-.45 1-1s-.45-1-1-1H3.41l5.29-5.29c.19-.18.3-.43.3-.71 0-.55-.45-1-1-1zM19 0h-5c-.55 0-1 .45-1 1s.45 1 1 1h2.59L11.3 7.29c-.19.18-.3.43-.3.71a1.003 1.003 0 001.71.71L18 3.41V6c0 .55.45 1 1 1s1-.45 1-1V1c0-.55-.45-1-1-1zm0 13c-.55 0-1 .45-1 1v2.59l-5.29-5.29A.965.965 0 0012 11a1.003 1.003 0 00-.71 1.71l5.3 5.29H14c-.55 0-1 .45-1 1s.45 1 1 1h5c.55 0 1-.45 1-1v-5c0-.55-.45-1-1-1z"
+        ></path>
+      </svg>
+    </motion.div>
   );
 };
 

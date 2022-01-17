@@ -14,6 +14,7 @@ const ReturnButton = (): JSX.Element => {
     visible: {
       //   height: "200px",
       //   width: "200px",
+      pointerEvents: "all",
       translateY: 0,
       opacity: 1,
     },
@@ -30,9 +31,9 @@ const ReturnButton = (): JSX.Element => {
   const containerStyle = {
     width: "10vw",
     height: "10vw",
-    backgroundColor: "red",
+    backgroundColor: "blue",
     position: "absolute",
-    zIndex: 10,
+    zIndex: 1000,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -42,7 +43,7 @@ const ReturnButton = (): JSX.Element => {
   } as React.CSSProperties;
 
   `${process.env.PUBLIC_URL}/asset.jpg`;
-  return (
+  return ReactDOM.createPortal(
     <motion.div
       initial={false}
       className="modal"
@@ -56,7 +57,8 @@ const ReturnButton = (): JSX.Element => {
     >
       <img src={`${process.env.PUBLIC_URL}/Icons/BackArrow.svg`} />
       {/* aaaaaaa */}
-    </motion.div>
+    </motion.div>,
+    document.getElementById("return-button") as HTMLDivElement
   );
 };
 

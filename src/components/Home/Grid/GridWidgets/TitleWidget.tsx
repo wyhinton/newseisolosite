@@ -17,6 +17,7 @@ const TitleWidget = (): JSX.Element => {
         display: "flex",
         alignItems: "center",
         width: "100%",
+        fontFamily: theme.titleFontFamily,
 
         // backgroundColor: theme.secondary,
       }}

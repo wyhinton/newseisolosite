@@ -3,12 +3,18 @@ import React from "react";
 import theme from "@static/theme";
 import { motion, Transition, Variants } from "framer-motion";
 import { Track } from "@interfaces/Track";
-import { useHomeActions, useHomeState, useIsPlaying } from "@hooks";
+import {
+  useHomeActions,
+  useHomeState,
+  useIsPlaying,
+  usePlaylist,
+} from "@hooks";
 
 const TrackItem = ({ track }: { track: Track }): JSX.Element => {
   // const { setCurrentTrack } = useHomeActions((actions) => actions);
 
   const isPlaying = useIsPlaying(track);
+  const { playTrack } = usePlaylist();
   // const {trackCategory} = usePl
   const variants: Variants = {
     paused: { opacity: 1, x: 0 },
@@ -35,20 +41,12 @@ const TrackItem = ({ track }: { track: Track }): JSX.Element => {
         position: "relative",
         marginRight: "2rem",
         borderRadius: theme.borderRadius,
-        // backgroundColor: "",
-        // backgroundColor: "rgba(0,0,0,0)",
-        // backgroundColor: colors[i],
-        // backgroundColor: theme.primaryMedium,
-        // backgroundColor: "grey",
         justifyContent: "center",
-        // margin: "auto",
         display: "flex",
         flexDirection: "column",
-        // overflow: "hidden",
-        // position: "relative",
-        // border: "2px solid",
-        // borderColor: theme.secondary,
-        // borderColor: "black",
+      }}
+      onClick={(e) => {
+        playTrack(track);
       }}
       animate={isPlaying ? "active" : "paused"}
       variants={variants}
@@ -61,7 +59,8 @@ const TrackItem = ({ track }: { track: Track }): JSX.Element => {
         transition: { duration: 0.1 },
       }}
     >
-      <CornerBox/>
+      {/* <img style={{ height: "100%", width: "100%" }} src={track.visual}></img> */}
+      <CornerBox />
       <Audio track={track} />
     </motion.div>
   );
@@ -69,50 +68,47 @@ const TrackItem = ({ track }: { track: Track }): JSX.Element => {
 
 export default TrackItem;
 
-
-const CornerBox = ():JSX.Element =>{
-
+const CornerBox = (): JSX.Element => {
   const imgSize = 10;
   const containerStyle = {
     width: "100%",
     height: "100%",
     position: "absolute",
-    top: 0, 
-    left: 0, 
+    top: 0,
+    left: 0,
     opacity: 0,
-    
-  } as React.CSSProperties
+  } as React.CSSProperties;
 
   const base = {
     width: imgSize,
     height: imgSize,
     position: "absolute",
-  }
+  };
   const tls = {
     ...base,
-    left: 0, 
+    left: 0,
     top: 0,
-  } as React.CSSProperties
+  } as React.CSSProperties;
   const trs = {
     ...base,
-    right: 0, 
+    right: 0,
     transform: "scale(-1, 1)",
     top: 0,
-  } as React.CSSProperties
+  } as React.CSSProperties;
 
   const bls = {
     ...base,
     left: 0,
     bottom: 0,
     transform: "scale(1, -1)",
-  } as React.CSSProperties
+  } as React.CSSProperties;
 
   const brs = {
     ...base,
     right: 0,
     bottom: 0,
     transform: "scale(-1, -1)",
-  } as React.CSSProperties
+  } as React.CSSProperties;
 
   // const variants: Variants = {
   //   paused: { opacity: 1, x: 0 },
@@ -130,23 +126,21 @@ const CornerBox = ():JSX.Element =>{
   // };
 
   return (
-    <motion.div 
-    style = {containerStyle}
-    whileHover={{
-      scale: 1.1,
-      opacity: 1,
-      transition: { duration: 0.1 },
-    }}
+    <motion.div
+      style={containerStyle}
+      whileHover={{
+        scale: 1.1,
+        opacity: 1,
+        transition: { duration: 0.1 },
+      }}
     >
-      <img style = {tls} src = {`${process.env.PUBLIC_URL}/Icons/Corner.svg`}/>
-      <img style = {trs} src = {`${process.env.PUBLIC_URL}/Icons/Corner.svg`}/>
-      <img style = {bls} src = {`${process.env.PUBLIC_URL}/Icons/Corner.svg`}/>
-      <img style = {brs} src = {`${process.env.PUBLIC_URL}/Icons/Corner.svg`}/>
+      <img style={tls} src={`${process.env.PUBLIC_URL}/Icons/Corner.svg`} />
+      <img style={trs} src={`${process.env.PUBLIC_URL}/Icons/Corner.svg`} />
+      <img style={bls} src={`${process.env.PUBLIC_URL}/Icons/Corner.svg`} />
+      <img style={brs} src={`${process.env.PUBLIC_URL}/Icons/Corner.svg`} />
     </motion.div>
-
-  )
-}
-
+  );
+};
 
 // <!-- Generator: Adobe Illustrator 23.0.2, SVG Export Plug-In  -->
 // <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="44.8px"

@@ -33,7 +33,8 @@ const Violin = () => {
   );
   const matcapTexture = useLoader(
     TextureLoader,
-    `${process.env.PUBLIC_URL}/Textures/matcapred.jpg`
+    `${process.env.PUBLIC_URL}/Textures/matcapdarkpurple.png`
+    // `${process.env.PUBLIC_URL}/Textures/matcapred.jpg`
   );
 
   const group = useRef<Group>();
@@ -50,7 +51,8 @@ const Violin = () => {
           <mesh key={i} geometry={c.geometry} material={c.material}>
             <meshMatcapMaterial
               attach="material"
-              color="yellow"
+              opacity={0.5}
+              // color="yellow"
               matcap={matcapTexture}
             />
           </mesh>

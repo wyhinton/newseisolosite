@@ -19,11 +19,6 @@ const ViewCard = ({
   width,
   height,
 }: ViewCardProperties): JSX.Element => {
-  const cardStyle = {
-    width: width ?? "100%",
-    height: height ?? "100%",
-  } as React.CSSProperties;
-
   const viewCardContainerStyle = {
     width: "100%",
     border: "1px solid blue",
@@ -38,22 +33,5 @@ const ViewCard = ({
     </div>
   );
 };
-// const ViewCard = ({
-//   children,
-//   width,
-//   height,
-// }: ViewCardProperties): JSX.Element => {
-//   const cardStyle = {
-//     width: width ?? "100%",
-//     height: height ?? "100%",
-//   } as React.CSSProperties;
-//   return (
-//     <div className="dimmer-container" style={cardStyle}>
-//       <div className="dimmer">
-//         <div className="dimmer-inner">{children}</div>
-//       </div>
-//     </div>
-//   );
-// };
 
 export default ViewCard;

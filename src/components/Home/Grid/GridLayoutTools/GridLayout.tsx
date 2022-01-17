@@ -39,6 +39,8 @@ const GridLayout = ({
           "oneRecitalText",
           "threeRemixes",
           "projectInfo",
+          "trackInfo",
+          "waveform",
         ];
         const border = !noBorderArray.includes(c.i as string);
         const overflowHidden = showOverflowArray.includes(c.i as string);
@@ -109,7 +111,7 @@ const GridLayout = ({
       compactType={undefined}
       width={window.innerWidth}
       rowHeight={rowHeight}
-      cols={{ lg: 12, md: 12, sm: 12, xxs: 12 }}
+      cols={{ lg: 12, md: 12, sm: 12, xs: 12, xxs: 12 }}
       containerPadding={[padding, padding]}
       // verticalCompact={false}
       // onLayoutChange={function () {}}

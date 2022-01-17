@@ -1,15 +1,15 @@
 import { Layout } from "react-grid-layout";
 
 const layoutBase = [
-  { i: "projectInfo", x: 11, y: 0, w: 1, h: 1 },
-  { i: "about", x: 9, y: 0, w: 2, h: 2 },
+  // { i: "projectInfo", x: 11, y: 0, w: 1, h: 1 },
+  { i: "about", x: 0, y: 9, w: 3, h: 6 },
   { i: "oneRecitalText", x: 0, y: 2, w: 4, h: 1 },
   { i: "recitalTracks", x: 0, y: 3, w: 5, h: 2 },
   { i: "threeRemixes", x: 6, y: 2, w: 4, h: 1 },
   { i: "remixes", x: 6, y: 3, w: 5, h: 2 },
   { i: "title", x: 0, y: 0, w: 9, h: 2 },
-  { i: "trackInfo", x: 0, y: 5, w: 3, h: 6 },
-  { i: "waveform", x: 3, y: 5, w: 9, h: 6 },
+  { i: "trackInfo", x: 3, y: 7, w: 5, h: 4 },
+  { i: "waveform", x: 3, y: 5, w: 5, h: 2 },
   { i: "violin", x: 5, y: 2, w: 1, h: 3 },
 ];
 

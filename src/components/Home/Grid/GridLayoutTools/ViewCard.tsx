@@ -6,10 +6,12 @@ const ViewCard = ({
   children,
   border,
   overflowHidden,
+  radius,
 }: {
   children: JSX.Element | JSX.Element[];
   border: boolean;
   overflowHidden: boolean;
+  radius: number | undefined;
 }): JSX.Element => {
   const noBorderArray = ["arrow"];
 
@@ -17,7 +19,7 @@ const ViewCard = ({
     width: "100%",
     height: "100%",
     border: border ? "2px solid black" : "",
-    backgroundColor: theme.primary,
+    // backgroundColor: theme.primary,
     overflow: overflowHidden ? "hidden" : "visible",
     borderRadius: theme.borderRadius,
   } as React.CSSProperties;

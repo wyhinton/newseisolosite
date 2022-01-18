@@ -28,10 +28,12 @@ const theme = {
   border: "2px solid black",
   // borderRadius: 0,
   borderRadius: 10,
+  // borderRadius: 10,
   textDark: "black",
   text: "white",
   shadow: "5px 5px 15px 5px #000000",
-  titleFontFamily: "Nunito",
+  titleFontFamily: "Heming",
+  // titleFontFamily: "Nunito",
   // titleFontFamily: "Mimoid",
   // titleFontFamily: "OTR type",
   // titleFontFamily: "Hoover",
@@ -40,10 +42,10 @@ const theme = {
   // primaryFont: "Nunito",
   // primaryFont: "NeueMetana-Bold",
   // primaryFont: "Aber-Mono",
-  titleFont: "4vw",
+  titleFont: "3vw",
   bigFont: "3.5vw",
 
-  mediumFont: "2.5vw",
+  mediumFont: "1.5vw",
 };
 
 export default theme;

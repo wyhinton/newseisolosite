@@ -73,7 +73,7 @@ const HomeWidgetGrid = (): JSX.Element => {
   }, [trackCategory, appMode]);
 
   return (
-    <section id="home-body" style={{ width: "100vw" }}>
+    <section id="home-body" style={{ width: "100vw", paddingTop: "5vw" }}>
       <GridLayout className={"layout"} layout={[...curLayout]}>
         {/* <AboutTriggerWidget key="projectInfo" /> */}
         <AboutWidget key="about" track={activeTrack} />
@@ -86,16 +86,16 @@ const HomeWidgetGrid = (): JSX.Element => {
           key="remixes"
           // appMode={appMode}
         />
-        <TitleWidget key="title" />
+        {/* <TitleWidget key="title" /> */}
 
         <TrackInfoWidget key="trackInfo" track={activeTrack} />
         {/* <Time key="time" progress={progress} track={activeTrack} /> */}
-        <WaveformWidget
+        {/* <WaveformWidget
           key="waveform"
-          progress={progress}
+          // progress={progress}
           track={activeTrack}
-        />
-        <ViolinWidget key="violin" />
+        /> */}
+        {/* <ViolinWidget key="violin" /> */}
       </GridLayout>
     </section>
   );

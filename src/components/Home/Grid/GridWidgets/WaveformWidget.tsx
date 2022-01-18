@@ -7,30 +7,38 @@ import WaveformSDF from "./WaveformWidget/WaveformSDF";
 import Canvas from "react-responsive-canvas";
 import CanvasGradient from "../../../Testing/CanvasGradient";
 import AudioDataCanvas from "./WaveformWidget/AudioDataCanvas";
-import { useElementSize } from "@hooks";
+import { useElementSize, usePlaylist } from "@hooks";
 import RGLWaveform from "./WaveformWidget/RGLVersion/RGLWaveform";
 
-const WaveformWidget = ({
-  progress,
-  track,
-}: {
-  progress: number;
-  track: Track;
-}): JSX.Element => {
+const WaveformWidget = ({}: {}): JSX.Element => {
   const containerStyle = {
     width: "100%",
     height: "100%",
     position: "relative",
   } as React.CSSProperties;
-  const [containerRef, { width, height }] = useElementSize();
 
+  const { currentTrack } = usePlaylist();
+  const [progress, setProgress] = useState(0);
+  // const audioRef = useRef<HTMLAudioElement>();
+
+  // useEffect(()=>{
+  //   audioRef.current = document.getElementById("audio_"+currentTrack.title);
+  // },[currentTrack]);
+
+  // useEffect(()=>{
+  //   console.log(currentTrack);
+  //   // const audio
+  // },[currentTrack]);
+
+  const [containerRef, { width, height }] = useElementSize();
+  // const progress = useS
   return (
     <div style={containerStyle} ref={containerRef}>
       {/* <WaveformSDF /> */}
-      {/* <RGLWaveform width={width} height={height} /> */}
-      {/* <AudioDataCanvas width={width} /> */}
+      {/* <RGLWaveform width={width} height={height} />
+      <AudioDataCanvas width={width} /> */}
       {/* <Canvas id="sdf-canvas" /> */}
-      <Waveform3d progress={progress} track={track} />
+      <Waveform3d track={currentTrack} />
       {/* <Grid></Grid> */}
     </div>
   );

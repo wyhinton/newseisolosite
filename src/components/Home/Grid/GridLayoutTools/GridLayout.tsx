@@ -34,7 +34,16 @@ const GridLayout = ({
   const wrappedWidgets = useMemo(
     () =>
       layout.map((c, i) => {
-        const noBorderArray = ["arrow", "recitalTracks", "remixes"];
+        const noBorderArray = [
+          "arrow",
+          "recitalTracks",
+          "remixes",
+          "oneRecitalText",
+          "threeRemixes",
+          "trackInfo",
+          "violin",
+          "about",
+        ];
         const showOverflowArray = [
           "oneRecitalText",
           "threeRemixes",
@@ -44,6 +53,7 @@ const GridLayout = ({
         ];
         const border = !noBorderArray.includes(c.i as string);
         const overflowHidden = showOverflowArray.includes(c.i as string);
+        // const overflowHidden = showOverflowArray.includes(c.i as string);
         const id = c.i;
         return (
           <div key={id} id={id}>
@@ -71,7 +81,11 @@ const GridLayout = ({
               id={id}
               style={cardContainerStyle}
             >
-              <ViewCard border={border} overflowHidden={overflowHidden}>
+              <ViewCard
+                border={border}
+                overflowHidden={overflowHidden}
+                radius={undefined}
+              >
                 {children[i]}
               </ViewCard>
             </motion.div>
@@ -81,6 +95,7 @@ const GridLayout = ({
     [layout]
   );
   useEffect(() => {
+    // const ratio = height / (screen.height - 95);
     const ratio = height / screen.height;
     const minRatioWindowToScreen = 0.61;
     if (ratio > minRatioWindowToScreen) {
@@ -102,6 +117,8 @@ const GridLayout = ({
       onWidthChange={(e) => {
         console.log(e);
       }}
+      //
+      // allowOverlap
       isDraggable={false}
       className={className}
       layouts={layouts}

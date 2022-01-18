@@ -205,6 +205,32 @@ const Slideshow = ({
     x.set(1);
   }, [track]);
 
+  const imageTrans = () => {
+    return progress > 0.0 ? (
+      <GLTransition
+        from={fromTexture}
+        to={toTexture}
+        progress={progress}
+        transition={aboutTransition}
+      />
+    ) : (
+      <LinearCopy>{toTexture}</LinearCopy>
+    );
+  };
+
+  const videoTrans = () => {
+    return progress > 0.0 ? (
+      <GLTransition
+        from={fromTexture}
+        to={toTexture}
+        progress={progress}
+        transition={aboutTransition}
+      />
+    ) : (
+      <LinearCopy>{toTexture}</LinearCopy>
+    );
+  };
+
   return progress > 0.0 ? (
     <GLTransition
       from={fromTexture}

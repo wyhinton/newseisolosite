@@ -40,7 +40,7 @@ const Info = ({ track }: { track: Track }): JSX.Element => {
   const InfoContainerStyle = {
     width: "100%",
     height: "100%",
-    backgroundColor: theme.primaryDark,
+    backgroundColor: theme.primaryMedium,
     color: "white",
 
     // marginTop: "12em",

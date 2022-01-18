@@ -239,6 +239,13 @@ const AudioForm = ({ track }: { track: Track }) => {
     }
   }, []);
 
+  const matcapTexture = useLoader(
+    TextureLoader,
+    `${process.env.PUBLIC_URL}/Textures/mats/BluePearl.png`
+    // `${process.env.PUBLIC_URL}/Textures/matcapdarkpurple.png`
+    // `${process.env.PUBLIC_URL}/Textures/matcapred.jpg`
+  );
+
   return (
     <group ref={groupRef}>
       <mesh
@@ -255,13 +262,19 @@ const AudioForm = ({ track }: { track: Track }) => {
           //     0
         }}
       >
-        <meshPhongMaterial
+        {/* <meshPhongMaterial
           attach="material"
           color="#f3f3f3"
           emissive={new Color(1, 0, 0)}
           shininess={100}
           specular={new Color(0, 0.5, 0)}
           // wireframe={true}
+        /> */}
+        <meshMatcapMaterial
+          attach="material"
+          opacity={0.5}
+          // color="yellow"
+          matcap={matcapTexture}
         />
         {/* <meshNormalMaterial /> */}
         {/* <shaderMaterial

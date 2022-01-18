@@ -7,10 +7,8 @@ const TitleWidget = (): JSX.Element => {
       style={{
         padding: ".5rem",
         height: "100%",
-        // width: "fit-content",
         fontSize: theme.titleFont,
         fontWeight: "bold",
-        // fontSize: theme.titleFont,
         position: "relative",
         justifyContent: "center",
         margin: "auto",
@@ -18,8 +16,7 @@ const TitleWidget = (): JSX.Element => {
         alignItems: "center",
         width: "100%",
         fontFamily: theme.titleFontFamily,
-
-        // backgroundColor: theme.secondary,
+        color: "white",
       }}
     >
       Seisolo.io: Remixing the Recital

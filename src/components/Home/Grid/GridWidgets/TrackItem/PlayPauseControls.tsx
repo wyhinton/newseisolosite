@@ -5,6 +5,7 @@ import { Track } from "@interfaces/Track";
 import "@css/PlayButton.scss";
 import { useIsPlaying, usePlaylist } from "@hooks";
 import theme from "@static/theme";
+import { motion } from "framer-motion";
 
 const PlayPauseControls = ({ track }: { track: Track }): JSX.Element => {
   const { playTrack, pauseTrack } = usePlaylist();
@@ -12,16 +13,27 @@ const PlayPauseControls = ({ track }: { track: Track }): JSX.Element => {
   const isPlaying = useIsPlaying(track);
 
   return (
-    <div
+    <motion.div
       style={{
-        // backgroundColor: "blue",
-        // borderRadius: "50%",
-        width: "fit-content",
+        width: "50%",
+        height: "50%",
+        // backgroundColor: "red",
+        border: "1px solid red",
         padding: "5px",
         position: "absolute",
-        // border: "1px solid black",
-        top: 0,
-        left: 0,
+        display: "flex",
+        justifyContent: "center",
+        // top: 0,
+        // left: 0,
+        opacity: 0,
+        zIndex: 1000,
+        left: "50%",
+        top: "50%",
+        transform: "translate(-50%,-50%)",
+      }}
+      whileHover={{
+        opacity: 1,
+        transition: { duration: 0.1 },
       }}
     >
       {isPlaying ? (
@@ -39,7 +51,7 @@ const PlayPauseControls = ({ track }: { track: Track }): JSX.Element => {
           }}
         />
       )}
-    </div>
+    </motion.div>
   );
 };
 
@@ -51,18 +63,19 @@ const PlayButton = ({
   handleClick: () => void;
 }): JSX.Element => {
   return (
-    <div
+    <motion.div
       className={"play-button-item"}
       onClick={(e) => {
         handleClick();
       }}
       style={{
-        width: 10,
+        width: "50%",
         height: "100%",
         // backgroundColor: "red",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        opacity: 1,
       }}
     >
       <svg
@@ -78,7 +91,7 @@ const PlayButton = ({
           transform="translate(-106.09 -141)"
         />
       </svg>
-    </div>
+    </motion.div>
   );
 };
 const PauseButton = ({
@@ -93,7 +106,7 @@ const PauseButton = ({
         handleClick();
       }}
       style={{
-        width: 10,
+        width: "50%",
         height: "100%",
         // backgroundColor: "red",
         display: "flex",

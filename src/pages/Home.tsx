@@ -20,10 +20,13 @@ import AboutModal from "@components/Home/Modals/AboutModal";
 import ReturnButton from "@components/ReturnButton";
 import appConfig from "@static/appConfig";
 import AboutButton from "@components/Home/AboutButton";
+import TopBar from "@components/Home/TopBar";
+import ViolinWidget from "@components/Home/Grid/GridWidgets/ViolinWidget";
+import WaveformWidget from "@components/Home/Grid/GridWidgets/WaveformWidget";
 export type HomeMode = "player" | "notes" | "about";
 
 const Home = (): JSX.Element => {
-  const { trackCategory } = usePlaylist();
+  const { trackCategory, currentTrack } = usePlaylist();
   const { appMode } = useApp();
 
   const audio = useRef(null);
@@ -38,24 +41,37 @@ const Home = (): JSX.Element => {
     setCurLayout(defaultLayout);
   }, []);
 
-  useEffect(() => {
-    if (trackCategory === "remix") {
-      setCurLayout(defaultLayout);
-    }
-
-    if (trackCategory === "recital") {
-      setCurLayout(recitalLayout);
-    }
-  }, [trackCategory, appMode]);
-
   return (
     <StoreProvider store={homeStore}>
       <section style={{ width: "100vw" }} className="dot-fill">
         {appConfig.showIntro && <IntroModal />}
         <AboutButton />
+        <TopBar />
         <ReturnButton />
         <AboutModal />
         <HomeWidgetGrid />
+        <div
+          style={{
+            height: "100%",
+            width: "100%",
+            position: "absolute",
+            top: 0,
+            zIndex: 0,
+          }}
+        >
+          <ViolinWidget track={currentTrack} />
+        </div>
+        <div
+          style={{
+            height: "20%",
+            width: "100%",
+            position: "absolute",
+            top: "50%",
+            zIndex: 0,
+          }}
+        >
+          <WaveformWidget />
+        </div>
       </section>
     </StoreProvider>
   );

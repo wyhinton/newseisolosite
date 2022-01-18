@@ -1,4 +1,4 @@
-import React, { Suspense, useRef } from "react";
+import React, { Suspense, useEffect, useRef } from "react";
 import { Canvas, useThree, useFrame, useLoader } from "react-three-fiber";
 // import { useGLTF } from "drei";
 import {
@@ -20,6 +20,9 @@ import {
   useProgress,
 } from "@react-three/drei";
 import { GLTF as GLTFThree } from "three/examples/jsm/loaders/GLTFLoader";
+import { usePlaylist, useTrackCategory } from "@hooks";
+import { Track } from "@interfaces/Track";
+import { useSpring } from "framer-motion";
 declare module "three-stdlib" {
   export interface GLTF extends GLTFThree {
     nodes: Record<string, Mesh>;
@@ -27,7 +30,7 @@ declare module "three-stdlib" {
   }
 }
 
-const Violin = () => {
+const Violin = ({ track }: { track: Track }) => {
   const { nodes } = useGLTF(
     `${process.env.PUBLIC_URL}/Models/realistic-violin.glb`
   );
@@ -40,6 +43,36 @@ const Violin = () => {
   const group = useRef<Group>();
   const target = nodes.V as unknown as Group;
   const children = target.children as Mesh[];
+
+  const xPos = useSpring(0, { damping: 10, stiffness: 10 });
+
+  useEffect(() => {
+    if (group.current) {
+      if (track.category === "remix") {
+        xPos.set(50);
+      } else {
+        xPos.set(-50);
+      }
+    }
+  }, [track.category]);
+
+  xPos.onChange((last) => {
+    group.current.position.x = last;
+  });
+
+  // useTrackCategory(
+  //   () => {
+  //     if (group.current) {
+  //       // group.current.position.x = 0;
+  //     }
+  //   },
+  //   () => {
+  //     if (group.current) {
+  //       group.current.position.x = 100;
+  //     }
+  //   }
+  // );
+
   useFrame(() => {
     group.current.rotation.y += 0.01;
   });
@@ -65,14 +98,14 @@ const Violin = () => {
 // Loads the skybox texture and applies it to the scene.
 
 // Lights
-const ViolinWidget = (): JSX.Element => {
+const ViolinWidget = ({ track }: { track: Track }): JSX.Element => {
   return (
     <Suspense fallback={<Loader />}>
       <Canvas className="canvas">
         <OrthographicCamera makeDefault zoom={10.1} position={[0, 0, 20]} />
         <OrbitControls />
         {/* <Sphere /> */}
-        <Violin />
+        <Violin track={track} />
         {/* <SkyBox /> */}
       </Canvas>
     </Suspense>

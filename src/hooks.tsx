@@ -46,6 +46,25 @@ export function useApp(): useAppProps {
 }
 //USE PLAYLIST
 
+export function useTrackCategory(
+  onRemix?: () => void,
+  onRecital?: () => void
+): void {
+  const currentTrackState = useHomeState((state) => state.currentTrack);
+  // const [curTrack, setcurTrack] = useState(currentTrackState);
+  // useEffect(() => {
+  //   setcurTrack(currentTrackState);
+  // }, [currentTrackState]);
+  // useEffect(() => {
+  //   console.log(curTrack);
+  //   // if (curTrack.category === "recital") {
+  //   //   onRecital();
+  //   // } else {
+  //   //   onRemix();
+  //   // }
+  // }, [curTrack]);
+}
+
 interface UsePlaylistProps {
   currentTrack: Track;
   setCurrentTrack: ActionCreator<string>;

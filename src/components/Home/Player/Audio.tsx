@@ -29,7 +29,7 @@ const Audio = ({ track }: { track: Track }): JSX.Element => {
       // className={songContainerClass}
       style={{
         borderRadius: theme.borderRadius,
-        border: "2px solid black",
+        // border: "2px solid black",
         overflow: "hidden",
         // paddingLeft: `clamp(${padMin}, 1vw, ${padMax})`,
         // paddingRight: `clamp(${padMin}, 1vw, ${padMax})`,
@@ -41,9 +41,9 @@ const Audio = ({ track }: { track: Track }): JSX.Element => {
       {/* {track.category === "remix" && <ArtistImage track={track} />} */}
       <AudioPlayer track={track} />
       <div style={playPauseStyle}>
-        <PlayPauseControls track={track} />
+        {/* <PlayPauseControls track={track} /> */}
       </div>
-      <Song track={track} />
+      {/* <Song track={track} /> */}
     </FlexRow>
   );
 };

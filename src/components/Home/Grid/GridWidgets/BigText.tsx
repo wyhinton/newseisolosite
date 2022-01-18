@@ -12,12 +12,13 @@ const BigText = ({
 }): JSX.Element => {
   const variants = {
     normal: {
-      backgroundColor: theme.primary,
+      // backgroundColor: theme.primary,
     },
     highlight: {
       opacity: 1,
       // scale: 2,
-      backgroundColor: theme.secondary,
+      // backgroundColor: theme.secondary,
+      color: theme.secondary,
       transition: {
         duration: 0.3,
         delayChildren: 0.5,
@@ -31,14 +32,15 @@ const BigText = ({
         style={{
           width: "100%",
           height: "100%",
+          borderLeft: "1px solid black",
           // width: "max-content",
           // fontFamily: theme.primaryFont,
-          fontSize: theme.mediumFont,
+          fontSize: theme.bigFont,
           alignItems: "center",
           display: "flex",
           fontWeight: "bold",
           paddingLeft: "1rem",
-          backgroundColor: active ? "green" : "",
+          // backgroundColor: active ? "green" : "",
           overflow: "visible",
         }}
         variants={variants}

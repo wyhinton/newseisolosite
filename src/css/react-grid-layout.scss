@@ -3,6 +3,7 @@ $length: 400ms;
 .react-grid-layout {
   position: relative;
   transition: height $length ease;
+  z-index: 1;
 }
 .react-grid-item {
   transition: all $length ease;

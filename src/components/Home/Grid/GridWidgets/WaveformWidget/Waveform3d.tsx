@@ -116,13 +116,7 @@ const Grid = ({ track }: { track: Track }): JSX.Element => {
 // Loads the skybox texture and applies it to the scene.
 
 // Lights
-const Waveform3d = ({
-  progress,
-  track,
-}: {
-  progress: number;
-  track: Track;
-}): JSX.Element => {
+const Waveform3d = ({ track }: { track: Track }): JSX.Element => {
   const items = Array.from(Array(50).keys());
   const orbitControlsRef = useRef(null);
   const cameraRef = useRef<THREE.OrthographicCamera>();
@@ -179,7 +173,7 @@ const Waveform3d = ({
           // scale={3}
           position={[0, 0, 100]}
         />
-        <OrbitControls/>
+        <OrbitControls />
         {/* <NewControls
           ref={orbitControlsRef}
           minX={-100}
@@ -216,11 +210,11 @@ const Geo = ({ track }: { track: Track }): JSX.Element => {
   const audioElem = useRef<HTMLAudioElement>();
 
   const groupRef = useRef<Group>();
-  // useEffect(() => {
-  //   audioElem.current = document.getElementById(
-  //     "audio_" + track.title
-  //   ) as HTMLAudioElement;
-  // }, [track.title]);
+  useEffect(() => {
+    audioElem.current = document.getElementById(
+      "audio_" + track.title
+    ) as HTMLAudioElement;
+  }, [track.title]);
 
   useFrame((state) => {
     const time = state.clock.getElapsedTime();

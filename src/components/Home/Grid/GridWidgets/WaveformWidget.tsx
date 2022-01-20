@@ -21,15 +21,6 @@ const WaveformWidget = ({}: {}): JSX.Element => {
   const [progress, setProgress] = useState(0);
   // const audioRef = useRef<HTMLAudioElement>();
 
-  // useEffect(()=>{
-  //   audioRef.current = document.getElementById("audio_"+currentTrack.title);
-  // },[currentTrack]);
-
-  // useEffect(()=>{
-  //   console.log(currentTrack);
-  //   // const audio
-  // },[currentTrack]);
-
   const [containerRef, { width, height }] = useElementSize();
   // const progress = useS
   return (
@@ -38,7 +29,7 @@ const WaveformWidget = ({}: {}): JSX.Element => {
       {/* <RGLWaveform width={width} height={height} />
       <AudioDataCanvas width={width} /> */}
       {/* <Canvas id="sdf-canvas" /> */}
-      <Waveform3d track={currentTrack} />
+      <Waveform3d />
       {/* <Grid></Grid> */}
     </div>
   );

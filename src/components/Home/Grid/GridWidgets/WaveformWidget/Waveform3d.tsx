@@ -1,23 +1,18 @@
-import React, { RefObject, Suspense, useEffect, useMemo, useRef } from "react";
+import React, {
+  RefObject,
+  Suspense,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import theme from "@static/theme";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import { GLTF as GLTFThree } from "three/examples/jsm/loaders/GLTFLoader";
 import { KernelSize } from "postprocessing";
 import glsl from "babel-plugin-glsl/macro";
-import {
-  OrbitControls,
-  OrthographicCamera,
-  shaderMaterial,
-  useGLTF,
-  useScroll,
-} from "@react-three/drei";
-import {
-  Canvas,
-  extend,
-  useFrame,
-  ReactThreeFiber,
-  useThree,
-} from "react-three-fiber";
+import { OrbitControls, OrthographicCamera } from "@react-three/drei";
+import { Canvas, useFrame } from "react-three-fiber";
 // import { useGLTF } from "drei";
 import THREE, {
   CubeTextureLoader,
@@ -47,6 +42,8 @@ import AudioForm from "./AudioForm";
 import { OrbitControls as CustomControls } from "../../../Graphics/CameraControls/CustomControls";
 // import { NewControls } from "./Graphics/CameraControls/NewControls";
 import { useRenderRoot } from "leva/dist/declarations/src/components/Leva";
+import WaveformUI from "./WaveformUI";
+import { useIsPlaying, usePlaylist, useWindowSize } from "@hooks";
 
 declare module "three-stdlib" {
   export interface GLTF extends GLTFThree {
@@ -116,65 +113,46 @@ const Grid = ({ track }: { track: Track }): JSX.Element => {
 // Loads the skybox texture and applies it to the scene.
 
 // Lights
-const Waveform3d = ({ track }: { track: Track }): JSX.Element => {
-  const items = Array.from(Array(50).keys());
+const Waveform3d = (): JSX.Element => {
   const orbitControlsRef = useRef(null);
   const cameraRef = useRef<THREE.OrthographicCamera>();
-  const otherCameraRef = useRef<THREE.OrthographicCamera>();
-
-  // const { scene, gl } = useThree();
-  // useEffect(() => {
-  //   if (cameraRef.current) {
-  //     const startPos = cameraRef.current.position;
-  //     console.log(cameraRef.current);
-  //     if (orbitControlsRef.current) {
-  //       console.log(orbitControlsRef.current);
-  //       // orbitControlsRef.current.object =
-  //       cameraRef.current.addEventListener("change", (e) => {
-  //         console.log("CHANGING");
-  //         console.log(e);
-  //       });
-  //       orbitControlsRef.current.orbitControlsRef.current.addEventListener(
-  //         "change",
-  //         (e) => {
-  //           console.log("CHANGING");
-  //           console.log(e);
-  //           console.log(e.target);
-  //           const target: OC = e.target;
-  //           const controlPos = target.target;
-  //           cameraRef.current.position.set(
-  //             controlPos.x,
-  //             startPos.y,
-  //             startPos.z
-  //           );
-  //           console.log(target.target);
-  //         }
-  //       );
-  //     }
-  //   }
-  // }, []);
-  // var vector = new THREE.Vector3();
-  // var projector = new Projector();
-  // projector.projectVector(
-  //   vector.setFromMatrixPosition(object.matrixWorld),
-  //   camera
-  // );
-
+  const { currentTrack, previousTrack, isPlaying } = usePlaylist();
+  // const isPlaying = useIsPlaying(currentTrack);
+  const { width, height } = useWindowSize();
+  const [trig, setTrig] = useState(0);
   return (
-    <Suspense fallback={<div>hello</div>}>
-      <Canvas className="waveform-canvas" shadows dpr={[1, 2]}>
-        <color attach="background" args={[theme.primary]} />
-        <ambientLight color={"black"} intensity={0.5} />
-        <pointLight position={[5, 5, 5]} />
-        <OrthographicCamera
-          ref={cameraRef}
-          makeDefault
-          zoom={2}
-          // scale={3}
-          position={[0, 0, 100]}
-        />
-        <OrbitControls />
-        {/* <NewControls
+    <div
+      onClick={(e) => {
+        setTrig(trig + 1);
+      }}
+      style={{ width: "100%", height: "100%" }}
+    >
+      <Suspense fallback={<div>hello</div>}>
+        <Canvas
+          className="waveform-canvas"
+          shadows
+          // dpr={[1, 2]}
+          // width={width}
+          // height={height}
+        >
+          {/* <color attach="background" args={[theme.primary]} /> */}
+          <ambientLight color={"black"} intensity={0.5} />
+          <pointLight position={[5, 5, 5]} />
+          <OrthographicCamera
+            ref={cameraRef}
+            makeDefault
+            zoom={20}
+            // scale={3}
+            position={[0, 0, 10]}
+          />
+          <OrbitControls makeDefault />
+          <WaveformUI
+            trig={trig}
+            track={currentTrack}
+            previousTrack={previousTrack}
+            isPlaying={isPlaying}
+          />
+          {/* <NewControls
           ref={orbitControlsRef}
           minX={-100}
           maxX={100}
@@ -185,10 +163,11 @@ const Waveform3d = ({ track }: { track: Track }): JSX.Element => {
           minZoom={0}
           maxZoom={1}
         /> */}
-        <Geo track={track} />
-        {/* </EffectComposer> */}
-      </Canvas>
-    </Suspense>
+          <Geo track={currentTrack} />
+          {/* </EffectComposer> */}
+        </Canvas>
+      </Suspense>
+    </div>
   );
 };
 
@@ -221,14 +200,14 @@ const Geo = ({ track }: { track: Track }): JSX.Element => {
     // cubeCamera.update(gl, scene);
     if (audioElem.current && !audioElem.current.paused && groupRef.current) {
       // console.log(audioElem.current.currentTime);
-      groupRef.current.position.x -= 1;
+      groupRef.current.position.x -= 0.1;
     }
     // console.log(progress);
   });
 
   return (
     <group ref={groupRef}>
-      <Grid track={track} />
+      {/* <Grid track={track} /> */}
       <AudioForm track={track} />
       {/* <AudioForm track={track} /> */}
     </group>

@@ -4,6 +4,7 @@ $length: 400ms;
   position: relative;
   transition: height $length ease;
   z-index: 1;
+  pointer-events: none;
 }
 .react-grid-item {
   transition: all $length ease;

@@ -119,13 +119,14 @@ const GridLayout = ({
       }}
       //
       // allowOverlap
-      isDraggable={false}
+      // isDraggable={false}
+      isDraggable={true}
       className={className}
       layouts={layouts}
       // layouts={ll}
       useCSSTransforms={animate}
       margin={[padding, padding]}
-      compactType={undefined}
+      // compactType={undefined}
       width={window.innerWidth}
       rowHeight={rowHeight}
       cols={{ lg: 12, md: 12, sm: 12, xs: 12, xxs: 12 }}

@@ -10,6 +10,7 @@ import CanvasGradient from "../components/Testing/CanvasGradient";
 import BasicAudioSetup from "./BasicAudioSetup";
 import SphereSDF from "./SphereSDF";
 import CSS3DDemo from "./Testing/CSS3DDemo";
+import TrackTesting from "@components/Testing/TrackTesting";
 
 interface TrackData {
   duration: number;
@@ -25,7 +26,8 @@ interface MyData {
 const Testing = (): JSX.Element => {
   return (
     <section>
-      <CSS3DDemo />
+      {/* <CSS3DDemo /> */}
+      <TrackTesting />
       {/* <SamplingTesting /> */}
       {/* <BasicAudioSetup /> */}
       {/* <SphereSDF /> */}

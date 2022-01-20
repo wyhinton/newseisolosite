@@ -77,9 +77,9 @@ extend({ ColorMaterial });
 const AudioForm = ({ track }: { track: Track }) => {
   const pathRef = useRef<Mesh>();
   const points = Array.from(Array(numPoints).keys()).map((n, i) => {
-    const dist = 10;
+    const dist = 0.5;
     const y = i * dist;
-    const x = getRandomIntInclusive(0, 30);
+    const x = getRandomIntInclusive(0, 5);
     return new Vector2(x, y);
   });
   //   const samplePoints = fetch(`${process.env.PUBLIC_URL}/TrackData/TRACKS_DATA.json`)

@@ -61,13 +61,16 @@ const Home = (): JSX.Element => {
         >
           <ViolinWidget track={currentTrack} />
         </div>
+
         <div
           style={{
-            height: "20%",
+            height: "100%",
             width: "100%",
             position: "absolute",
-            top: "50%",
+            top: 0,
+            left: 0,
             zIndex: 0,
+            // backgroundColor: "orange",
           }}
         >
           <WaveformWidget />

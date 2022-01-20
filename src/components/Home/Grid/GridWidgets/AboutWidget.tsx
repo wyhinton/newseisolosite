@@ -21,25 +21,38 @@ import aboutTransition from "./AboutWidget/aboutTransition";
 import theme from "@static/theme";
 import { opacity } from "ui-box";
 
-const AboutWidget = ({ track }: { track: Track }): JSX.Element => {
+const AboutWidget = ({
+  track,
+  previousTrack,
+}: {
+  track: Track;
+  previousTrack: Track;
+}): JSX.Element => {
   // const { currentTrack } = usePlaylist();
 
   const aboutTextContainerStyle = {
-    width: "100%",
-    height: "100%",
+    width: 500,
+    // width: "100%",
+    height: 500,
     fontSize: "3vh",
   } as React.CSSProperties;
 
   return (
     <motion.div className={"track-about-text"} style={aboutTextContainerStyle}>
-      <ArtistImage />
+      <ArtistImage track={track} previousTrack={previousTrack} />
     </motion.div>
   );
 };
 
 export default AboutWidget;
 
-const ArtistImage = (): JSX.Element => {
+const ArtistImage = ({
+  track,
+  previousTrack,
+}: {
+  track: Track;
+  previousTrack: Track;
+}): JSX.Element => {
   const containerStyle = {
     width: "100%",
     height: "100%",
@@ -48,7 +61,8 @@ const ArtistImage = (): JSX.Element => {
     overflow: "hidden",
     borderRadius: theme.borderRadius,
   } as React.CSSProperties;
-  const { currentTrack, previousTrack } = usePlaylist();
+  // const { currentTrack, previousTrack } = usePlaylist();
+  const currentTrack = track;
   const [image, setImage] = useState(currentTrack.visual);
 
   useEffect(() => {

@@ -27,7 +27,7 @@ const BigText = ({
   };
 
   return (
-    <FlexRow height="100%">
+    <FlexRow height="100%" style={{ backdropFilter: "blur(1px)" }}>
       <motion.div
         style={{
           width: "100%",
@@ -42,6 +42,7 @@ const BigText = ({
           paddingLeft: "1rem",
           // backgroundColor: active ? "green" : "",
           overflow: "visible",
+          backdropFilter: "blur 5px",
         }}
         variants={variants}
         animate={active ? "highlight" : "normal"}

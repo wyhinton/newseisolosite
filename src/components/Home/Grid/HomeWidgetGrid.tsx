@@ -76,7 +76,7 @@ const HomeWidgetGrid = (): JSX.Element => {
     <section id="home-body" style={{ width: "100vw", paddingTop: "5vw" }}>
       <GridLayout className={"layout"} layout={[...curLayout]}>
         {/* <AboutTriggerWidget key="projectInfo" /> */}
-        <AboutWidget key="about" track={activeTrack} />
+        {/* <AboutWidget key="about" track={activeTrack} /> */}
         <OneRecitalTextWidget key="oneRecitalText" />
         <RecitalWidgets key="recitalTracks" />
 
@@ -88,7 +88,7 @@ const HomeWidgetGrid = (): JSX.Element => {
         />
         {/* <TitleWidget key="title" /> */}
 
-        <TrackInfoWidget key="trackInfo" track={activeTrack} />
+        {/* <TrackInfoWidget key="trackInfo" track={activeTrack} /> */}
         {/* <Time key="time" progress={progress} track={activeTrack} /> */}
         {/* <WaveformWidget
           key="waveform"

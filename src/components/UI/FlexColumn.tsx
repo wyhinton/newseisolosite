@@ -10,7 +10,7 @@ const FlexColumn = ({
   className,
   justifyContent,
 }: {
-  children: JSX.Element | JSX.Element[];
+  children: JSX.Element | JSX.Element[] | string;
   padding?: string;
   style?: React.CSSProperties;
   width?: string;

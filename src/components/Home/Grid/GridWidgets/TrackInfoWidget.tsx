@@ -13,7 +13,10 @@ const TrackInfoWidget = ({ track }: { track: Track }): JSX.Element => {
     display: "flex",
   } as React.CSSProperties;
   const [showVideo, setShowVideo] = useState(false);
-  const { currentTrack, isPlaying, isRecital, trackCategory } = usePlaylist();
+  // const { currentTrack, isPlaying, isRecital, trackCategory } = usePlaylist();
+
+  const trackCategory = track.category;
+
   useEffect(() => {
     setShowVideo(trackCategory === "recital");
   }, [trackCategory]);
@@ -24,7 +27,7 @@ const TrackInfoWidget = ({ track }: { track: Track }): JSX.Element => {
       {/* {!showVideo && ( */}
       {/* <> */}
       {/* <ArtistImage track={currentTrack} /> */}
-      <Info track={currentTrack} />
+      <Info track={track} />
       {/* </> */}
       {/* )} */}
       {/* <ArtistImage track={currentTrack} /> */}
@@ -38,8 +41,8 @@ export default TrackInfoWidget;
 
 const Info = ({ track }: { track: Track }): JSX.Element => {
   const InfoContainerStyle = {
-    width: "100%",
-    height: "100%",
+    width: "50%",
+    height: "50%",
     backgroundColor: theme.primaryMedium,
     color: "white",
 

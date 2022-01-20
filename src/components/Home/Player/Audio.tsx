@@ -11,10 +11,6 @@ import theme from "@static/theme";
 import { motion } from "framer-motion";
 
 const Audio = ({ track }: { track: Track }): JSX.Element => {
-  // const songContainerClass = classNames("play-body", {
-  //   "play-body-playing": true,
-  // });
-
   const playPauseStyle = {
     height: "100%",
     // margin: "auto",
@@ -22,8 +18,6 @@ const Audio = ({ track }: { track: Track }): JSX.Element => {
   } as React.CSSProperties;
   // const { src, artist, title, link, about, category } = track;
 
-  const padMin = "0rem";
-  const padMax = ".5rem";
   return (
     <FlexRow
       // className={songContainerClass}

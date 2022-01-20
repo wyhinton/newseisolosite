@@ -3,6 +3,7 @@ export interface Theme {
   primaryInactive: string;
   primaryMedium: string;
   secondary: string;
+  secondaryRGB: [number, number, number];
   secondaryHover: string;
   stroke: string;
   transparent: string;
@@ -21,6 +22,7 @@ const theme = {
   primaryDark: "#1f1f1f",
   primaryMedium: "rgba(100, 100, 100, 255)",
   secondary: "#fff200",
+  secondaryRGB: [255, 242, 0],
   secondaryHover: "#b38900",
   primaryInactive: "#4c4c4c",
   transparent: "#0000",

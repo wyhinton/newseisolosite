@@ -127,10 +127,6 @@ const shaders = Shaders.create({
             float circXPos = ((ratio*z*third)-third*2.)/scaleX; 
             testPos = vec2(circXPos, y);
             float div = length(positions[i]-m)*.03;
-            // float radiusMult = 1.-length(mt-testPos)*2.;
-            // float radiusMult = abs(1.-length(testPos-(mt/1.5))*2.);
-            // float radiusMult = abs(1.-length(testPos-(mt/1.5))*2.);
-            // float radiusMult = abs(length((m.x*1.5)-circXPos));
             float radiusMult = length(m.x*scaleX-testPos);
             // float radiusMult = m.x*1.5-circXPos;
             vec2 pn = vec2(p.x/scaleX, p.y);
@@ -139,20 +135,9 @@ const shaders = Shaders.create({
                 pixel += Sphere(pn*1.5, testPos, (radius*dd)+-.2);
                 dist += Sphere(pn, testPos, (radius*2.*dd)+-.2);
             } else {
-                dist += Sphere(pn, testPos, (radius*dd)+-.2);
+                dist += Sphere(pn, testPos, (radius*dd)+-.17);
             }
-            // dist += Sphere(pn, testPos, (radius*dd)+-.2);
             pixel += dist;
-   
-
-            // pixel += Sphere(pn, testPos, (extraAdd+radius*dd)+-.2);
-            // pixel += Sphere(pn, testPos, (radius*dd)+-.2)*color;
-            // pixel += mix(color, vec3(0.), Sphere(pn, testPos, (radius*dd)+-.2));
-
-            // dq += Sphere(pn, testPos, extraAdd+(radius*dd)+-.1);
-            // mb += mBall(pn, testPos, (radius*dd)+-.2);
-            // pixel += Sphere(pn, testPos, radius*.1/dd);
-            // pixel += Sphere(p, testPos, radius);
         }
         if (dist>0.){
             col2 += vec3(.5);
@@ -258,7 +243,7 @@ const BubbleDots = ({
   posY.onChange((last) => {
     //   console.log(last);
     // console.log(last);
-    //   setOffset([posX.get(), last])
+    setOffset([posX.get(), last])
   });
   const onMouseMove = (e) => {
     // console.log("moving on canvas");
@@ -349,7 +334,7 @@ const BubbleDots = ({
           pointerEvents: "none",
         }}
       >
-           <ComposerTitle>Bach</ComposerTitle>
+        <ComposerTitle>Bach</ComposerTitle>
         <ComposerTitle>Bartok</ComposerTitle>
         <ComposerTitle>Ysaye</ComposerTitle>
       </div>
@@ -357,9 +342,9 @@ const BubbleDots = ({
         onClick={onClick}
         onMouseMove={onMouseMove}
         onMouseLeave={onMouseLeave}
-        width={size.width}
-        height={size.height}
-        style={{ zIndex: 0, pointerEvents: "all" }}
+        width={size.width + 100}
+        height={size.height + 100}
+        style={{ zIndex: 0, pointerEvents: "all", top: "-7vh", left: "-1vh" }}
       >
         <Node
           shader={shaders.helloGL}

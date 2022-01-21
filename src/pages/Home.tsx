@@ -23,6 +23,7 @@ import AboutButton from "@components/Home/AboutButton";
 import TopBar from "@components/Home/TopBar";
 import ViolinWidget from "@components/Home/Grid/GridWidgets/ViolinWidget";
 import WaveformWidget from "@components/Home/Grid/GridWidgets/WaveformWidget";
+import Nav from "@components/Home/Nav/Nav";
 export type HomeMode = "player" | "notes" | "about";
 
 const Home = (): JSX.Element => {
@@ -46,17 +47,19 @@ const Home = (): JSX.Element => {
       <section style={{ width: "100vw" }} className="dot-fill">
         {appConfig.showIntro && <IntroModal />}
         <AboutButton />
-        <TopBar />
+        {/* <TopBar /> */}
         <ReturnButton />
         <AboutModal />
         <HomeWidgetGrid />
+        <Nav />
         <div
           style={{
             height: "100%",
-            width: "100%",
+            width: "50%",
             position: "absolute",
             top: 0,
             zIndex: 0,
+            border: "1px solid red",
           }}
         >
           <ViolinWidget track={currentTrack} />

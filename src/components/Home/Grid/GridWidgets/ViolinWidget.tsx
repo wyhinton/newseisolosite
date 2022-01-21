@@ -49,9 +49,9 @@ const Violin = ({ track }: { track: Track }) => {
   useEffect(() => {
     if (group.current) {
       if (track.category === "remix") {
-        xPos.set(50);
+        xPos.set(0);
       } else {
-        xPos.set(-50);
+        xPos.set(0);
       }
     }
   }, [track.category]);

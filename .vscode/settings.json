@@ -1,3 +1,4 @@
 {
-  "cSpell.words": ["easings", "KOSIMA", "unparse"]
+  "cSpell.words": ["easings", "KOSIMA", "unparse"],
+  "editor.formatOnSave": true,
 }

@@ -15,6 +15,7 @@ export interface Theme {
   bigFont: string;
   mediumFont: string;
   titleFont: string;
+  logoFont: string;
 }
 
 const theme = {
@@ -45,9 +46,10 @@ const theme = {
   // primaryFont: "NeueMetana-Bold",
   // primaryFont: "Aber-Mono",
   titleFont: "3vw",
-  bigFont: "8.5vw",
+  bigFont: "6.5vw",
 
   mediumFont: "1.5vw",
+  logoFont: "Pexel",
 };
 
 export default theme;

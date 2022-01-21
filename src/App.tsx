@@ -10,7 +10,7 @@ import Testing from "./pages/Testing";
 import { StoreProvider } from "easy-peasy";
 import homeStore from "./stores/homeStore";
 import FXAADemoPage from "./pages/FXAADemoPage";
-import DAWApp from "@components/reactronica-0.4.6/website/components/DAWApp"
+// import DAWApp from "@components/reactronica-0.4.6/website/components/DAWApp";
 
 const App = (): JSX.Element => {
   const fetchCardDataGoogleSheetThunk = useStoreActions(
@@ -45,7 +45,7 @@ const App = (): JSX.Element => {
   return (
     <Router>
       <Route path="/app" component={Instrument} />
-      <Route path="/daw" component={DAWApp}/>
+      {/* <Route path="/daw" component={DAWApp}/> */}
       <StoreProvider store={homeStore}>
         <Route path="/" exact component={Home} />
       </StoreProvider>

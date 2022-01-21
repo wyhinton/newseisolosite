@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Suspense, useRef } from "react";
-import { Canvas, useThree, useFrame, useLoader } from "react-three-fiber";
+import { Canvas, useThree, useFrame, useLoader } from "@react-three/fiber";
 import {
   CubeTextureLoader,
   CubeCamera,
@@ -132,4 +132,3 @@ const ArrowWidget = (): JSX.Element => {
 };
 
 export default React.memo(ArrowWidget);
-

@@ -1,22 +1,24 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { useAspect } from "@react-three/drei";
-import THREE, {VideoTexture} from "three";
+import THREE, { VideoTexture } from "three";
 
 function VideoScene() {
   const size = useAspect(550, 850);
   const videoRef = useRef<HTMLVideoElement>();
-  // const vidTexture 
+  // const vidTexture
   const [video] = useState(() => {
     const vid = document.createElement("video");
-    vid.id = "current-video"
+    vid.id = "current-video";
     vid.src = `${process.env.PUBLIC_URL}/Videos/ROTOSCOPE_TEST_1.mp4`;
     vid.crossOrigin = "Anonymous";
     vid.loop = true;
     vid.muted = true;
     return vid;
   });
-      {/* <mesh scale={size * 0.5}> */}
+  {
+    /* <mesh scale={size * 0.5}> */
+  }
   // const vidTexture = new VideoTexture(document.getElementById("current-video") as HTMLVideoElement)
   // Keep in mind videos can only play once the user has interacted with the site ...
   useEffect(() => void video.play(), [video]);
@@ -27,35 +29,33 @@ function VideoScene() {
       {/* </shaderMaterial> */}
       <planeBufferGeometry />
       <meshBasicMaterial>
-      <videoTexture attach="map" args={[video]} />
-
+        <videoTexture attach="map" args={[video]} />
       </meshBasicMaterial>
     </mesh>
   );
 }
 
 export default VideoScene;
-// https://codesandbox.io/s/webglmaterialsenvmapsparallax-react-three-fiber-shadermaterial-7qh2w?from-embed
-
+// https://codesandbox.io/s/webglmaterialsenvmapsparallax-@react-three/fiber-shadermaterial-7qh2w?from-embed
 
 const shaderArgs = {
-    //   extensions: {
-    //     derivatives: "#extension GL_OES_standard_derivatives : enable",
-    //   },
-    uniforms: {
-        map: { value:  undefined}
+  //   extensions: {
+  //     derivatives: "#extension GL_OES_standard_derivatives : enable",
+  //   },
+  uniforms: {
+    map: { value: undefined },
     //   uTime: { value: 0 },
     //   uColor: { value: new Vector3(opts.red, opts.green, opts.blue) }, // Color Correction
     //   uShade: { value: opts.shade },
-    },
-    vertexShader: /*glsl*/ `
+  },
+  vertexShader: /*glsl*/ `
       varying vec3 vNormal;
       void main() {
         vNormal = normalize(normalMatrix * normal);
         gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
       } 
     `,
-    fragmentShader: /*glsl*/ `
+  fragmentShader: /*glsl*/ `
     varying vec2 vUv;
     uniform sampler2D map;
     void main() {
@@ -75,5 +75,4 @@ const shaderArgs = {
         gl_FragColor = vec4(videoColor.rgb, videoColor.a * blend); 
     }
     `,
-  };
-  
+};

@@ -1,5 +1,5 @@
 import React, {
-  RefObject,
+  forwardRef,
   Suspense,
   useEffect,
   useMemo,
@@ -11,8 +11,13 @@ import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import { GLTF as GLTFThree } from "three/examples/jsm/loaders/GLTFLoader";
 import { KernelSize } from "postprocessing";
 import glsl from "babel-plugin-glsl/macro";
-import { OrbitControls, OrthographicCamera } from "@react-three/drei";
-import { Canvas, useFrame } from "react-three-fiber";
+import {
+  OrbitControls,
+  OrbitControlsProps,
+  OrthographicCamera,
+  Stats,
+} from "@react-three/drei";
+import { Canvas, useFrame, useThree, ThreeEvent } from "@react-three/fiber";
 // import { useGLTF } from "drei";
 import THREE, {
   CubeTextureLoader,
@@ -30,6 +35,7 @@ import THREE, {
   LatheGeometry,
   Vector3,
   ShaderMaterial,
+  DoubleSide,
 } from "three";
 import { useControls } from "leva";
 import { OrbitControls as OC } from "three/examples/jsm/controls/OrbitControls";
@@ -37,13 +43,11 @@ import { Track } from "@interfaces/Track";
 import AudioForm from "./AudioForm";
 // https://codesandbox.io/s/yoga-r3f-lgl0j
 // import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-// import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
-// import { GLTF } from "three/examples/jsm/loaders/GLTFLoader";
 import { OrbitControls as CustomControls } from "../../../Graphics/CameraControls/CustomControls";
 // import { NewControls } from "./Graphics/CameraControls/NewControls";
-import { useRenderRoot } from "leva/dist/declarations/src/components/Leva";
 import WaveformUI from "./WaveformUI";
 import { useIsPlaying, usePlaylist, useWindowSize } from "@hooks";
+import PlayHead from "./AudioForm/PlayHead";
 
 declare module "three-stdlib" {
   export interface GLTF extends GLTFThree {
@@ -114,12 +118,18 @@ const Grid = ({ track }: { track: Track }): JSX.Element => {
 
 // Lights
 const Waveform3d = (): JSX.Element => {
-  const orbitControlsRef = useRef(null);
+  // const orbitControlsRef = useRef<OC>(null);
+  // const orbitControlsRef = useRef<OrbitControls>(null);
+  // const orbitControlsRef = useRef<OrbitControlsProps>(null);
   const cameraRef = useRef<THREE.OrthographicCamera>();
   const { currentTrack, previousTrack, isPlaying } = usePlaylist();
   // const isPlaying = useIsPlaying(currentTrack);
   const { width, height } = useWindowSize();
   const [trig, setTrig] = useState(0);
+  //  {x: -10.754739638502834, y: 8.381388045740534, z: -0.3001230079934838}
+  // {x: -11.908978394837014, y: 11.714935091201424, z: -1.3115463020322258}
+  // -0.9637938506196949, _y: -0.5028793509417407, _z: -0.6066787526996839,
+
   return (
     <div
       onClick={(e) => {
@@ -135,6 +145,8 @@ const Waveform3d = (): JSX.Element => {
           // width={width}
           // height={height}
         >
+          <Stats showPanel={0} className="stats" />
+          {/* <SceneUpdate /> */}
           {/* <color attach="background" args={[theme.primary]} /> */}
           <ambientLight color={"black"} intensity={0.5} />
           <pointLight position={[5, 5, 5]} />
@@ -143,9 +155,20 @@ const Waveform3d = (): JSX.Element => {
             makeDefault
             zoom={20}
             // scale={3}
-            position={[0, 0, 10]}
+            // position={[-52, 11.7, -1.3]}
+            position={[-12, 11.7, -1.3]}
+            rotation={[-0.963, -0.502, -0.606]}
+            // position={[0, 0, 10]}
           />
-          <OrbitControls makeDefault />
+          <OrbitControls
+            // ref={orbitControlsRef}
+            // position={[-12, 11.7, -1.3]}
+            // rotation={[-0.963, -0.502, -0.606]}
+            // target={[-12, 11.7, -1.3]}
+            // makeDefault
+            camera={cameraRef.current}
+          />
+          {/* <OrbitControls makeDefault camera={cameraRef.current} /> */}
           <WaveformUI
             trig={trig}
             track={currentTrack}
@@ -169,6 +192,38 @@ const Waveform3d = (): JSX.Element => {
       </Suspense>
     </div>
   );
+};
+
+const SceneUpdate = (): JSX.Element => {
+  const state = useThree();
+  const orbitControlsRef = useRef<OC>();
+  // const {camera, controls} = useThree();
+  console.log(state);
+  // useEffect(() => {
+  //   // if (cameraRef.current && orbitControlsRef.current) {
+  //   // state.camera.position.set(-12, 11.7, -1.3);
+  //   state.camera.position.set(-12, 11.7, -1.3);
+  //   state.camera.rotation.set(-0.963, -0.002, -0.606);
+  //   // state.camera.rotation.set(-0.963, -0.502, -0.606);
+  //   // cameraRef.current.rotation.set(-0.963, -0.502, -0.606);
+  //   orbitControlsRef.current.update();
+  //   // orbitControlsRef.current.update();
+  //   // console.log(orbitControlsRef.current);
+  //   // }
+  // }, []);
+
+  return <></>;
+  // return (
+  //   <OrbitControls
+  //     //@ts-ignore
+  //     ref={orbitControlsRef}
+  //     //  position={[-12, 11.7, -1.3]}
+  //     //  rotation={[-0.963, -0.502, -0.606]}
+  //     //  target={[-12, 11.7, -1.3]}
+  //     // makeDefault
+  //     // camera={cameraRef.current}
+  //   />
+  // );
 };
 
 interface ControlsProps {
@@ -197,28 +252,57 @@ const Geo = ({ track }: { track: Track }): JSX.Element => {
 
   useFrame((state) => {
     const time = state.clock.getElapsedTime();
+    // console.log(state.controls);
     // cubeCamera.update(gl, scene);
     if (audioElem.current && !audioElem.current.paused && groupRef.current) {
       // console.log(audioElem.current.currentTime);
       groupRef.current.position.x -= 0.1;
     }
+    // console.log(state.camera.position);
+    // console.log(state.camera.rotation);
+
     // console.log(progress);
   });
+
+  const playHeadRef = useRef<Mesh>();
+  // onPointerMove={(e) => {
+  //   console.log(e);
+  // }}
+  //   const bind = useDrag(({ offset: [x, y] }) => {
+
+  //     const [,, z] = position;
+  //     setPosition([x / aspect, -y / aspect, z]);
+  // }, { pointerEvents: true });
 
   return (
     <group ref={groupRef}>
       {/* <Grid track={track} /> */}
-      <AudioForm track={track} />
+      <PlayHead x={0} ref={playHeadRef} />
+      <AudioForm
+        onPointerMove={(e: ThreeEvent<PointerEvent>) => {
+          // console.log(e);
+          const { x, y, z } = e.point;
+          playHeadRef.current.position.set(x, 0, 0);
+        }}
+        track={track}
+      />
       {/* <AudioForm track={track} /> */}
     </group>
   );
 };
 
 const Sphere = (props) => {
+  const [curPos, setCurPos] = useState<Vector3>();
+
   return (
-    <mesh position={props.position}>
+    <mesh
+      onPointerMove={(e: ThreeEvent<PointerEvent>) => {
+        // console.log(e);
+        setCurPos(e.point);
+      }}
+      position={props.position}
+    >
       <sphereGeometry args={[100, 100, 100]} />
-      {props.children}
     </mesh>
   );
 };

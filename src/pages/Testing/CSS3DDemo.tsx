@@ -1,7 +1,7 @@
 import { Html, OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { useSpring } from "framer-motion";
 import React, { forwardRef, useEffect, useMemo, useRef, useState } from "react";
-import { Canvas, GroupProps, useFrame } from "react-three-fiber";
+import { Canvas, GroupProps, useFrame } from "@react-three/fiber";
 import { Group, LineCurve3, TubeGeometry, Vector3 } from "three";
 const lorem =
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam pulvinar lorem ipsum, at suscipit nibh finibus sed. Donec dignissim erat sed nunc consequat molestie. In arcu urna, eleifend vitae nisi vel, dignissim efficitur odio. Suspendisse hendrerit odio feugiat nulla suscipit posuere. Nulla scelerisque, urna in euismod dictum, mi elit fermentum nisi, et porttitor ipsum massa auctor tellus. Sed a sem vitae quam volutpat ultricies ac ac odio. Maecenas sit amet felis varius massa tempor porta. Quisque eu tristique massa.";

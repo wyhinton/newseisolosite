@@ -10,7 +10,13 @@ import theme from "@static/theme";
 import { GLTF as GLTFThree } from "three/examples/jsm/loaders/GLTFLoader";
 import glsl from "babel-plugin-glsl/macro";
 
-import { extend, useThree, useFrame, useLoader } from "react-three-fiber";
+import {
+  extend,
+  useThree,
+  useFrame,
+  useLoader,
+  ThreeEvent,
+} from "react-three-fiber";
 import THREE, {
   CubeTextureLoader,
   Mesh,
@@ -74,7 +80,13 @@ class ColorMaterial extends ShaderMaterial {
 }
 extend({ ColorMaterial });
 
-const AudioForm = ({ track }: { track: Track }) => {
+const AudioForm = ({
+  track,
+  onPointerMove,
+}: {
+  track: Track;
+  onPointerMove: (e: ThreeEvent<PointerEvent>) => void;
+}) => {
   const pathRef = useRef<Mesh>();
   const points = Array.from(Array(numPoints).keys()).map((n, i) => {
     const dist = 0.5;
@@ -127,106 +139,6 @@ const AudioForm = ({ track }: { track: Track }) => {
   // https://codesandbox.io/s/github/onion2k/r3f-by-example/tree/develop/examples/materials/glowing-torus
   // https://codesandbox.io/s/earth-day-night-i79md?file=/src/models/Halo.jsx
   // https://codesandbox.io/s/custom-material-shader-with-r3f-w170k?file=/src/ShaderObject.tsx
-  // const opts = useControls({
-  //   red: {
-  //     min: -1,
-  //     max: 1,
-  //     value: 0.3,
-  //   },
-  //   green: {
-  //     min: -1,
-  //     max: 1,
-  //     value: 0.2,
-  //   },
-  //   blue: {
-  //     min: -1,
-  //     max: 1,
-  //     value: -0.2,
-  //   },
-  //   shade: {
-  //     min: 3,
-  //     max: 30,
-  //     value: 20,
-  //   },
-  //   animate: true,
-  // });
-
-  //   useFrame(() => {
-  //     if (opts.animate) {
-  //       if (pathRef.current) {
-  //         //   @ts-ignore
-  //         pathRef.current.material.uniforms.uTime.value += 0.02;
-  //       }
-  //     }
-  //     //@ts-ignore
-  //     pathRef.current.material.uniforms.uColor.value = new Vector3(
-  //       opts.red,
-  //       opts.green,
-  //       opts.blue
-  //     );
-  //     //@ts-ignore
-  //     pathRef.current.material.uniforms.uShade.value = opts.shade;
-  //   });
-
-  // const shaderArgs = useMemo(
-  //   () => ({
-  //     uniforms: {
-  //       uTime: { value: 0 },
-  //       uColor: { value: new Vector3(opts.red, opts.green, opts.blue) }, // Color Correction
-  //       uShade: { value: opts.shade },
-  //     },
-  //     vertexShader: /*glsl*/ `
-  //     varying vec3 vNormal;
-  //     void main() {
-  //       vNormal = normalize(normalMatrix * normal);
-  //       gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-  //     }
-  //   `,
-  //     fragmentShader: /*glsl*/ `
-  //     varying vec3 vNormal;
-  //     uniform float uTime;
-  //     uniform float uShade;
-  //     uniform vec3 uColor;
-  //     void main() {
-  //       gl_FragColor = vec4(vNormal * (sin(vNormal.z * uShade + uTime * 3.) * .5 + .5) + uColor, 1.);
-  //     }
-  //   `,
-  //   }),
-  //   [opts]
-  // );
-
-  const subSurf = SubsurfaceScatteringShader;
-  const uniforms = UniformsUtils.clone(subSurf.uniforms);
-
-  const imgTexture = useLoader(
-    TextureLoader,
-    `${process.env.PUBLIC_URL}/Textures/white.jpg`
-  );
-  const thicknessTexture = useLoader(
-    TextureLoader,
-    `${process.env.PUBLIC_URL}/Textures/bunny_thickness.jpg`
-  );
-
-  uniforms["map"].value = imgTexture;
-
-  uniforms["diffuse"].value = new Vector3(1.0, 0.2, 0.2);
-  uniforms["shininess"].value = 500;
-
-  uniforms["thicknessMap"].value = thicknessTexture;
-  uniforms["thicknessColor"].value = new Vector3(0.5, 0.3, 0.0);
-  uniforms["thicknessDistortion"].value = 0.1;
-  uniforms["thicknessAmbient"].value = 0.4;
-  uniforms["thicknessAttenuation"].value = 0.8;
-  uniforms["thicknessPower"].value = 2.0;
-  uniforms["thicknessScale"].value = 16.0;
-
-  const sShader = {
-    uniforms: uniforms,
-    vertexShader: subSurf.vertexShader,
-    fragmentShader: subSurf.fragmentShader,
-    lights: true,
-  };
-  // sShader.extensions.derivatives = true;
 
   const groupRef = useRef<Group>();
 
@@ -248,20 +160,7 @@ const AudioForm = ({ track }: { track: Track }) => {
 
   return (
     <group ref={groupRef}>
-      <mesh
-        geometry={latheGeo}
-        ref={pathRef}
-        onPointerDown={(e) => {
-          // console.log(e);
-          // console.log(e.point);
-          // console.log(e.offsetX);
-          //           let vector = new Vector3();
-          // vector.set(
-          //     (e.clientX / window.innerWidth) * 2 - 1,
-          //     - (e.clientY / window.innerHeight) * 2 + 1,
-          //     0
-        }}
-      >
+      <mesh geometry={latheGeo} ref={pathRef} onPointerMove={onPointerMove}>
         {/* <meshPhongMaterial
           attach="material"
           color="#f3f3f3"

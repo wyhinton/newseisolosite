@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect, useRef } from "react";
-import { Canvas, useThree, useFrame, useLoader } from "react-three-fiber";
+import { Canvas, useThree, useFrame, useLoader } from "@react-three/fiber";
 // import { useGLTF } from "drei";
 import {
   CubeTextureLoader,

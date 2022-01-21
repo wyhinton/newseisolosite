@@ -3,7 +3,7 @@ import { Html, OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import theme from "@static/theme";
 import { useSpring } from "framer-motion";
 import React, { forwardRef, useEffect, useMemo, useRef, useState } from "react";
-import { Canvas, GroupProps, useFrame, useThree } from "react-three-fiber";
+import { Canvas, GroupProps, useFrame, useThree } from "@react-three/fiber";
 import {
   Color,
   Group,

@@ -3,7 +3,7 @@ import classNames from "classnames";
 
 import TrackData from "@interfaces/TrackData";
 import { Texture, TextureLoader, Vector2, Vector3 } from "three";
-import { useLoader } from "react-three-fiber";
+import { useLoader } from "@react-three/fiber";
 
 const WaveGeometry = ({
   trackData,

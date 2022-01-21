@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Suspense, useRef } from "react";
 import classNames from "classnames";
 import { OrbitControls, OrthographicCamera } from "@react-three/drei";
-import { Canvas, useLoader } from "react-three-fiber";
+import { Canvas, useLoader } from "@react-three/fiber";
 import trackData from "@static/TRACKS_DATA.json";
 import AllTracks from "@interfaces/AllTracks";
 import WaveGeometry from "@components/Home/Grid/GridWidgets/WaveformWidget/AudioForm/WaveGeometry";

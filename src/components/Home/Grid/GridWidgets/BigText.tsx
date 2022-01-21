@@ -12,6 +12,8 @@ const BigText = ({
 }): JSX.Element => {
   const variants = {
     normal: {
+      opacity: .5,
+      // color: "rba(0,0,0,0)",
       // backgroundColor: theme.primary,
     },
     highlight: {
@@ -40,7 +42,8 @@ const BigText = ({
           display: "flex",
           fontWeight: "bold",
           paddingLeft: "1rem",
-          // backgroundColor: active ? "green" : "",
+          // WebkitTextStroke: active?"0":".5px",
+          // WebkitTextStrokeColor: active?"":"black",
           overflow: "visible",
           backdropFilter: "blur 5px",
         }}

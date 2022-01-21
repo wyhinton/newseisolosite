@@ -349,8 +349,8 @@ const BubbleDots = ({
           pointerEvents: "none",
         }}
       >
+           <ComposerTitle>Bach</ComposerTitle>
         <ComposerTitle>Bartok</ComposerTitle>
-        <ComposerTitle>Bach</ComposerTitle>
         <ComposerTitle>Ysaye</ComposerTitle>
       </div>
       <Surface

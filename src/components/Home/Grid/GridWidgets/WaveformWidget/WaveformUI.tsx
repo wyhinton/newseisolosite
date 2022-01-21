@@ -179,7 +179,7 @@ const WaveformUI = ({
   return (
     <>
       <group>
-        <gridHelper />
+        {/* <gridHelper /> */}
         <group ref={connectorsGroup}>
           <Connector points={lines[0]} />
           <Connector points={lines[1]} />
@@ -270,7 +270,7 @@ const DivBlock = forwardRef<Group, DivBlockProps>(function DivBlock(
         prepend={true}
         position={[0, 0, 0]}
         occlude={true}
-        distanceFactor={isPlaying ? 1 : 10}
+        // distanceFactor={isPlaying ? 1 : 1}
         // transform={text !== "1" ? true : false}
         transform={true}
       >
@@ -283,7 +283,8 @@ const DivBlock = forwardRef<Group, DivBlockProps>(function DivBlock(
           }}
         >
           {/* <Text color={color}>{text}</Text> */}
-          {isPlaying && children}
+          {/* {isPlaying && children} */}
+          {children}
           {!isPlaying && (
             <div
               style={{

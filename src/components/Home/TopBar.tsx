@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import FlexRow from "@components/UI/FlexRow";
 import theme from "@static/theme";
+// import "@css/Body.scss"
 
 const TopBar = (): JSX.Element => {
   const containerStyle = {
@@ -11,19 +12,21 @@ const TopBar = (): JSX.Element => {
     height: "5vw",
     backgroundColor: theme.primaryDark,
     zIndex: 1000,
-    borderBottom: "1px solid black",
+    // borderBottom: "1px solid black",
   } as React.CSSProperties;
 
   const buttons = Array.from(Array(3).keys());
 
   return (
-    <FlexRow style={containerStyle}>
+    <FlexRow style={containerStyle} className="dot-fill">
       <div
         style={{
           padding: ".5rem",
-          height: "100%",
-          // width: "fit-content",
-          fontSize: theme.titleFont,
+          height: "fit-content",
+          // height: "100%",
+          width: "fit-content",
+          fontSize: '2vh',
+          // fontSize: theme.titleFont,
           fontWeight: "bold",
           // fontSize: theme.titleFont,
           position: "relative",
@@ -32,20 +35,27 @@ const TopBar = (): JSX.Element => {
           margin: "auto",
           display: "flex",
           alignItems: "center",
-          width: "100%",
+          // width: "100%",
           textAlign: "left",
+          border: `1px solid ${theme.secondary}`,
+          borderRadius: 10,
           fontFamily: theme.titleFontFamily,
+          color: "black",
+          backgroundColor: theme.secondary,
 
           // backgroundColor: theme.secondary,
         }}
       >
-        <Logo /> Seisolo.io: Remixing the Recital
+        {/* <Logo />  */}
+        
+        Seisolo.io: Remixing the Recital
       </div>
       <FlexRow justifyContent="center">
         {buttons.map((button, i) => {
           const buttonStyle = {
-            width: 50,
-            height: 50,
+            width: "4vh",
+            height: "4vh",
+            // height: "100%",
             margin: "1em",
             backgroundColor: theme.secondary,
             // backgroundColor: "blue",

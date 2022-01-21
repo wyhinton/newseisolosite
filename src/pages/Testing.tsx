@@ -26,8 +26,8 @@ interface MyData {
 const Testing = (): JSX.Element => {
   return (
     <section>
-      {/* <CSS3DDemo /> */}
-      <TrackTesting />
+      <CSS3DDemo />
+      {/* <TrackTesting /> */}
       {/* <SamplingTesting /> */}
       {/* <BasicAudioSetup /> */}
       {/* <SphereSDF /> */}

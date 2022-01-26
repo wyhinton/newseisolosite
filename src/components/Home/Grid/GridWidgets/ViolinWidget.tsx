@@ -20,7 +20,6 @@ import {
   useProgress,
 } from "@react-three/drei";
 import { GLTF as GLTFThree } from "three/examples/jsm/loaders/GLTFLoader";
-import { usePlaylist, useTrackCategory } from "@hooks";
 import { Track } from "@interfaces/Track";
 import { useSpring } from "framer-motion";
 declare module "three-stdlib" {
@@ -36,7 +35,12 @@ const Violin = ({ track }: { track: Track }) => {
   );
   const matcapTexture = useLoader(
     TextureLoader,
-    `${process.env.PUBLIC_URL}/Textures/matcapdarkpurple.png`
+    // `${process.env.PUBLIC_URL}/Textures/pinkMatcap.png`
+    // `${process.env.PUBLIC_URL}/Textures/mats/Warmth5.png`
+    // `${process.env.PUBLIC_URL}/Textures/mats/Warmth5.png`
+    // `${process.env.PUBLIC_URL}/Textures/mats/BluePearl3.png`
+    `${process.env.PUBLIC_URL}/Textures/mats/Warmth5.png`
+    // `${process.env.PUBLIC_URL}/Textures/mats/BluePearl.png`
     // `${process.env.PUBLIC_URL}/Textures/matcapred.jpg`
   );
 
@@ -84,7 +88,7 @@ const Violin = ({ track }: { track: Track }) => {
           <mesh key={i} geometry={c.geometry} material={c.material}>
             <meshMatcapMaterial
               attach="material"
-              opacity={0.5}
+              opacity={.6}
               // color="yellow"
               matcap={matcapTexture}
             />
@@ -102,7 +106,7 @@ const ViolinWidget = ({ track }: { track: Track }): JSX.Element => {
   return (
     <Suspense fallback={<Loader />}>
       <Canvas className="canvas">
-        <OrthographicCamera makeDefault zoom={5.1} position={[0, 0, 20]} />
+        <OrthographicCamera makeDefault zoom={20.1} position={[0, 0, 20]} />
         <OrbitControls />
         {/* <Sphere /> */}
         <Violin track={track} />

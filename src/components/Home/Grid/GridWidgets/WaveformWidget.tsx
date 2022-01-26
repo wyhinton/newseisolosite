@@ -10,7 +10,7 @@ import AudioDataCanvas from "./WaveformWidget/AudioDataCanvas";
 import { useElementSize, usePlaylist } from "@hooks";
 import RGLWaveform from "./WaveformWidget/RGLVersion/RGLWaveform";
 
-const WaveformWidget = ({}: {}): JSX.Element => {
+const WaveformWidget = ({ }: {}): JSX.Element => {
   const containerStyle = {
     width: "100%",
     height: "100%",
@@ -25,6 +25,9 @@ const WaveformWidget = ({}: {}): JSX.Element => {
   // const progress = useS
   return (
     <div style={containerStyle} ref={containerRef}>
+      <div>
+
+      </div>
       {/* <WaveformSDF /> */}
       {/* <RGLWaveform width={width} height={height} />
       <AudioDataCanvas width={width} /> */}

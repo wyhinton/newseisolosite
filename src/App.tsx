@@ -11,6 +11,7 @@ import { StoreProvider } from "easy-peasy";
 import homeStore from "./stores/homeStore";
 import FXAADemoPage from "./pages/FXAADemoPage";
 import DAWPage from "./pages/DAWPage";
+import TempSiteApp from "./pages/TempSite/TempSiteApp";
 
 const App = (): JSX.Element => {
   const fetchCardDataGoogleSheetThunk = useStoreActions(
@@ -47,7 +48,8 @@ const App = (): JSX.Element => {
       <Route path="/app" component={Instrument} />
       {/* <Route path="/daw" component={DAWApp}/> */}
       <StoreProvider store={homeStore}>
-        <Route path="/" exact component={Home} />
+        <Route path="/" exact component={TempSiteApp} />
+        {/* <Route path="/" exact component={Home} /> */}
       </StoreProvider>
       <Route path="/testing" component={Testing} />
       <Route path="/fxaa" component={FXAADemoPage} />

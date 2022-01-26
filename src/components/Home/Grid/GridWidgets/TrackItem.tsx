@@ -41,13 +41,14 @@ const TrackItem = ({
     <motion.div
       className="track-item-container"
       style={{
+
         height: track.category === "remix" ? "100%" : 0,
         width: "33.333%",
         fontSize: "2rem",
         position: "relative",
         marginRight: "2rem",
         borderRadius: theme.borderRadius,
-        justifyContent: "center",
+        justifyContent: "flex-start",
         display: "flex",
         flexDirection: "column",
         overflow: "visible",

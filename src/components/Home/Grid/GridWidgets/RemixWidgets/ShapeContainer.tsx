@@ -41,7 +41,8 @@ const ShapeContainer = ({ track, viewBox, children }: { track: Track, viewBox: s
             className="shapeContainer"
             style={{
                 // backgroundColor: "red",
-                height: "100%",
+                // height: "100%",
+                height: "fit-content",
                 // height: "min-content",
                 display: "flex",
                 flexDirection: "column",

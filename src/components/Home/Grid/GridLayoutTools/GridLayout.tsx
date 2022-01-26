@@ -138,7 +138,7 @@ const GridLayout = ({
       width={window.innerWidth}
       rowHeight={rowHeight}
       cols={{ lg: 12, md: 9, sm: 9, xs: 6, xxs: 6 }}
-      containerPadding={[padding, padding]}
+      containerPadding={[padding, padding * 4]}
     // verticalCompact={false}
     // onLayoutChange={function () {}}
     >

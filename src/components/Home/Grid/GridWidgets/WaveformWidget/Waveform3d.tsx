@@ -150,6 +150,8 @@ const Waveform3d = (): JSX.Element => {
   //   x: -14.115966185140149
   // y: 13.409646809707494
   // z: -10.01058072182044
+
+  // 1.9294503154085874, y: 13.596600611407606, z: 18.895300303258846}
   return (
     <div
       onClick={(e) => {
@@ -157,6 +159,7 @@ const Waveform3d = (): JSX.Element => {
       }}
       style={{ width: "100%", height: "100%" }}
     >
+
       <Suspense fallback={<div>hello</div>}>
         <Canvas
           className="waveform-canvas"
@@ -177,19 +180,20 @@ const Waveform3d = (): JSX.Element => {
             zoom={20}
             // scale={3}
             // position={[-52, 11.7, -1.3]}
-            position={[-14, 13, -10]}
+            position={[-2., 13.5, 18]}
+            // position={[-14, 13, -10]}
             // position={[-5, 10, 11]}
-            rotation={[-0.963, -0.502, -0.606]}
+            rotation={[0, -0, -0.]}
           // position={[0, 0, 10]}
           />
-          <OrbitControls
+          {/* <OrbitControls
             // ref={orbitControlsRef}
             // position={[-12, 11.7, -1.3]}
             // rotation={[-0.963, -0.502, -0.606]}
             // target={[-12, 11.7, -1.3]}
             // makeDefault
             camera={cameraRef.current}
-          />
+          /> */}
           {/* <OrbitControls makeDefault camera={cameraRef.current} /> */}
           <WaveformUI
             trig={trig}

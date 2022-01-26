@@ -16,10 +16,13 @@ import { recitalLayout, remixLayout } from "@static/gridLayouts";
 
 export type HomeLayout = "about" | "remix" | "recital" | "projectInfo";
 export type SSAppMode = "intro" | "view" | "create" | "projectInfo";
+export type InfoDisplayMode = "notes" | "image" | "bio" | undefined;
 
 export interface HomeModel {
   appMode: SSAppMode;
   setAppMode: Action<HomeModel, SSAppMode>;
+  infoDisplayMode: InfoDisplayMode;
+  setInfoDisplayMode: Action<HomeModel, InfoDisplayMode>;
   isPlaying: boolean;
   setIsPlaying: Action<HomeModel, boolean>;
   currentTrackId: string;
@@ -34,6 +37,10 @@ const homeModel: HomeModel = {
   appMode: "intro",
   setAppMode: action((state, mode) => {
     state.appMode = mode;
+  }),
+  infoDisplayMode: undefined,
+  setInfoDisplayMode: action((state, mode) => {
+    state.infoDisplayMode = mode;
   }),
   isPlaying: false,
   setCurrentTrack: action((state, payload) => {

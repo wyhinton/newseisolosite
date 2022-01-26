@@ -1,160 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
-    <title>React App</title>
-  </head>
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="Remixing the Recital" />
+  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
-  <body class=".dot-fill">
-    <style>
-      body {
-        max-height: 100vh;
-        overflow: hidden;
-      }
-      @font-face {
-        font-family: "Nippo-Regular";
-        src: local("Nippo-Regular"), url(./Nippo-Regular.otf) format("opentype");
-      }
-      @font-face {
-        font-family: "Nunito";
-        src: local("Nunito"),
-          url(./Fonts/Nunito/Nunito-VariableFont_wght.ttf) format("trutype");
-      }
-      @font-face {
-        font-family: "NeueMetana-Bold";
-        src: local("NeueMetana-Bold"),
-          url(./Fonts/NeueMetana-Bold.otf) format("opentype");
-      }
-      @font-face {
-        font-family: "Aber-Mono";
-        src: url(./Fonts/aber_mono/Aber-Mono-Regular.woff) format("woff");
-      }
-      @font-face {
-        font-family: "Hoover";
-        src: url(./Fonts/Hoover_Complete/Hoover-Medium.ttf) format("truetype");
-      }
-      @font-face {
-        font-family: "Pexel";
-        src: url(./Fonts/PexelGrotesk/PexelGrotesk-Regular.ttf)
-          format("truetype");
-      }
-      @font-face {
-        font-family: "OTR type";
-        src: url(./Fonts/OTR_type/OTRtypeGX.ttf) format("truetype");
-      }
-      /* NOT WOKRING */
-      @font-face {
-        font-family: "Lustra Variable";
-        src: url(./Fonts/lustra/Lustra_Variable.ttf) format("truetype");
-      }
-      @font-face {
-        font-family: "Mimoid";
-        font-weight: 500;
-        src: url(./Fonts/mimoid/MimoidVF.ttf) format("truetype");
-      }
-      @font-face {
-        font-family: "Nounans";
-        font-weight: 500;
-        src: url(./Fonts/nounas/Nounas-VariableVF.ttf) format("truetype");
-      }
-      @font-face {
-        font-family: "Aber Mono";
-        src: url(./Fonts/aber_mono/Aber-Mono-Light.woff) format("woff");
-      }
-      @font-face {
-        font-family: "Heming";
-        font-weight: 500;
-        src: url(./Fonts/heming/Heming.ttf) format("truetype");
-      }
+  <title>Seisolo.io</title>
+</head>
 
-      html * {
-        /* font-size: 16px !important; */
-        line-height: 1.625 !important;
-        color: #2020131 !important;
-        /* font-family: Aber-mono, sans-serif; */
-        /* font-family: NeueMetana-Bold, sans-serif; */
-        /* font-family: OTR type, sans-serif; */
-        /* font-family: Lustra Variable; */
-        /* font-family: Mimoid, sans-serif; */
-        /* font-family: Nounans, sans-serif; */
-        /* font-family: Aber Mono, sans-serif; */
-        /* font-family: Chill Pixels Mono, sans-serif; */
-        /* font-family: Nippo, sans-serif; */
-        font-family: Heming, sans-serif;
-        color: white;
-        /* font-family: Nunito, sans-serif; */
-      }
+<body class=".dot-fill">
+  <style>
+    body {
+      max-height: 100vh;
+      overflow: hidden;
+    }
 
-      #drag-target {
-        z-index: 1000;
-        width: 100vw;
-        height: 100vh;
-        top: 0;
-        left: 0;
-        position: absolute;
-        pointer-events: none;
-        padding: 0;
-      }
-      #dialog-box {
-        position: absolute;
-        z-index: 100;
-        width: 100vw;
-        top: 0;
-        left: 0;
-        height: 100vh;
-        pointer-events: none;
-      }
-      #navigation {
-        position: absolute;
-        z-index: 200;
-        width: 10vw;
-        top: 0;
-        right: 0;
-        pointer-events: none;
-        /* height: fit-content;
+    @font-face {
+      font-family: "Nippo-Regular";
+      src: local("Nippo-Regular"), url(./Nippo-Regular.otf) format("opentype");
+    }
+
+    @font-face {
+      font-family: "Nunito";
+      src: local("Nunito"),
+        url(./Fonts/Nunito/Nunito-VariableFont_wght.ttf) format("trutype");
+    }
+
+    @font-face {
+      font-family: "NeueMetana-Bold";
+      src: local("NeueMetana-Bold"),
+        url(./Fonts/NeueMetana-Bold.otf) format("opentype");
+    }
+
+    @font-face {
+      font-family: "Aber-Mono";
+      src: url(./Fonts/aber_mono/Aber-Mono-Regular.woff) format("woff");
+    }
+
+    @font-face {
+      font-family: "Hoover";
+      src: url(./Fonts/Hoover_Complete/Hoover-Medium.ttf) format("truetype");
+    }
+
+    @font-face {
+      font-family: "Pexel";
+      src: url(./Fonts/PexelGrotesk/PexelGrotesk-Regular.ttf) format("truetype");
+    }
+
+    @font-face {
+      font-family: "OTR type";
+      src: url(./Fonts/OTR_type/OTRtypeGX.ttf) format("truetype");
+    }
+
+    /* NOT WOKRING */
+    @font-face {
+      font-family: "Lustra Variable";
+      src: url(./Fonts/lustra/Lustra_Variable.ttf) format("truetype");
+    }
+
+    @font-face {
+      font-family: "Mimoid";
+      font-weight: 500;
+      src: url(./Fonts/mimoid/MimoidVF.ttf) format("truetype");
+    }
+
+    @font-face {
+      font-family: "Nounans";
+      font-weight: 500;
+      src: url(./Fonts/nounas/Nounas-VariableVF.ttf) format("truetype");
+    }
+
+    @font-face {
+      font-family: "Aber Mono";
+      src: url(./Fonts/aber_mono/Aber-Mono-Light.woff) format("woff");
+    }
+
+    @font-face {
+      font-family: "Heming";
+      font-weight: 500;
+      src: url(./Fonts/heming/Heming.ttf) format("truetype");
+    }
+
+    html * {
+      /* font-size: 16px !important; */
+      line-height: 1.625 !important;
+      color: #2020131 !important;
+      /* font-family: Aber-mono, sans-serif; */
+      /* font-family: NeueMetana-Bold, sans-serif; */
+      /* font-family: OTR type, sans-serif; */
+      /* font-family: Lustra Variable; */
+      /* font-family: Mimoid, sans-serif; */
+      /* font-family: Nounans, sans-serif; */
+      /* font-family: Aber Mono, sans-serif; */
+      /* font-family: Chill Pixels Mono, sans-serif; */
+      /* font-family: Nippo, sans-serif; */
+      font-family: Heming, sans-serif;
+      color: white;
+      /* font-family: Nunito, sans-serif; */
+    }
+
+    #drag-target {
+      z-index: 1000;
+      width: 100vw;
+      height: 100vh;
+      top: 0;
+      left: 0;
+      position: absolute;
+      pointer-events: none;
+      padding: 0;
+    }
+
+    #dialog-box {
+      position: absolute;
+      z-index: 100;
+      width: 100vw;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      pointer-events: none;
+    }
+
+    #navigation {
+      position: absolute;
+      z-index: 200;
+      width: 10vw;
+      top: 0;
+      right: 0;
+      pointer-events: none;
+      /* height: fit-content;
          */
-        height: 100px;
-        /* pointer-events: none; */
-      }
-      #return-button {
-        /* width: 10vw; */
-        /* height: 10vw; */
-        /* background-color: red; */
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 300;
-      }
-      #top-right {
-        position: absolute;
-        right: 0;
-        top: 0;
-        width: 8vw;
-        height: 5vw;
-        background-color: red;
-      }
-    </style>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="top-right"></div>
-    <div id="navigation"></div>
-    <div id="dialog-box"></div>
-    <div id="draggable"></div>
-    <div id="drag-target"></div>
-    <div id="intro-modal"></div>
-    <div id="return-button"></div>
-    <div id="menu-button"></div>
-    <div id="about-modal"></div>
-    <!-- <div id="return-button"></div> -->
-    <div class-name = "dot-fill" id="root"></div>
-  </body>
+      height: 100px;
+      /* pointer-events: none; */
+    }
+
+    #return-button {
+      /* width: 10vw; */
+      /* height: 10vw; */
+      /* background-color: red; */
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 300;
+    }
+
+    #top-right {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: max(10vw, 50px);
+      height: max(5vw, 30px);
+      background-color: red;
+      z-index: 10;
+    }
+  </style>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="top-right"></div>
+  <div id="navigation"></div>
+  <div id="dialog-box"></div>
+  <div id="draggable"></div>
+  <div id="drag-target"></div>
+  <div id="intro-modal"></div>
+  <div id="return-button"></div>
+  <div id="menu-button"></div>
+  <div id="about-modal"></div>
+  <!-- <div id="return-button"></div> -->
+  <div class-name="dot-fill" id="root"></div>
+</body>
+
 </html>

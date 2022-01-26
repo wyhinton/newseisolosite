@@ -39,6 +39,7 @@ const TrackItem = ({
 
   return (
     <motion.div
+      className="track-item-container"
       style={{
         height: track.category === "remix" ? "100%" : 0,
         width: "33.333%",
@@ -68,7 +69,7 @@ const TrackItem = ({
           // backgroundColor: theme.primaryMedium,
         }
       }
-      //   animat
+    //   animat
     >
       {/* <div
         style={{
@@ -90,9 +91,9 @@ const TrackItem = ({
         {track.title}
       </div> */}
       {/* <PlayPauseControls track={track} /> */}
-      {useBox && <CornerBox />}
+      {/* {useBox && <CornerBox />} */}
       {children}
-      <Audio track={track} />
+      {/* <Audio track={track} /> */}
     </motion.div>
   );
 };

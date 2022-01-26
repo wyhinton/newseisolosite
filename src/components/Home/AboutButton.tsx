@@ -19,6 +19,7 @@ const AboutButton = (): JSX.Element => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
+
         backgroundColor: theme.secondary,
       }}
       onClick={(e) => {

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import classNames from "classnames";
 import ReactDOM from "react-dom";
 import { motion, Variants } from "framer-motion";
 import { useApp, useHover, usePlaylist } from "@hooks";

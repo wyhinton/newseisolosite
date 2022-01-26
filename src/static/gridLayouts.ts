@@ -13,21 +13,35 @@ let layoutBase = [
   { i: "violin", x: 5, y: 2, w: 1, h: 3 },
 ];
 
-const layoutv2 = [
+// const layoutv2: Layout[] = [
+//   // { i: "about", x: 6, y: 5, w: 3, h: 6 },
+//   { i: "oneRecitalText", x: 0, y: 0, w: 6, h: 2, static: false },
+//   { i: "recitalTracks", x: 0, y: 3, w: 5, h: 4, static: true },
+//   { i: "threeRemixes", x: 0, y: 7, w: 6, h: 2, static: false },
+//   { i: "remixes", x: 0, y: 3, w: 6, h: 5, static: false },
+//   // { i: "infoDisplay", x: 6, y: 0, w: 6, h: 4, static: true },
+//   // 
+
+//   // { i: "trackInfo", x: 6, y: 7, w: 5, h: 4 },
+//   // { i: "waveform", x: 6, y: 5, w: 5, h: 2 },
+//   // { i: "violin", x: 0, y: 2, w: 1, h: 6 },
+// ];
+const layoutv2: Layout[] = [
   // { i: "about", x: 6, y: 5, w: 3, h: 6 },
-  { i: "oneRecitalText", x: 0, y: 0, w: 10, h: 2 },
-  { i: "recitalTracks", x: 0, y: 3, w: 5, h: 3 },
-  { i: "threeRemixes", x: 0, y: 3, w: 5, h: 2 },
-  { i: "remixes", x: 0, y: 3, w: 6, h: 4 },
+  { i: "oneRecitalText", x: 0, y: 0, w: 6, h: 2, static: false },
+  { i: "recitalTracks", x: 0, y: 3, w: 5, h: 4, static: true },
+  { i: "threeRemixes", x: 6, y: 0, w: 6, h: 2, static: false },
+  { i: "remixes", x: 6, y: 3, w: 5, h: 5, static: false },
+  // { i: "infoDisplay", x: 6, y: 0, w: 6, h: 4, static: true },
+  // 
+
   // { i: "trackInfo", x: 6, y: 7, w: 5, h: 4 },
   // { i: "waveform", x: 6, y: 5, w: 5, h: 2 },
   // { i: "violin", x: 0, y: 2, w: 1, h: 6 },
 ];
 
-layoutBase = layoutv2;
-
 const modifyBase = (toReplace: Layout[]) => {
-  const copy = [...layoutBase];
+  const copy = [...layoutv2];
   const toReplaceIds = toReplace.map((t) => t.i);
   const toReplaceIndexes = [];
   const copyIds = copy.map((t) => t.i);
@@ -40,6 +54,16 @@ const modifyBase = (toReplace: Layout[]) => {
   return copy;
 };
 
+export const layoutLg = modifyBase([
+  { i: "recitalTracks", x: 0, y: 2, w: 5, h: 4, static: true },
+  { i: "remixes", x: 6, y: 3, w: 6, h: 6, static: false },
+])
+
+
+
+layoutBase = layoutv2;
+
+
 export const remixLayout = modifyBase([]);
 
 export const recitalLayout = modifyBase([
@@ -48,3 +72,4 @@ export const recitalLayout = modifyBase([
 ]);
 
 export const defaultLayout = modifyBase([]);
+

@@ -31,7 +31,7 @@ const ReturnButton = (): JSX.Element => {
   const containerStyle = {
     width: "10vw",
     height: "10vw",
-    backgroundColor: "blue",
+    // backgroundColor: "blue",
     position: "absolute",
     zIndex: 1000,
     display: "flex",

@@ -46,7 +46,8 @@ const theme = {
   // primaryFont: "NeueMetana-Bold",
   // primaryFont: "Aber-Mono",
   titleFont: "3vw",
-  bigFont: "6.5vw",
+  // bigFont: "6.5vw",
+  bigFont: "min(10.5vh, 100px)",
 
   mediumFont: "1.5vw",
   logoFont: "Pexel",

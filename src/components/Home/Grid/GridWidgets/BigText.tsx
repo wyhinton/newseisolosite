@@ -29,19 +29,20 @@ const BigText = ({
   };
 
   return (
-    <FlexRow height="100%" style={{ backdropFilter: "blur(1px)" }}>
+    <FlexRow height="100%">
+      {/* <FlexRow height="100%" style={{ backdropFilter: "blur(1px)" }}> */}
       <motion.div
         style={{
           width: "100%",
           height: "100%",
-          borderLeft: "1px solid black",
+          // borderLeft: "1px solid black",
           // width: "max-content",
           // fontFamily: theme.primaryFont,
           fontSize: theme.bigFont,
           alignItems: "center",
           display: "flex",
           fontWeight: "bold",
-          paddingLeft: "1rem",
+          // paddingLeft: "1rem",
           // WebkitTextStroke: active?"0":".5px",
           // WebkitTextStrokeColor: active?"":"black",
           overflow: "visible",

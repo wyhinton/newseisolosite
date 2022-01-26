@@ -6,7 +6,7 @@ import { usePlaylist } from "@hooks";
 const OneRecitalTextWidget = (): JSX.Element => {
   const { trackCategory } = usePlaylist();
 
-  return <BigText active={trackCategory === "recital"}>Violin Recital</BigText>;
+  return <BigText active={trackCategory === "recital"}>Recital</BigText>;
 };
 
 export default OneRecitalTextWidget;

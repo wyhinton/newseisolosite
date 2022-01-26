@@ -96,7 +96,7 @@ const AudioForm = ({
   });
   //   const samplePoints = fetch(`${process.env.PUBLIC_URL}/TrackData/TRACKS_DATA.json`)
   const data = useAsset(async () => {
-    // Any async task can run in here, fetch requests, parsing, workers, promises, ...
+    // Any async task can run in here, fetch reqkuests, parsing, workers, promises, ...
     const res = await fetch(
       `${process.env.PUBLIC_URL}/TrackData/TRACKS_DATA.json`
     );
@@ -132,6 +132,7 @@ const AudioForm = ({
   //   )
 
   const latheGeo = new LatheGeometry(points, 10);
+  latheGeo.computeBoundingBox()
   // console.log(latheGeo);
   // https://codesandbox.io/s/cc-1-iso-simple-custom-shader-kksbs?file=/src/IsoScene.tsx
   // https://codesandbox.io/s/iridescent-shader-material-l1vdv?file=/src/App.js:433-438
@@ -159,8 +160,8 @@ const AudioForm = ({
   );
 
   return (
-    <group ref={groupRef}>
-      <mesh geometry={latheGeo} ref={pathRef} onPointerMove={onPointerMove}>
+    <group ref={groupRef} >
+      <mesh name="audioForm_Mesh" geometry={latheGeo} ref={pathRef} onPointerMove={onPointerMove}>
         {/* <meshPhongMaterial
           attach="material"
           color="#f3f3f3"

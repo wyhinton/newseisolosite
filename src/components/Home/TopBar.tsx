@@ -25,7 +25,7 @@ const TopBar = (): JSX.Element => {
           height: "fit-content",
           // height: "100%",
           width: "fit-content",
-          fontSize: '2vh',
+          // fontSize: '2vh',
           // fontSize: theme.titleFont,
           fontWeight: "bold",
           // fontSize: theme.titleFont,
@@ -42,12 +42,13 @@ const TopBar = (): JSX.Element => {
           fontFamily: theme.titleFontFamily,
           color: "black",
           backgroundColor: theme.secondary,
-
+          fontSize: 100,
+          zIndex: 100,
           // backgroundColor: theme.secondary,
         }}
       >
         {/* <Logo />  */}
-        
+
         Seisolo.io: Remixing the Recital
       </div>
       <FlexRow justifyContent="center">

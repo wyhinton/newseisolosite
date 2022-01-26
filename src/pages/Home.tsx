@@ -24,6 +24,8 @@ import TopBar from "@components/Home/TopBar";
 import ViolinWidget from "@components/Home/Grid/GridWidgets/ViolinWidget";
 import WaveformWidget from "@components/Home/Grid/GridWidgets/WaveformWidget";
 import Nav from "@components/Home/Nav/Nav";
+import MediaControls from "@components/Home/Nav/MediaControls";
+import InfoPopup from "@components/Home/InfoPopup";
 export type HomeMode = "player" | "notes" | "about";
 
 const Home = (): JSX.Element => {
@@ -46,10 +48,11 @@ const Home = (): JSX.Element => {
     <StoreProvider store={homeStore}>
       <section style={{ width: "100vw" }} className="dot-fill">
         {appConfig.showIntro && <IntroModal />}
-        <AboutButton />
+        {/* <AboutButton /> */}
         {/* <TopBar /> */}
+        <MediaControls />
         <ReturnButton />
-        <AboutModal />
+        <InfoPopup />
         <HomeWidgetGrid />
         <Nav />
         <div
@@ -59,7 +62,7 @@ const Home = (): JSX.Element => {
             position: "absolute",
             top: 0,
             zIndex: 0,
-            border: "1px solid red",
+            // border: "1px solid red",
           }}
         >
           <ViolinWidget track={currentTrack} />
@@ -76,6 +79,7 @@ const Home = (): JSX.Element => {
             // backgroundColor: "orange",
           }}
         >
+
           <WaveformWidget />
         </div>
       </section>

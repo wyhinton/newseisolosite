@@ -102,7 +102,7 @@ const ViolinWidget = ({ track }: { track: Track }): JSX.Element => {
   return (
     <Suspense fallback={<Loader />}>
       <Canvas className="canvas">
-        <OrthographicCamera makeDefault zoom={10.1} position={[0, 0, 20]} />
+        <OrthographicCamera makeDefault zoom={5.1} position={[0, 0, 20]} />
         <OrbitControls />
         {/* <Sphere /> */}
         <Violin track={track} />

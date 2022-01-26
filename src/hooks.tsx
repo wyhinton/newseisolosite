@@ -30,6 +30,7 @@ export const useHomeState = playListHooks.useStoreState;
 interface useAppProps {
   setAppMode: ActionCreator<SSAppMode>;
   appMode: SSAppMode;
+
 }
 export function useApp(): useAppProps {
   const setAppMode = useHomeActions((actions) => actions.setAppMode);
@@ -71,6 +72,9 @@ interface UsePlaylistProps {
   previousTrack: Track | undefined;
   playTrack: (t: Track) => void;
   pauseTrack: (t: Track) => void;
+  // nextTrack: () => void;
+  restartCurrent: () => void;
+  pauseCurrent: () => void;
   isPlaying: boolean;
   currentAudioRef: React.MutableRefObject<HTMLAudioElement>;
   currentAudio: HTMLAudioElement;
@@ -78,6 +82,8 @@ interface UsePlaylistProps {
   trackCategory: TrackCategory;
   isRecital: boolean;
   startingTrack: Track;
+  infoDisplayMode: InfoDisplayMode;
+  setInfoDisplayMode: (payload: InfoDisplayMode) => void;
 }
 
 export function usePlaylist(): UsePlaylistProps {
@@ -87,7 +93,10 @@ export function usePlaylist(): UsePlaylistProps {
   const setIsPlayingAction = useHomeActions((actions) => actions.setIsPlaying);
   const isPlayingState = useHomeState((state) => state.isPlaying);
   const currentAudioRef = useRef<HTMLAudioElement>(null);
-
+  const infoDisplayModeState = useHomeState((state) => state.infoDisplayMode);
+  const setInfoDisplayMode = useHomeActions((actions) => actions.setInfoDisplayMode)
+  // setInfoDisplayMode("bio")
+  // setInfoDisplayMode.
   const handleEnd = (e: Event) => {
     // console.log(e.target);
     const targ = e.target as HTMLAudioElement;
@@ -144,7 +153,30 @@ export function usePlaylist(): UsePlaylistProps {
     setIsPlayingAction(false);
   };
 
+  const restartCurrent = () => {
+    if (allAudioElems.current) {
+      allAudioElems.current.forEach((element) => {
+        if (element.id === "audio_" + currentTrack.title) {
+          element.currentTime = 0;
+        }
+      });
+    }
+  }
+
+  const pauseCurrent = () => {
+    if (allAudioElems.current) {
+      allAudioElems.current.forEach((element) => {
+        if (element.id === "audio_" + currentTrack.title) {
+          element.pause()
+        }
+      });
+    }
+    setIsPlaying(false)
+  }
+
   const [currentTrack, setCurrentTrackLocal] = useState(currentTrackState);
+  const [infoDisplayMode, setInfoDisplayModeLocal] = useState(infoDisplayModeState);
+
   const previousTrack = usePrevious<Track | undefined>(currentTrack, undefined);
   const [trackCategory, setTrackCategory] = useState(
     currentTrackState.category
@@ -188,6 +220,11 @@ export function usePlaylist(): UsePlaylistProps {
     setIsPlaying(isPlayingState);
   }, [isPlayingState]);
 
+  useEffect(() => {
+    setInfoDisplayModeLocal(infoDisplayModeState)
+  }, [infoDisplayModeState]);
+
+
   const startingTrack = tracks[0];
   return {
     currentTrack,
@@ -195,6 +232,8 @@ export function usePlaylist(): UsePlaylistProps {
     previousTrack,
     playTrack,
     pauseTrack,
+    restartCurrent,
+    pauseCurrent,
     isPlaying,
     currentAudioRef,
     currentAudio,
@@ -202,6 +241,8 @@ export function usePlaylist(): UsePlaylistProps {
     trackCategory,
     isRecital,
     startingTrack,
+    infoDisplayMode,
+    setInfoDisplayMode,
   };
 }
 
@@ -241,7 +282,7 @@ export { useArray };
 const test = "test";
 
 import { RefObject, useEffect } from "react";
-import { HomeModel, SSAppMode } from "model/homeModel";
+import { HomeModel, InfoDisplayMode, SSAppMode } from "model/homeModel";
 import { Track, TrackCategory } from "@interfaces/Track";
 import tracks from "@static/tracks";
 

@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Layout, Layouts, Responsive, WidthProvider } from "react-grid-layout";
 import ViewCard from "./ViewCard";
+import { layoutLg } from "@static/gridLayouts"
+import appConfig from "@static/appConfig";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 const GridLayout = ({
@@ -23,7 +25,8 @@ const GridLayout = ({
   const l = layout.map((l) => {
     return { ...l };
   });
-  const padding = 26;
+  const { homePadding } = appConfig;
+  const padding = homePadding;
   const rows = 12;
   const { width, height } = useWindowSize();
   const trueRowHeight = (height - 25 * rows) / 12;
@@ -43,6 +46,7 @@ const GridLayout = ({
           "trackInfo",
           "violin",
           "about",
+          "infoDisplay",
         ];
         const showOverflowArray = [
           "oneRecitalText",
@@ -56,7 +60,10 @@ const GridLayout = ({
         // const overflowHidden = showOverflowArray.includes(c.i as string);
         const id = c.i;
         return (
-          <div key={id} id={id}>
+          <div key={id} id={id} style={{
+            width: "100%",
+            height: "100%"
+          }}>
             <motion.div
               // initial={{
               //   opacity: 0,
@@ -104,11 +111,12 @@ const GridLayout = ({
   }, [height]);
 
   let layouts: Layouts = {
-    lg: layout,
+    lg: layoutLg,
     md: layout,
     sm: layout,
     xxs: layout,
   };
+
 
   // https://github.com/react-grid-layout/react-grid-layout/issues/233#issuecomment-319995357
   return (
@@ -129,10 +137,10 @@ const GridLayout = ({
       // compactType={undefined}
       width={window.innerWidth}
       rowHeight={rowHeight}
-      cols={{ lg: 12, md: 12, sm: 12, xs: 12, xxs: 12 }}
+      cols={{ lg: 12, md: 9, sm: 9, xs: 6, xxs: 6 }}
       containerPadding={[padding, padding]}
-      // verticalCompact={false}
-      // onLayoutChange={function () {}}
+    // verticalCompact={false}
+    // onLayoutChange={function () {}}
     >
       {wrappedWidgets}
     </ResponsiveGridLayout>

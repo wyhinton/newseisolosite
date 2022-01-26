@@ -15,28 +15,21 @@ const PlayHead = forwardRef<Mesh, PlayHeadProps>(function PlayHead(
     () => ({
       uniforms: {
         uTime: { value: 0 },
-        // uColor: { value: new Vector3(opts.red, opts.green, opts.blue) }, // Color Correction
-        // uShade: { value: opts.shade }
       },
       vertexShader: /*glsl*/ `
-      #version 300 es
-        in vec4 position;
+      varying vec2 vUv; 
         void main() {
-        // vNormal = normalize(normalMatrix * normal);
-        // gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-        gl_Position = position;
-        } 
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.);
+        }
     `,
       fragmentShader: /*glsl*/ `
-        #version 300 es
-        // varying vec3 vNormal;
-        uniform float uTime;
-        // uniform float uShade;
-        // uniform vec3 uColor;
-        out vec4 fragColor;
-        void main() {
-            fragColor = vec4(sin(uTime));
-        } 
+      uniform float uTime;
+      varying vec2 vUv;
+      void main() {
+        gl_FragColor = vec4(abs(sin(uTime)),1.,0.5,1.);
+        
+      }
     `,
     }),
     []
@@ -62,13 +55,12 @@ const PlayHead = forwardRef<Mesh, PlayHeadProps>(function PlayHead(
   const size = 15;
   return (
     <mesh ref={forwardRef} rotation={[0, r, 0]}>
-      {/* <mesh ref={forwardRef} rotation={[Math.PI / 2, 0, 0]}> */}
-      <planeBufferGeometry args={[15, 15, 15]} />
-      {/* <sphereGeometry args={[5, 100, 100]} /> */}
-      {/* <sphereGeometry args={[100, 100, 100]} /> */}
-      <meshPhongMaterial color="red" side={DoubleSide} />
+      {/* <planeBufferGeometry args={[15, 15, 15]} /> */}
+      <planeBufferGeometry args={[1, 1, 1]} />
+      <shaderMaterial args={[shaderArgs]} side={DoubleSide} />
     </mesh>
   );
 });
 
 export default PlayHead;
+

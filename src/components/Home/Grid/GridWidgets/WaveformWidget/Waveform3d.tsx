@@ -48,6 +48,9 @@ import { OrbitControls as CustomControls } from "../../../Graphics/CameraControl
 import WaveformUI from "./WaveformUI";
 import { useIsPlaying, usePlaylist, useWindowSize } from "@hooks";
 import PlayHead from "./AudioForm/PlayHead";
+import appConfig from "@static/appConfig";
+import AudioCaps from "./AudioForm/AudioCaps";
+import { InfoDisplayMode } from "@model/homeModel";
 
 declare module "three-stdlib" {
   export interface GLTF extends GLTFThree {
@@ -72,7 +75,9 @@ const Grid = ({ track }: { track: Track }): JSX.Element => {
   }, [track.title]);
 
   useFrame((state) => {
+
     if (meshRef.current) {
+
       // const time = state.clock.getElapsedTime();
       const time = audioElem.current.currentTime;
       let i = 0;
@@ -95,8 +100,8 @@ const Grid = ({ track }: { track: Track }): JSX.Element => {
       <instancedMesh
         ref={meshRef}
         args={[null, null, 5000]}
-        // onPointerMove={(e) => set(e.instanceId)}
-        // onPointerOut={(e) => set(undefined)}
+      // onPointerMove={(e) => set(e.instanceId)}
+      // onPointerOut={(e) => set(undefined)}
       >
         <boxGeometry args={[1, 250, 1]}>
           <instancedBufferAttribute
@@ -122,14 +127,29 @@ const Waveform3d = (): JSX.Element => {
   // const orbitControlsRef = useRef<OrbitControls>(null);
   // const orbitControlsRef = useRef<OrbitControlsProps>(null);
   const cameraRef = useRef<THREE.OrthographicCamera>();
-  const { currentTrack, previousTrack, isPlaying } = usePlaylist();
+  const { currentTrack, previousTrack, isPlaying, infoDisplayMode, setInfoDisplayMode } = usePlaylist();
+  // const { setActiveContent }
   // const isPlaying = useIsPlaying(currentTrack);
   const { width, height } = useWindowSize();
   const [trig, setTrig] = useState(0);
+  const [activeInfoDisplayLocal, setActiveInfoDisplayLocal] = useState(infoDisplayMode);
+
+  const onUiClick = (i: InfoDisplayMode) => {
+    console.log("DOING ON UI CLICK");
+    setInfoDisplayMode(i)
+  }
+  // const wavefor
+  // const
   //  {x: -10.754739638502834, y: 8.381388045740534, z: -0.3001230079934838}
   // {x: -11.908978394837014, y: 11.714935091201424, z: -1.3115463020322258}
   // -0.9637938506196949, _y: -0.5028793509417407, _z: -0.6066787526996839,
+  // x: -5.384119159597229
+  // y: 10.68353945558257
+  // z: 11.809032372564184
 
+  //   x: -14.115966185140149
+  // y: 13.409646809707494
+  // z: -10.01058072182044
   return (
     <div
       onClick={(e) => {
@@ -141,11 +161,12 @@ const Waveform3d = (): JSX.Element => {
         <Canvas
           className="waveform-canvas"
           shadows
-          // dpr={[1, 2]}
-          // width={width}
-          // height={height}
+        // dpr={[1, 2]}
+        // width={width}
+        // height={height}
         >
-          <Stats showPanel={0} className="stats" />
+          {appConfig.showFPS && <Stats showPanel={0} className="stats" />}
+
           {/* <SceneUpdate /> */}
           {/* <color attach="background" args={[theme.primary]} /> */}
           <ambientLight color={"black"} intensity={0.5} />
@@ -156,9 +177,10 @@ const Waveform3d = (): JSX.Element => {
             zoom={20}
             // scale={3}
             // position={[-52, 11.7, -1.3]}
-            position={[-12, 11.7, -1.3]}
+            position={[-14, 13, -10]}
+            // position={[-5, 10, 11]}
             rotation={[-0.963, -0.502, -0.606]}
-            // position={[0, 0, 10]}
+          // position={[0, 0, 10]}
           />
           <OrbitControls
             // ref={orbitControlsRef}
@@ -174,6 +196,7 @@ const Waveform3d = (): JSX.Element => {
             track={currentTrack}
             previousTrack={previousTrack}
             isPlaying={isPlaying}
+            onUiClick={onUiClick}
           />
           {/* <NewControls
           ref={orbitControlsRef}
@@ -251,18 +274,16 @@ const Geo = ({ track }: { track: Track }): JSX.Element => {
   }, [track.title]);
 
   useFrame((state) => {
-    const time = state.clock.getElapsedTime();
-    // console.log(state.controls);
-    // cubeCamera.update(gl, scene);
-    if (audioElem.current && !audioElem.current.paused && groupRef.current) {
-      // console.log(audioElem.current.currentTime);
-      groupRef.current.position.x -= 0.1;
-    }
     // console.log(state.camera.position);
     // console.log(state.camera.rotation);
-
-    // console.log(progress);
+    const time = state.clock.getElapsedTime();
+    if (audioElem.current && !audioElem.current.paused && groupRef.current) {
+      groupRef.current.position.x -= 0.1;
+    }
   });
+
+
+
 
   const playHeadRef = useRef<Mesh>();
   // onPointerMove={(e) => {
@@ -273,6 +294,35 @@ const Geo = ({ track }: { track: Track }): JSX.Element => {
   //     const [,, z] = position;
   //     setPosition([x / aspect, -y / aspect, z]);
   // }, { pointerEvents: true });
+  const position1Ref = useRef<Vector3>();
+  const position1Vector = new Vector3(0, 0, 0);
+  const audioFormRef = useRef<Mesh>();
+  const { scene } = useThree()
+
+  const audioCapsRefs = useRef<Group>()
+  useEffect(() => {
+    audioFormRef.current = scene.getObjectByName("audioForm_Mesh") as Mesh;
+    // const bBox = audioFormRef.current.
+    // audioFormRef.current.compu
+    console.log(audioFormRef.current);
+    const bBox = audioFormRef.current.geometry.boundingBox;
+    position1Ref.current = position1Vector;
+    console.log(bBox);
+    console.log(audioCapsRefs.current.children);
+    const caps = audioCapsRefs.current.children;
+    const { min, max } = bBox;
+    const startCap = caps[0]
+    const endCaps = caps[1]
+    startCap.position.set(0, 0, 0);
+    endCaps.position.set(max.y, 0, 0)
+    console.log(min.x);
+    console.log(max.y);
+    // audioCapsRefs
+    // position1Ref.current.set()
+
+
+  }, [])
+
 
   return (
     <group ref={groupRef}>
@@ -286,6 +336,7 @@ const Geo = ({ track }: { track: Track }): JSX.Element => {
         }}
         track={track}
       />
+      <AudioCaps ref={audioCapsRefs} />
       {/* <AudioForm track={track} /> */}
     </group>
   );

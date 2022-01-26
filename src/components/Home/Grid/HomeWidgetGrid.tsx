@@ -16,7 +16,7 @@ import tracks from "@static/tracks";
 import { Track } from "@interfaces/Track";
 import { useApp, usePlaylist, useToggle, useWindowSize } from "@hooks";
 import { useKeyboardShortcut } from "crooks";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import "@css/blockquote.scss";
 // import Model from "@components/Home/Model";
 import Waveform3d from "@components/Home/Grid/GridWidgets/WaveformWidget/Waveform3d";
@@ -50,30 +50,35 @@ const HomeWidgetGrid = (): JSX.Element => {
     audio.current = new AudioContext();
   }, []);
 
-  const [activeTrack, setTrack] = useState<undefined | Track>(tracks[0]);
-  const [progress, setProgress] = useState(0);
 
   const [curLayout, setCurLayout] = useState<Layout[]>(defaultLayout);
   useEffect(() => {
     setCurLayout(defaultLayout);
   }, []);
-  const { trackCategory } = usePlaylist();
+  const { trackCategory, infoDisplayMode } = usePlaylist();
   const { appMode } = useApp();
 
   useEffect(() => {
     let newLayout: Layout[] = [...curLayout];
-    // defaultLayout[0].w =
-    // if (trackCategory === "remix") {
-    //   setCurLayout(remixLayout);
-    // }
-
-    // if (trackCategory === "recital") {
-    //   setCurLayout(recitalLayout);
-    // }
   }, [trackCategory, appMode]);
 
+  const variants: Variants = {
+    regular: { opacity: 1, x: 0 },
+    infoPopup: {
+      opacity: .1,
+      transition: {
+        ease: "linear",
+        duration: .5,
+      },
+    },
+  };
+
   return (
-    <section id="home-body" style={{ width: "100vw", paddingTop: "5vw" }}>
+    <motion.section
+      variants={variants}
+      animate={infoDisplayMode !== undefined ? "infoPopup" : "regular"}
+      id="home-body" style={{ width: "100vw" }}>
+      {/* <section id="home-body" style={{ width: "100vw", paddingTop: "5vw" }}> */}
       <GridLayout className={"layout"} layout={[...curLayout]}>
         {/* <AboutTriggerWidget key="projectInfo" /> */}
         {/* <AboutWidget key="about" track={activeTrack} /> */}
@@ -84,8 +89,9 @@ const HomeWidgetGrid = (): JSX.Element => {
         <ThreeRemixes key="threeRemixes" />
         <RemixesWidget
           key="remixes"
-          // appMode={appMode}
+        // appMode={appMode}
         />
+        {/* <InfoDisplay key="infoDispplay" /> */}
         {/* <TitleWidget key="title" /> */}
 
         {/* <TrackInfoWidget key="trackInfo" track={activeTrack} /> */}
@@ -97,7 +103,7 @@ const HomeWidgetGrid = (): JSX.Element => {
         /> */}
         {/* <ViolinWidget key="violin" /> */}
       </GridLayout>
-    </section>
+    </motion.section>
   );
 };
 
@@ -111,3 +117,4 @@ function alterLayout(id: string, layout: Layout[], newLayout: LayoutPos) {
   const ind = layout.indexOf(toGet);
   // layout[ind] = { i: id, ...newLayout };
 }
+

@@ -3,30 +3,36 @@ import { Html, OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import theme from "@static/theme";
 import { useSpring } from "framer-motion";
 import React, { forwardRef, useEffect, useMemo, useRef, useState } from "react";
-import { Canvas, GroupProps, useFrame, useThree } from "@react-three/fiber";
+import { Canvas, GroupProps, ThreeEvent, useFrame, useLoader, useThree } from "@react-three/fiber";
 import {
   Color,
+  DoubleSide,
   Group,
   LineCurve3,
   Matrix4,
   Mesh,
   Quaternion,
+  TextureLoader,
   TubeGeometry,
   Vector3,
 } from "three";
 import AboutWidget from "../AboutWidget";
 import TrackInfoWidget from "../TrackInfoWidget";
+import { InfoDisplayMode } from "@model/homeModel";
+import { CalculatePosition } from "@react-three/drei/web/Html";
 
 const WaveformUI = ({
   trig,
   track,
   previousTrack,
   isPlaying,
+  onUiClick,
 }: {
   isPlaying: boolean;
   trig: number;
   track: Track;
   previousTrack: Track;
+  onUiClick: (i: InfoDisplayMode) => void;
 }): JSX.Element => {
   const div1 = useRef<Group>();
   const div2 = useRef<Group>();
@@ -91,11 +97,12 @@ const WaveformUI = ({
     if (connectorsGroup.current) {
       const chil = connectorsGroup.current.children;
       chil.forEach((c, i) => {
-        c.position.x += i * 5;
+        // c.position.x += i * 5;
       });
       divItems.forEach((c, i) => {
         c.current.position.x += i * 10;
         c.current.position.y = 10;
+
       });
     }
   }, []);
@@ -163,16 +170,16 @@ const WaveformUI = ({
     val += off;
 
     const linescopy = [...lines];
-    divItems.forEach((item, i) => {
-      item.current.position.set(
-        Math.cos(val + third * i) * r,
-        0,
-        Math.sin(val + third * i) * r
-      );
-      const p1 = item.current.position;
-      linescopy[i][1].set(p1.x, p1.y, p1.z);
-      linescopy[i][0].set(p1.x * 0.5, p1.y * 0.5, p1.z * 0.5);
-    });
+    // divItems.forEach((item, i) => {
+    //   item.current.position.set(
+    //     Math.cos(val + third * i) * r,
+    //     0,
+    //     Math.sin(val + third * i) * r
+    //   );
+    //   const p1 = item.current.position;
+    //   linescopy[i][1].set(p1.x, p1.y, p1.z);
+    //   linescopy[i][0].set(p1.x * 0.5, p1.y * 0.5, p1.z * 0.5);
+    // });
     setLines(linescopy);
   });
 
@@ -187,28 +194,34 @@ const WaveformUI = ({
         </group>
         <DivBlock
           text={"1"}
+          infoType={"bio"}
           track={track}
           color="red"
           ref={div1}
           isPlaying={isPlaying}
+          onUiClick={onUiClick}
         >
           <TrackInfoWidget track={track} />
         </DivBlock>
         <DivBlock
+          infoType={"image"}
           text={"2"}
           track={track}
           color="green"
           isPlaying={isPlaying}
           ref={div2}
+          onUiClick={onUiClick}
         >
           <AboutWidget previousTrack={previousTrack} track={track} />
         </DivBlock>
         <DivBlock
+          infoType={"notes"}
           text={"3"}
           track={track}
           color="blue"
           ref={div3}
           isPlaying={isPlaying}
+          onUiClick={onUiClick}
         >
           <TrackInfoWidget track={track} />
         </DivBlock>
@@ -228,9 +241,14 @@ interface DivBlockProps extends GroupProps {
   color: string;
   children: JSX.Element;
   track: Track;
+  infoType: InfoDisplayMode;
+  onUiClick: (i: InfoDisplayMode) => void;
 }
+
+
+
 const DivBlock = forwardRef<Group, DivBlockProps>(function DivBlock(
-  { color, text, children, track, isPlaying },
+  { color, text, children, track, isPlaying, infoType, onUiClick },
   forwardRef
 ) {
   const { gl, scene, camera, controls } = useThree();
@@ -249,6 +267,23 @@ const DivBlock = forwardRef<Group, DivBlockProps>(function DivBlock(
     }
   }, [controls, track.title]);
 
+  const texture = useLoader(TextureLoader, `${process.env.PUBLIC_URL}/Textures/infoIcon2.png`)
+
+
+  const v1 = new Vector3()
+
+  const overrideCalculatePosition: CalculatePosition = (el, camera, size) => {
+    const objectPos = v1.setFromMatrixPosition(el.matrixWorld)
+    objectPos.project(camera)
+    const widthHalf = size.width / 2
+    const heightHalf = size.height / 2
+    return [
+      Math.min(size.width - 100, Math.max(0, objectPos.x * widthHalf + widthHalf)),
+      Math.min(size.height - 20, Math.max(0, -(objectPos.y * heightHalf) + heightHalf)),
+    ]
+  }
+
+
   useEffect(() => {
     if (controls) {
       console.log(controls.hasEventListener("change", onPositionChange));
@@ -256,36 +291,62 @@ const DivBlock = forwardRef<Group, DivBlockProps>(function DivBlock(
       if (!hasControls) {
         controls.addEventListener("change", onPositionChange);
       }
-      // return controls.removeEventListener("change", onPositionChange);
     }
   }, [track]);
 
   useEffect(() => {
     console.log(isPlaying);
   }, [isPlaying]);
+  const size = 4;
+
+  const onPointerEnter = (e: ThreeEvent<PointerEvent>) => {
+    console.log(e);
+
+  }
+  const onPointerLeave = (e: ThreeEvent<PointerEvent>) => {
+    console.log(e);
+  }
+  const onPointerDown = (e: ThreeEvent<PointerEvent>) => {
+    console.log(e);
+    onUiClick(infoType)
+  }
 
   return (
     <group ref={forwardRef} name={text}>
-      <Html
+      <mesh
+        onPointerEnter={onPointerEnter}
+        onPointerLeave={onPointerEnter}
+        onPointerDown={onPointerDown}
+      >
+        <planeBufferGeometry args={[size, size, size]} />
+        <meshBasicMaterial side={DoubleSide} map={texture} />
+      </mesh>
+      {/* <Html
+        calculatePosition={overrideCalculatePosition}
         prepend={true}
         position={[0, 0, 0]}
         occlude={true}
         // distanceFactor={isPlaying ? 1 : 1}
         // transform={text !== "1" ? true : false}
+        // distanceFactor={10}
+        // transform={false}
         transform={true}
       >
         <div
           style={{
-            width: "100%",
-            height: "100%",
+            width: 5,
+            height: 5,
             border: "1px solid white",
-            // backgroundColor: "red",
+            backgroundColor: "red",
           }}
         >
-          {/* <Text color={color}>{text}</Text> */}
-          {/* {isPlaying && children} */}
-          {children}
-          {!isPlaying && (
+
+          <img src={`${process.env.PUBLIC_URL}/Textures/infoIcon2.png`} />
+        </div> */}
+      {/* <Text color={color}>{text}</Text> */}
+      {/* {isPlaying && children} */}
+      {/* {children} */}
+      {/* {!isPlaying && (
             <div
               style={{
                 width: 200,
@@ -296,10 +357,10 @@ const DivBlock = forwardRef<Group, DivBlockProps>(function DivBlock(
                 // backgroundColor: "red",
               }}
             ></div>
-          )}
-        </div>
-      </Html>
-    </group>
+          )} */}
+      {/* </div> */}
+      {/* </Html> */}
+    </group >
   );
 });
 

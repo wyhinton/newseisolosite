@@ -14,6 +14,10 @@ const bachTrack = `${process.env.PUBLIC_URL}/Tracks/Bach Mov 2.wav`;
 const bartokTrack = `${process.env.PUBLIC_URL}/Tracks/Bartok Mov 1.wav`;
 const ysaeTrack = `${process.env.PUBLIC_URL}/Tracks/Ysaye_AUDIO.mp3`;
 
+const anjaliBio = "ANJALI BIO"
+const countourBio = "CONTOUR BIO"
+const pacificBio = "PACIFIC BIO"
+
 const bachVideo = `${process.env.PUBLIC_URL}/Videos/Recital/Vivek Menon - JS Bach Partita n2_rev01-005.mov`;
 const ysayeVideo = `${process.env.PUBLIC_URL}/Videos/Recital/Vivek Menon - Sonate n3 - Eugene Ysaye_Rev02.mov`;
 const bartokVideo = `${process.env.PUBLIC_URL}/Videos/Recital/Vivek_Menon_Bartok_Sonata_for_Violin_Solo_rev01.mov`;
@@ -48,6 +52,7 @@ const tracks: Track[] = [
       },
     ],
     category: "remix",
+    bio: anjaliBio,
   },
   {
     artist: "Pacific Yew",
@@ -65,6 +70,7 @@ const tracks: Track[] = [
       },
     ],
     category: "remix",
+    bio: pacificBio,
   },
   {
     artist: "Contour",
@@ -82,6 +88,7 @@ const tracks: Track[] = [
       },
     ],
     category: "remix",
+    bio: countourBio,
   },
   {
     artist: "Vivek Menon",

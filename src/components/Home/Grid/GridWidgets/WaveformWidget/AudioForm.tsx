@@ -1,43 +1,28 @@
 import React, {
-  RefObject,
-  Suspense,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from "react";
-import theme from "@static/theme";
 import { GLTF as GLTFThree } from "three/examples/jsm/loaders/GLTFLoader";
-import glsl from "babel-plugin-glsl/macro";
 
 import {
   extend,
-  useThree,
-  useFrame,
   useLoader,
   ThreeEvent,
-} from "react-three-fiber";
-import THREE, {
-  CubeTextureLoader,
+} from "@react-three/fiber";
+import {
   Mesh,
   Material,
   Group,
   Color,
   Vector2,
   LatheGeometry,
-  Vector3,
   ShaderMaterial,
-  UniformsUtils,
   TextureLoader,
-  FileLoader,
 } from "three";
 import { useAsset } from "use-asset";
-import { useControls } from "leva";
-import { OrbitControls as OC } from "three/examples/jsm/controls/OrbitControls";
 import { Track } from "@interfaces/Track";
-import { getRandomIntInclusive, mapRange } from "@utils";
-import { SubsurfaceScatteringShader } from "three/examples/jsm/shaders/SubsurfaceScatteringShader.js";
-import { shaderArgs } from "./SDFTest";
+import { getRandomIntInclusive } from "@utils";
 // https://codesandbox.io/s/yoga-r3f-lgl0j
 
 declare module "three-stdlib" {

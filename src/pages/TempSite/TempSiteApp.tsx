@@ -91,7 +91,7 @@ const TopBar = (): JSX.Element => {
                 alignItems: "center",
                 // width: "100%",
                 transform: "translate(-50%, -50%)",
-                borderRadius: 20,
+                borderRadius: 50,
                 left: "50%",
                 top: "-10%",
                 // textAlign: "left",
@@ -101,7 +101,7 @@ const TopBar = (): JSX.Element => {
                 color: "black",
                 backgroundColor: theme.secondary,
                 // fontSize: 100,
-                fontSize: "1rem",
+                fontSize: "2rem",
                 zIndex: 100,
                 // backgroundColor: theme.secondary,
             }}

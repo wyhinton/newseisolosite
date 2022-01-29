@@ -2,3 +2,5 @@ node_modules
 public/Tracks/*.wav
 public/Videos/Recital
 reactronica-0.4.6
+diagrams
+public/Videos

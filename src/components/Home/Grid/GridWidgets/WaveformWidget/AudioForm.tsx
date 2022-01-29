@@ -1,43 +1,28 @@
 import React, {
-  RefObject,
-  Suspense,
   useEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
-import theme from "@static/theme";
 import { GLTF as GLTFThree } from "three/examples/jsm/loaders/GLTFLoader";
-import glsl from "babel-plugin-glsl/macro";
 
 import {
-  extend,
-  useThree,
-  useFrame,
   useLoader,
   ThreeEvent,
-} from "react-three-fiber";
-import THREE, {
-  CubeTextureLoader,
+} from "@react-three/fiber";
+import {
   Mesh,
   Material,
   Group,
   Color,
   Vector2,
   LatheGeometry,
-  Vector3,
   ShaderMaterial,
-  UniformsUtils,
   TextureLoader,
-  FileLoader,
 } from "three";
 import { useAsset } from "use-asset";
-import { useControls } from "leva";
-import { OrbitControls as OC } from "three/examples/jsm/controls/OrbitControls";
 import { Track } from "@interfaces/Track";
-import { getRandomIntInclusive, mapRange } from "@utils";
-import { SubsurfaceScatteringShader } from "three/examples/jsm/shaders/SubsurfaceScatteringShader.js";
-import { shaderArgs } from "./SDFTest";
+import { getRandomIntInclusive } from "@utils";
 // https://codesandbox.io/s/yoga-r3f-lgl0j
 
 declare module "three-stdlib" {
@@ -48,37 +33,37 @@ declare module "three-stdlib" {
 }
 
 const numPoints = 1000;
-class ColorMaterial extends ShaderMaterial {
-  constructor() {
-    super({
-      uniforms: {
-        time: { value: 1.0 },
-        color: { value: new Color(0.2, 0.0, 0.1) },
-      },
-      vertexShader: `varying vec2 vUv;
-      void main() {
-        vUv = uv;
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-      }`,
-      fragmentShader: `uniform float time;
-      uniform vec3 color;
-      varying vec2 vUv;
-      void main() {
-        gl_FragColor.rgba = vec4(0.5 + 0.3 * sin(vUv.yxx + time) + color, 1.0);
-      }`,
-    });
-  }
-  get color() {
-    return this.uniforms.color.value;
-  }
-  get time() {
-    return this.uniforms.time.value;
-  }
-  set time(v) {
-    this.uniforms.time.value = v;
-  }
-}
-extend({ ColorMaterial });
+// class ColorMaterial extends ShaderMaterial {
+//   constructor() {
+//     super({
+//       uniforms: {
+//         time: { value: 1.0 },
+//         color: { value: new Color(0.2, 0.0, 0.1) },
+//       },
+//       vertexShader: `varying vec2 vUv;
+//       void main() {
+//         vUv = uv;
+//         gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+//       }`,
+//       fragmentShader: `uniform float time;
+//       uniform vec3 color;
+//       varying vec2 vUv;
+//       void main() {
+//         gl_FragColor.rgba = vec4(0.5 + 0.3 * sin(vUv.yxx + time) + color, 1.0);
+//       }`,
+//     });
+//   }
+//   get color() {
+//     return this.uniforms.color.value;
+//   }
+//   get time() {
+//     return this.uniforms.time.value;
+//   }
+//   set time(v) {
+//     this.uniforms.time.value = v;
+//   }
+// }
+// extend({ ColorMaterial });
 
 const AudioForm = ({
   track,
@@ -88,23 +73,27 @@ const AudioForm = ({
   onPointerMove: (e: ThreeEvent<PointerEvent>) => void;
 }) => {
   const pathRef = useRef<Mesh>();
+
+
   const points = Array.from(Array(numPoints).keys()).map((n, i) => {
     const dist = 0.5;
     const y = i * dist;
     const x = getRandomIntInclusive(0, 5);
     return new Vector2(x, y);
   });
+
+  // const points = useMemo(())
   //   const samplePoints = fetch(`${process.env.PUBLIC_URL}/TrackData/TRACKS_DATA.json`)
-  const data = useAsset(async () => {
-    // Any async task can run in here, fetch reqkuests, parsing, workers, promises, ...
-    const res = await fetch(
-      `${process.env.PUBLIC_URL}/TrackData/TRACKS_DATA.json`
-    );
-    // const mapedData = res
-    // const r = res.json();
-    // const pm =
-    return await res.json();
-  });
+  // const data = useAsset(async () => {
+  //   // Any async task can run in here, fetch reqkuests, parsing, workers, promises, ...
+  //   const res = await fetch(
+  //     `${process.env.PUBLIC_URL}/TrackData/TRACKS_DATA.json`
+  //   );
+  //   // const mapedData = res
+  //   // const r = res.json();
+  //   // const pm =
+  //   return await res.json();
+  // });
   // console.log(data);
 
   const [audioPoints, setAudioPoints] = useState<Vector2[]>([]);
@@ -155,8 +144,6 @@ const AudioForm = ({
   const matcapTexture = useLoader(
     TextureLoader,
     `${process.env.PUBLIC_URL}/Textures/mats/BluePearl.png`
-    // `${process.env.PUBLIC_URL}/Textures/matcapdarkpurple.png`
-    // `${process.env.PUBLIC_URL}/Textures/matcapred.jpg`
   );
 
   return (

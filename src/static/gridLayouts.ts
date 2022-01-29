@@ -13,25 +13,14 @@ let layoutBase = [
   { i: "violin", x: 5, y: 2, w: 1, h: 3 },
 ];
 
-// const layoutv2: Layout[] = [
-//   // { i: "about", x: 6, y: 5, w: 3, h: 6 },
-//   { i: "oneRecitalText", x: 0, y: 0, w: 6, h: 2, static: false },
-//   { i: "recitalTracks", x: 0, y: 3, w: 5, h: 4, static: true },
-//   { i: "threeRemixes", x: 0, y: 7, w: 6, h: 2, static: false },
-//   { i: "remixes", x: 0, y: 3, w: 6, h: 5, static: false },
-//   // { i: "infoDisplay", x: 6, y: 0, w: 6, h: 4, static: true },
-//   // 
+const s = true;
 
-//   // { i: "trackInfo", x: 6, y: 7, w: 5, h: 4 },
-//   // { i: "waveform", x: 6, y: 5, w: 5, h: 2 },
-//   // { i: "violin", x: 0, y: 2, w: 1, h: 6 },
-// ];
 const layoutv2: Layout[] = [
   // { i: "about", x: 6, y: 5, w: 3, h: 6 },
-  { i: "oneRecitalText", x: 0, y: 0, w: 6, h: 2, static: false },
-  { i: "recitalTracks", x: 0, y: 3, w: 5, h: 4, static: true },
-  { i: "threeRemixes", x: 6, y: 0, w: 6, h: 2, static: false },
-  { i: "remixes", x: 6, y: 3, w: 5, h: 5, static: false },
+  { i: "oneRecitalText", x: 0, y: 0, w: 6, h: 2, static: s },
+  { i: "recitalTracks", x: 0, y: 3, w: 8, h: 4, static: s },
+  { i: "threeRemixes", x: 6, y: 0, w: 6, h: 2, static: s },
+  { i: "remixes", x: 6, y: 3, w: 5, h: 6, static: s },
   // { i: "infoDisplay", x: 6, y: 0, w: 6, h: 4, static: true },
   // 
 
@@ -54,11 +43,22 @@ const modifyBase = (toReplace: Layout[]) => {
   return copy;
 };
 
+
+
 export const layoutLg = modifyBase([
-  { i: "recitalTracks", x: 0, y: 2, w: 5, h: 4, static: true },
-  { i: "remixes", x: 6, y: 3, w: 6, h: 6, static: false },
+  { i: "threeRemixes", x: 6, y: 9, w: 6, h: 1, static: s },
+  { i: "oneRecitalText", x: 9, y: 2, w: 6, h: 1, static: s },
+  { i: "recitalTracks", x: 0, y: 0, w: 6, h: 6, static: s },
+  { i: "remixes", x: 0, y: 6, w: 6, h: 7, static: s },
 ])
 
+
+export const layoutSm = modifyBase([
+  { i: "oneRecitalText", x: 0, y: 3, w: 12, h: 2, static: s },
+  { i: "threeRemixes", x: 0, y: 0, w: 12, h: 2, static: s },
+  { i: "recitalTracks", x: 0, y: 2, w: 12, h: 3, static: s },
+  { i: "remixes", x: 0, y: 3, w: 12, h: 4, static: s },
+])
 
 
 layoutBase = layoutv2;

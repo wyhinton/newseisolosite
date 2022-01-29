@@ -1,0 +1,45 @@
+import React, { useRef, useEffect, useState } from 'react'
+import { extend, useThree } from '@react-three/fiber'
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass'
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
+import { CrtShader } from './TransitionShader'
+import { useSpring, animated } from '@react-spring/three'
+import { useProgress } from '@react-three/drei';
+
+extend({ EffectComposer, ShaderPass, RenderPass })
+
+
+const ViolinWidgetEffects = (): JSX.Element => {
+    const composer = useRef<EffectComposer>()
+    const { scene, gl, size, camera } = useThree()
+    const shaderRef = useRef<ShaderPass>()
+    const { loaded } = useProgress();
+
+    const [progressS, setSProgress] = useState(0);
+
+    const { spring } = useSpring({
+        spring: progressS,
+        config: { mass: 5, tension: 400, friction: 50, precision: 0.0001 }
+    })
+
+
+
+    useEffect(() => {
+        console.log(loaded)
+        if (loaded == 2) {
+            setSProgress(1)
+        }
+    }, [loaded])
+
+    useEffect(() => void composer.current.setSize(size.width, size.height), [size])
+    return (
+        <animated.effectComposer ref={composer} args={[gl]}>
+            <animated.renderPass attachArray="passes" scene={scene} camera={camera} />
+            <animated.shaderPass attachArray="passes" ref={shaderRef} args={[CrtShader]} />
+        </animated.effectComposer>
+    )
+}
+
+export default ViolinWidgetEffects
+

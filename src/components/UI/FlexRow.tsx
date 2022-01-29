@@ -1,39 +1,36 @@
 import React, { useState, useEffect } from "react";
 
-const FlexRow = ({
-  children,
-  padding,
-  className,
-  style,
-  width,
-  height,
-  justifyContent,
-  id,
-}: {
-  children: JSX.Element | JSX.Element[] | Element[];
+
+interface FlexRowProps extends Omit<React.HTMLProps<HTMLDivElement>, 'as' | 'ref'> {
+  // children: JSX.Element | JSX.Element[] | Element[];
   padding?: string;
-  className?: string;
-  style?: React.CSSProperties;
+  // className?: string;
+  // style?: React.CSSProperties;
   width?: string;
   height?: string;
   justifyContent?: string;
-  id?: string;
-}): JSX.Element => {
+  flexDirection?: string;
+}
+
+const FlexRow = (props: FlexRowProps): JSX.Element => {
+
   return (
     <div
-      className={className}
+      // className={className}
+      {...props}
       style={{
         display: "flex",
-        flexDirection: "row",
-        padding: padding,
-        width,
-        height,
-        justifyContent,
-        ...style,
+        //@ts-ignore
+        flexDirection: props.flexDirection ?? "row" as 'row',
+        padding: props.padding,
+        width: props.width,
+        height: props.height,
+        justifyContent: props.justifyContent,
+        ...props.style,
       }}
-      id={id}
+    // id={id}
     >
-      {children}
+      {props.children}
     </div>
   );
 };

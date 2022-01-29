@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import theme from "@static/theme";
 import {
-    useIsPlaying,
+    useIsPlaying, usePlaylist,
 } from "@hooks";
 import { motion, Variants } from "framer-motion";
 import { Track } from "@interfaces/Track";
@@ -27,13 +27,20 @@ const ShapeContainer = ({ track, viewBox, children }: { track: Track, viewBox: s
             },
         },
     };
+    const { isPlaying, currentTrack } = usePlaylist();
 
-    const isPlaying = useIsPlaying(track);
+    // const isPlayingTrack = useIsPlaying(track);
+
+
+
     const [animate, setAnimate] = useState(false);
     useEffect(() => {
+        // console.log(isPlayingTrack);
+        // setAnimate(isPlayingTrack && isPlaying);
+        // if (currentTrack.title ==)
         console.log(isPlaying);
-        setAnimate(isPlaying);
-    }, [isPlaying]);
+        setAnimate(currentTrack.title === track.title && isPlaying)
+    }, [currentTrack, isPlaying]);
 
 
     return (
@@ -54,7 +61,7 @@ const ShapeContainer = ({ track, viewBox, children }: { track: Track, viewBox: s
             }}
             whileHover={
                 {
-                    backgroundColor: theme.primaryDark,
+                    backgroundColor: theme.secondaryHover,
                     scale: 1.1,
 
                     transition: {

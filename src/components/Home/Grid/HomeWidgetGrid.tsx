@@ -65,7 +65,7 @@ const HomeWidgetGrid = (): JSX.Element => {
   const variants: Variants = {
     regular: { opacity: 1, x: 0 },
     infoPopup: {
-      opacity: .1,
+      opacity: .0,
       transition: {
         ease: "linear",
         duration: .5,
@@ -107,7 +107,7 @@ const HomeWidgetGrid = (): JSX.Element => {
   );
 };
 
-export default HomeWidgetGrid;
+export default React.memo(HomeWidgetGrid);
 
 type LayoutPos = Pick<Layout, "x" | "y" | "w" | "h">;
 

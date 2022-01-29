@@ -4,6 +4,7 @@ import classNames from "classnames";
 import TrackData from "@interfaces/TrackData";
 import { Texture, TextureLoader, Vector2, Vector3 } from "three";
 import { useLoader } from "@react-three/fiber";
+import { useAudioAnalysis } from "@hooks";
 
 const WaveGeometry = ({
   trackData,
@@ -12,23 +13,28 @@ const WaveGeometry = ({
 }: {
   trackData: TrackData;
   position: Vector3;
-  matCap: Texture;
+  matCap: string;
 }): JSX.Element => {
+
+  const { xDistance } = useAudioAnalysis();
+
   const points = trackData.data.map((d, i) => {
-    const x = d * 0.05;
-    const y = i * 1;
+    const mult = .5;
+    const x = Math.abs(d) * 0.03;
+    // const x = d * 0.05;
+    const y = i * xDistance;
     return new Vector2(x, y);
   });
 
   const matcapTexture = useLoader(
     TextureLoader,
-    `${process.env.PUBLIC_URL}/Textures/mats/BluePearl.png`
+    matCap
   );
 
   return (
     <mesh position={position}>
-      <latheGeometry args={[points, 5]} />
-      <meshMatcapMaterial attach="material" opacity={0.5} matcap={matCap} />
+      <latheGeometry args={[points, 10]} />
+      <meshMatcapMaterial attach="material" opacity={1} matcap={matcapTexture} />
     </mesh>
   );
 };

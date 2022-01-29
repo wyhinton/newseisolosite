@@ -26,16 +26,21 @@ import WaveformWidget from "@components/Home/Grid/GridWidgets/WaveformWidget";
 import Nav from "@components/Home/Nav/Nav";
 import MediaControls from "@components/Home/Nav/MediaControls";
 import InfoPopup from "@components/Home/InfoPopup";
+import AppBar from "@components/Home/AppBar";
+import { AudioAnalyser } from "three";
+import AudioDataContainer from "@components/Home/Player/EQ/AudioDataContainer";
+import NewAna from "@components/Home/InfoPopup/NewAna";
 export type HomeMode = "player" | "notes" | "about";
 
 const Home = (): JSX.Element => {
-  const { trackCategory, currentTrack } = usePlaylist();
+  const { trackCategory, currentTrack, pauseTrack, pauseCurrent, infoDisplayMode } = usePlaylist();
   const { appMode } = useApp();
 
-  const audio = useRef(null);
-
   useEffect(() => {
-    audio.current = new AudioContext();
+    pauseCurrent()
+    pauseTrack(tracks[0])
+    // audio.current = new AudioContext();
+
   }, []);
 
   const [curLayout, setCurLayout] = useState<Layout[]>(defaultLayout);
@@ -45,45 +50,34 @@ const Home = (): JSX.Element => {
   }, []);
 
   return (
-    <StoreProvider store={homeStore}>
-      <section style={{ width: "100vw" }} className="dot-fill">
-        {appConfig.showIntro && <IntroModal />}
-        {/* <AboutButton /> */}
-        {/* <TopBar /> */}
-        <MediaControls />
-        <ReturnButton />
-        <InfoPopup />
-        <HomeWidgetGrid />
-        <Nav />
-        <div
-          style={{
-            height: "100%",
-            width: "50%",
-            position: "absolute",
-            top: 0,
-            zIndex: 0,
-            // border: "1px solid red",
-          }}
-        >
-          <ViolinWidget track={currentTrack} />
-        </div>
-
-        <div
-          style={{
-            height: "100%",
-            width: "100%",
-            position: "absolute",
-            top: 0,
-            left: 0,
-            zIndex: 0,
-            // backgroundColor: "orange",
-          }}
-        >
-
-          <WaveformWidget />
-        </div>
-      </section>
-    </StoreProvider>
+    // <StoreProvider store={homeStore}>
+    <section style={{ width: "100vw" }} className="dot-fill">
+      {appConfig.showIntro && <IntroModal />}
+      {/* <AboutButton /> */}
+      {/* <TopBar /> */}
+      {/* <MediaControls /> */}
+      <ReturnButton />
+      <InfoPopup />
+      <HomeWidgetGrid />
+      <Nav />
+      <AppBar />
+      <div
+        id="violin-widget-container"
+        style={{
+          height: "100%",
+          width: "50%",
+          position: "absolute",
+          top: "0%",
+          right: "0%",
+          zIndex: infoDisplayMode !== undefined ? -1 : 10,
+          // border: "1px solid red",
+        }}
+      >
+        <ViolinWidget track={currentTrack} />
+      </div>
+      {/* <WaveformWidget /> */}
+    </section>
+    // </StoreProvider>
   );
 };
 

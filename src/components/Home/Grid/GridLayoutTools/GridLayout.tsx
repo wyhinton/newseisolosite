@@ -4,10 +4,11 @@ import { motion } from "framer-motion";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Layout, Layouts, Responsive, WidthProvider } from "react-grid-layout";
 import ViewCard from "./ViewCard";
-import { layoutLg } from "@static/gridLayouts"
+import { layoutLg, layoutSm } from "@static/gridLayouts"
 import appConfig from "@static/appConfig";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
+
 const GridLayout = ({
   children,
   className,
@@ -65,6 +66,7 @@ const GridLayout = ({
             height: "100%"
           }}>
             <motion.div
+              initial={false}
               // initial={{
               //   opacity: 0,
               //   // translateX: i % 2 === 0 ? -50 : 50,
@@ -112,9 +114,9 @@ const GridLayout = ({
 
   let layouts: Layouts = {
     lg: layoutLg,
-    md: layout,
-    sm: layout,
-    xxs: layout,
+    md: layoutLg,
+    sm: layoutSm,
+    xxs: layoutSm,
   };
 
 
@@ -126,18 +128,21 @@ const GridLayout = ({
         console.log(e);
       }}
       //
+      measureBeforeMount={true}
       // allowOverlap
       // isDraggable={false}
-      isDraggable={true}
+      // isDraggable={true}
       className={className}
       layouts={layouts}
       // layouts={ll}
-      useCSSTransforms={animate}
-      margin={[padding, padding]}
+      useCSSTransforms={false}
+      // useCSSTransforms={animate}
+      margin={[padding / 2, padding / 2]}
+      // margin={[padding, padding]}
       // compactType={undefined}
       width={window.innerWidth}
       rowHeight={rowHeight}
-      cols={{ lg: 12, md: 9, sm: 9, xs: 6, xxs: 6 }}
+      cols={{ lg: 12, md: 12, sm: 12, xs: 12, xxs: 12 }}
       containerPadding={[padding, padding * 4]}
     // verticalCompact={false}
     // onLayoutChange={function () {}}
@@ -148,7 +153,7 @@ const GridLayout = ({
 };
 ("1=20px");
 
-export default GridLayout;
+export default React.memo(GridLayout);
 
 function getRandomIntInclusive(min, max) {
   min = Math.ceil(min);

@@ -23,6 +23,7 @@ import { GLTF as GLTFThree } from "three/examples/jsm/loaders/GLTFLoader";
 import { usePlaylist, useTrackCategory } from "@hooks";
 import { Track } from "@interfaces/Track";
 import { useSpring } from "framer-motion";
+import ViolinWidgetEffects from "./ViolinWidget/ViolinWidgetEffects";
 declare module "three-stdlib" {
   export interface GLTF extends GLTFThree {
     nodes: Record<string, Mesh>;
@@ -102,17 +103,19 @@ const ViolinWidget = ({ track }: { track: Track }): JSX.Element => {
   return (
     <Suspense fallback={<Loader />}>
       <Canvas className="canvas">
-        <OrthographicCamera makeDefault zoom={5.1} position={[0, 0, 20]} />
+        <OrthographicCamera makeDefault zoom={15.1} position={[0, 0, 20]} />
         <OrbitControls />
         {/* <Sphere /> */}
         <Violin track={track} />
         {/* <SkyBox /> */}
+        <ViolinWidgetEffects />
       </Canvas>
     </Suspense>
   );
 };
 
 export default React.memo(ViolinWidget);
+
 
 function Loader() {
   const { active, progress, errors, item, loaded, total } = useProgress();

@@ -29,7 +29,7 @@ const Audio = ({ track }: { track: Track }): JSX.Element => {
         // paddingRight: `clamp(${padMin}, 1vw, ${padMax})`,
         // paddingTop: `clamp(${padMin}, 1vw, ${padMax})`,
         // paddingBottom: `clamp(${padMin}, 1vw, ${padMax})`,
-        height: "100%",
+        height: "0%",
       }}
     >
       {/* {track.category === "remix" && <ArtistImage track={track} />} */}
@@ -60,14 +60,14 @@ const Song = ({ track }: { track: Track }): JSX.Element => {
           fontSize: 24,
           // opacity: track.category === "remix" ? 0 : 1,
         }}
-        // whileHover={
-        //   track.category === "remix"
-        //     ? {
-        //         opacity: 1,
-        //         transition: { duration: 0.1 },
-        //       }
-        //     : {}
-        // }
+      // whileHover={
+      //   track.category === "remix"
+      //     ? {
+      //         opacity: 1,
+      //         transition: { duration: 0.1 },
+      //       }
+      //     : {}
+      // }
       >
         {title}
       </motion.div>

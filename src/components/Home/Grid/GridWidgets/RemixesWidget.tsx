@@ -34,7 +34,7 @@ const RemixesWidget = (): JSX.Element => {
       case ("Revolving Melody"):
         // viewBox="0 0 221 221"
         el = <MirrorShape track={t} />
-        vb = "0 0 221 221";
+        vb = "0 0 200 200";
         break;
       default:
         // viewBox="0 0 257 231.2"
@@ -64,12 +64,26 @@ const RemixesWidget = (): JSX.Element => {
       {remixParts.map((track, i) => {
         return (
           <TrackItem key={i} track={track} useBox={false}>
-            {/* <TrackText track={track} /> */}
-            {getShape(track)}
+            <TrackText track={track} />
+            <motion.div
+              // scale={0}
+              // y={10}
+              animate={{
+                scale: [0, 1],
+                rotateZ: [0, 90],
+                transition: {
+                  duration: .5,
+                  delay: i * .5,
+                }
+              }}
+
+            >
+              {getShape(track)}
+            </motion.div>
           </TrackItem>
         );
       })}
-    </div>
+    </div >
   );
 };
 
@@ -84,11 +98,11 @@ const TrackText = ({ track }: { track: Track }): JSX.Element => {
         playTrack(track);
       }}
       style={{
-        zIndex: 1,
+        zIndex: 100,
         width: "100%",
         height: "10%",
         position: "relative",
-        top: "0%",
+        top: "50%",
         left: "50%",
         transform: "translate(-50%,-50%)",
         textAlign: "left",
@@ -99,7 +113,7 @@ const TrackText = ({ track }: { track: Track }): JSX.Element => {
         alignItems: "center",
         justifyContent: "center",
         // fontSize: theme.mediumFont,
-        fontSize: 15,
+        fontSize: theme.widgetFontSize,
         // backgroundColor: theme.secondary,
         color: theme.primaryDark,
         // color: "black",
@@ -107,7 +121,7 @@ const TrackText = ({ track }: { track: Track }): JSX.Element => {
     >
       <div
         style={{
-          zIndex: 0,
+          // zIndex: 0,
           width: "1%",
           height: "100%",
           position: "absolute",
@@ -121,16 +135,14 @@ const TrackText = ({ track }: { track: Track }): JSX.Element => {
           alignItems: "center",
           justifyContent: "center",
           fontSize: 25,
-          // fontSize: theme.mediumFont,
           backgroundColor: theme.secondary,
           color: theme.primary,
-          // backgroundColor: "red",
-          // color: "black",
+          zIndex: 100,
         }}
       >
 
       </div>
-      {track.title}
+      {track.artist}
     </div>
   );
 };

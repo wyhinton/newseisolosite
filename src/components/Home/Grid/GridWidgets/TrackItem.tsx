@@ -94,7 +94,7 @@ const TrackItem = ({
       {/* <PlayPauseControls track={track} /> */}
       {/* {useBox && <CornerBox />} */}
       {children}
-      {/* <Audio track={track} /> */}
+      <Audio track={track} />
     </motion.div>
   );
 };

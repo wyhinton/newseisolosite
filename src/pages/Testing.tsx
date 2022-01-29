@@ -11,6 +11,7 @@ import BasicAudioSetup from "./BasicAudioSetup";
 import SphereSDF from "./SphereSDF";
 import CSS3DDemo from "./Testing/CSS3DDemo";
 import TrackTesting from "@components/Testing/TrackTesting";
+import Chromatic from "@components/Testing/Chromatic";
 
 interface TrackData {
   duration: number;
@@ -25,8 +26,9 @@ interface MyData {
 
 const Testing = (): JSX.Element => {
   return (
-    <section>
-      <CSS3DDemo />
+    <section style={{ backgroundColor: "black" }}>
+      <Chromatic />
+      {/* <CSS3DDemo /> */}
       {/* <TrackTesting /> */}
       {/* <SamplingTesting /> */}
       {/* <BasicAudioSetup /> */}

@@ -21,7 +21,7 @@ const ViewCard = ({
     border: border ? "2px solid black" : "",
     // backgroundColor: theme.primary,
     overflow: overflowHidden ? "hidden" : "visible",
-    borderRadius: theme.borderRadius,
+    // borderRadius: theme.borderRadius,
   } as React.CSSProperties;
 
   return (

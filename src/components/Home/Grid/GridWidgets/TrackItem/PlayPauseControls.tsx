@@ -8,28 +8,38 @@ import theme from "@static/theme";
 import { motion } from "framer-motion";
 
 const PlayPauseControls = ({ track }: { track: Track }): JSX.Element => {
-  const { playTrack, pauseTrack } = usePlaylist();
+  const { playTrack, pauseTrack, pauseCurrent, isPlaying, currentTrack } = usePlaylist();
 
-  const isPlaying = useIsPlaying(track);
+  const isPlayingTrack = useIsPlaying(track);
+  useEffect(() => {
+    console.log(track)
+    // track.current = item
+  }, [track])
+  useEffect(() => {
+    // console.log(is)
+    // is.current = item
+  }, [isPlaying])
 
   return (
     <motion.div
       style={{
-        width: "50%",
-        height: "50%",
+        width: "100%",
+        height: "100%",
         // backgroundColor: "red",
-        border: "1px solid red",
-        padding: "5px",
-        position: "absolute",
+        // border: "1px solid red",
+        // padding: ".5e",
+        // padding: "5px",
+        // position: "absolute",
         display: "flex",
         justifyContent: "center",
         // top: 0,
         // left: 0,
-        opacity: 0,
+        // backgroundColor: "red",
+        opacity: 1,
         zIndex: 1000,
         left: "50%",
         top: "50%",
-        transform: "translate(-50%,-50%)",
+        // transform: "translate(-50%,-50%)",
       }}
       whileHover={{
         opacity: 1,
@@ -40,7 +50,8 @@ const PlayPauseControls = ({ track }: { track: Track }): JSX.Element => {
         <PauseButton
           handleClick={() => {
             console.log("FIRING PAUSE BUTTON HANDLER");
-            pauseTrack(track);
+            pauseCurrent();
+            // pauseTrack(track);
           }}
         />
       ) : (
@@ -79,6 +90,7 @@ const PlayButton = ({
       }}
     >
       <svg
+
         id="Layer_1"
         data-name="Layer 1"
         xmlns="http://www.w3.org/2000/svg"
@@ -124,8 +136,8 @@ const PauseButton = ({
         <path
           fill="yellow"
           d="M51.24,0h0c4.64,0,8.41,4.18,8.41,9.34V66.9c0,5.16-3.77,9.34-8.41,9.34h0c-4.65,0-8.42-4.18-8.42-9.34V9.34C42.82,4.18,46.59,0,51.24,0Z"
-          // transform="translate(-106.09 -141)"
-          //TODO: USE THEME COLORS FOR FILL
+        // transform="translate(-106.09 -141)"
+        //TODO: USE THEME COLORS FOR FILL
         />
         <path
           fill="yellow"

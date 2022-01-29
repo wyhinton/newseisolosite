@@ -9,14 +9,22 @@ $length: 400ms;
 .react-grid-item {
   transition: all $length ease;
   transition-property: left, top;
+
 }
 .react-grid-item img {
   pointer-events: none;
   user-select: none;
 }
-.react-grid-item.cssTransforms {
-  transition-property: transform;
-}
+
+// https://github.com/react-grid-layout/react-grid-layout/issues/103
+// .react-grid-item.cssTransforms {
+//   // transition-property: transform;
+//   transition-property: none;
+// }
+// .animated .react-grid-item.cssTransforms {
+//   transition-property: transform;
+// }
+
 .react-grid-item.resizing {
   z-index: 1;
   will-change: width, height;

@@ -9,6 +9,7 @@ import React, {
   useState,
 } from "react";
 
+import trackData from "@static/TRACKS_DATA.json";
 import { StoreModel } from "./model";
 import { ActionCreator, createTypedHooks } from "easy-peasy";
 import { useArray } from "react-hanger";
@@ -26,6 +27,38 @@ const playListHooks = createTypedHooks<HomeModel>();
 export const useHomeActions = playListHooks.useStoreActions;
 export const useHomeDispatch = playListHooks.useStoreDispatch;
 export const useHomeState = playListHooks.useStoreState;
+
+
+interface useAudioAnlaysisProps {
+  sampleRate: number;
+  subSample: number;
+  xDistance: number;
+  demo: TrackData;
+  kontour: TrackData;
+  pacific: TrackData;
+  diaspoura: TrackData;
+}
+
+export function useAudioAnalysis(): useAudioAnlaysisProps {
+  const allData = trackData as unknown as AllTracks;
+  const demo = allData.demo;
+  const kontour = allData.Kontour_Remix_16
+  const diaspoura = allData["overandunder (infinity)"]
+  const pacific = allData["overandunder (infinity)"]
+  const sampleRate = diaspoura.samplerate;
+  const subSample = diaspoura.subsample;
+  const xDistance = .5;
+
+  return {
+    sampleRate,
+    subSample,
+    xDistance,
+    demo,
+    kontour,
+    diaspoura,
+    pacific,
+  }
+}
 
 interface useAppProps {
   setAppMode: ActionCreator<SSAppMode>;
@@ -72,6 +105,7 @@ interface UsePlaylistProps {
   previousTrack: Track | undefined;
   playTrack: (t: Track) => void;
   pauseTrack: (t: Track) => void;
+  playNext: () => void;
   // nextTrack: () => void;
   restartCurrent: () => void;
   pauseCurrent: () => void;
@@ -107,11 +141,16 @@ export function usePlaylist(): UsePlaylistProps {
     playTrack(tracks[endedIndex + 1]);
   };
 
+
+  const videoId = "recital_video";
+
   useEffect(() => {
     const elems = tracks
       .map((t) => "audio_" + t.title)
       .map((id) => document.getElementById(id) as HTMLAudioElement)
       .filter((e) => e !== null);
+    // console.log(elems);
+
 
     allAudioElems.current = elems;
     allAudioElems.current.forEach((audio) => {
@@ -126,12 +165,37 @@ export function usePlaylist(): UsePlaylistProps {
   }, []);
 
   const playTrack = (track: Track) => {
+    allAudioElems.current = tracks
+      .map((t) => "audio_" + t.title)
+      .map((id) => document.getElementById(id) as HTMLAudioElement)
+      .filter((e) => e !== null);
+
+    async function playVideo(v: HTMLVideoElement) {
+      try {
+        await v.play();
+        // playButton.classList.add("playing");
+      } catch (err) {
+        // playButton.classList.remove("playing");
+      }
+    }
+
+    console.log(allAudioElems.current);
     if (allAudioElems.current) {
       allAudioElems.current.forEach((element) => {
         if (element.id === "audio_" + track.title) {
           // if (track.)
-          element.play();
-          setCurrentAudio(element);
+          console.log("PLAYING MY TRACK");
+          if (track.category === "remix") {
+            element.play();
+            setCurrentAudio(element);
+          } else {
+            const videoEl = document.getElementById("recital_video") as HTMLVideoElement
+            console.log(videoEl);
+            // videoEl.play()
+            // videoEl.play()
+            playVideo(videoEl)
+            console.log(videoEl.paused);
+          }
         } else {
           element.pause();
         }
@@ -139,9 +203,11 @@ export function usePlaylist(): UsePlaylistProps {
     }
     setCurrentTrack(track.title);
     setIsPlayingAction(true);
+    setIsPlaying(true)
   };
 
   const pauseTrack = (track: Track) => {
+    console.log(allAudioElems.current);
     if (allAudioElems.current) {
       allAudioElems.current.forEach((element) => {
         if (element.id === "audio_" + track.title) {
@@ -151,9 +217,17 @@ export function usePlaylist(): UsePlaylistProps {
     }
     // setCurrentTrack(track.title);
     setIsPlayingAction(false);
+    setIsPlaying(false)
   };
 
+
+
   const restartCurrent = () => {
+    allAudioElems.current = tracks
+      .map((t) => "audio_" + t.title)
+      .map((id) => document.getElementById(id) as HTMLAudioElement)
+      .filter((e) => e !== null);
+
     if (allAudioElems.current) {
       allAudioElems.current.forEach((element) => {
         if (element.id === "audio_" + currentTrack.title) {
@@ -164,13 +238,32 @@ export function usePlaylist(): UsePlaylistProps {
   }
 
   const pauseCurrent = () => {
+    // console.log(object);
+    const { title, category } = currentTrack;
+    allAudioElems.current = tracks
+      .map((t) => "audio_" + t.title)
+      .map((id) => document.getElementById(id) as HTMLAudioElement)
+      .filter((e) => e !== null);
+    // console.log(elems);
+
+    // console.log(allAudioElems.current);
+    // allAudioElems.current = elems;
     if (allAudioElems.current) {
       allAudioElems.current.forEach((element) => {
-        if (element.id === "audio_" + currentTrack.title) {
-          element.pause()
+        if (category === "remix") {
+          if (element.id === "audio_" + title) {
+            element.pause()
+            console.log("got my audio!");
+          }
+        } else {
+          const el = document.getElementById(videoId) as HTMLMediaElement
+          el.pause()
+
         }
+
       });
     }
+    setIsPlayingAction(false);
     setIsPlaying(false)
   }
 
@@ -224,16 +317,26 @@ export function usePlaylist(): UsePlaylistProps {
     setInfoDisplayModeLocal(infoDisplayModeState)
   }, [infoDisplayModeState]);
 
+  const playNext = () => {
+    const endedIndex = tracks.indexOf(
+      tracks.filter((t) => t.title === currentTrack.title)[0]
+    );
+    playTrack(tracks[endedIndex + 1]);
+  }
+
 
   const startingTrack = tracks[0];
   return {
     currentTrack,
     setCurrentTrack,
+    // currentTrackIndex,
     previousTrack,
     playTrack,
     pauseTrack,
     restartCurrent,
     pauseCurrent,
+    playNext,
+
     isPlaying,
     currentAudioRef,
     currentAudio,
@@ -245,6 +348,31 @@ export function usePlaylist(): UsePlaylistProps {
     setInfoDisplayMode,
   };
 }
+
+interface UseQueryProps {
+  isLg: boolean;
+  isMd: boolean;
+  isSm: boolean;
+  isXs: boolean;
+  isXxs: boolean;
+}
+
+export const useQuery = (): UseQueryProps => {
+  const isLg = useMediaQuery({ query: '(min-width: 1200px)' })
+  const isMd = useMediaQuery({ query: '(max-width: 996px)' })
+  const isSm = useMediaQuery({ query: '(max-width: 768px)' })
+  const isXs = useMediaQuery({ query: '(max-width: 480px)' })
+  const isXxs = useMediaQuery({ query: '(min-width: 0px)' })
+
+  return {
+    isLg,
+    isMd,
+    isSm,
+    isXs,
+    isXxs,
+  }
+}
+
 
 export const useIsPlaying = (track: Track) => {
   const currentTrackState = useHomeState((state) => state.currentTrack);
@@ -285,6 +413,9 @@ import { RefObject, useEffect } from "react";
 import { HomeModel, InfoDisplayMode, SSAppMode } from "model/homeModel";
 import { Track, TrackCategory } from "@interfaces/Track";
 import tracks from "@static/tracks";
+import TrackData from "@interfaces/TrackData";
+import AllTracks from "@interfaces/AllTracks";
+import { useMediaQuery } from "react-responsive";
 
 type AnyEvent = MouseEvent | TouchEvent;
 

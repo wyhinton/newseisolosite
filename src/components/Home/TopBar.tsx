@@ -21,6 +21,7 @@ const TopBar = (): JSX.Element => {
     <FlexRow style={containerStyle} className="dot-fill">
       <div
         style={{
+          color: theme.secondary,
           padding: ".5rem",
           height: "fit-content",
           // height: "100%",
@@ -40,7 +41,7 @@ const TopBar = (): JSX.Element => {
           border: `1px solid ${theme.secondary}`,
           borderRadius: 10,
           fontFamily: theme.titleFontFamily,
-          color: "black",
+          // color: "black",
           backgroundColor: theme.secondary,
           fontSize: 100,
           zIndex: 100,

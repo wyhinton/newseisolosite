@@ -9,6 +9,8 @@ import { useElementSize, usePlaylist, useWindowSize } from "@hooks";
 import FlexColumn from "@components/UI/FlexColumn";
 import tracks from "@static/tracks";
 import BubbleShader from "./BubbleShader";
+import ComposerNames from "./ComposerNames";
+// import { useSpring, animated } from 'react-spring'
 
 
 function getPosition(e: any): [number, number] {
@@ -43,6 +45,7 @@ const BubbleDots = ({
     // console.log(last);
     setOffset([posX.get(), last])
   });
+  // const v = useSpring()
   const onMouseMove = (e) => {
     // console.log("moving on canvas");
     const val = getPosition(e);
@@ -58,6 +61,7 @@ const BubbleDots = ({
     posX.set(x, false);
     posY.set(y, false);
     // console.log(x);
+    console.log(x, y);
 
     if (0 < x && x < 0.40) {
       setActiveHoverInd(0);
@@ -71,17 +75,28 @@ const BubbleDots = ({
     setOffset([x2, y2]);
 
   };
-
+  // style: new Animated.ValueXY({ x: 0.5, y: 0.5 })
   const windowSize = useWindowSize();
 
   const onMouseLeave = (e) => {
     console.log("left canvas");
-    setOffset([0, 0.99999]);
+    // setOffset([0, 0.99999]);
+    if (activeInd == 0) {
+      setOffset([0.3, .5]);
+      // setActiveHoverInd(0);
+    } else if (activeInd == 1) {
+      setOffset([0.5, 0.5]);
+      // setActiveHoverInd(1);
+    } else if (activeInd == 2) {
+      setOffset([0.8, 0.5]);
+      // setActiveHoverInd(2);
+    }
+
     //   setTime
     console.log(offset);
 
-    posX.set(0, true);
-    posY.set(1, true);
+    // posX.set(0, true);
+    // posY.set(1, true);
 
 
   };
@@ -110,11 +125,11 @@ const BubbleDots = ({
     // const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
     // console.log(x);
     if (0 < x && x < 0.33) {
-      playTrack(recitalParts[0]);
+      playTrack(recitalParts[1]);
       setActiveInd(0);
     } else if (0.33 < x && x < 0.66) {
       setActiveInd(1);
-      playTrack(recitalParts[1]);
+      playTrack(recitalParts[0]);
     } else if (0.66 < x && x < 0.99) {
       setActiveInd(2);
       playTrack(recitalParts[2]);
@@ -136,27 +151,7 @@ const BubbleDots = ({
 
       }}
     >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          width: "100%",
-          //   border: "1px solid red",
-          position: "absolute",
-          top: "0%",
-          zIndex: 1000,
-          fontSize: 50,
-          color: "grey",
-          transform: "translate(0, 50%)",
-          pointerEvents: "none",
-          paddingLeft: ".5em",
-          paddingRight: ".5em",
-        }}
-      >
-        <ComposerTitle hovered={activeHoverInd == 0}> Bach</ComposerTitle>
-        <ComposerTitle hovered={activeHoverInd == 1}> Bartok</ComposerTitle>
-        <ComposerTitle hovered={activeHoverInd == 2}> Ysaye</ComposerTitle>
-      </div>
+      <ComposerNames activeIndex={activeHoverInd} />
       <Surface
         onClick={onClick}
         onMouseMove={onMouseMove}
@@ -175,7 +170,7 @@ const BubbleDots = ({
           uniforms={{
             activeInd: activeInd,
             color: col,
-            u_resolution: [width - 100, height - 100],
+            u_resolution: [size.width, size.height],
             u_mouse: offset,
           }}
           uniformOptions={{ audioData: {} }}
@@ -191,30 +186,6 @@ export const Sdf = ({ width, height }) => (
 
 export default BubbleDots;
 
-const ComposerTitle = ({
-  children,
-  hovered,
-}: {
-  children: string;
-  hovered?: boolean;
-}): JSX.Element => {
-
-  const variants: Variants = {
-    hovered: { color: "grey", x: 0 },
-    normal: {
-      rotate: 360,
-      color: "black",
-      transition: {
-        ease: "linear",
-        duration: .5,
-      },
-    },
-  };
-
-  // console.log(hovered);
-  return <motion.div
-    animate={hovered ? "hovered" : "normal"} style={{ color: hovered ? "black" : "grey", textAlign: "center", fontSize: "min(10vh, 36px)" }}>{children}</motion.div>;
-};
 
 export function useAnimation(easingName = "linear", duration = 500, delay = 0) {
   // The useAnimationTimer hook calls useState every animation frame ...

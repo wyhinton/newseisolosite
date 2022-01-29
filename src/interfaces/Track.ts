@@ -17,4 +17,5 @@ export interface Track {
   category: "remix" | "recital" | "none";
   startTime?: number;
   bio?: string;
+  duration?: number;
 }

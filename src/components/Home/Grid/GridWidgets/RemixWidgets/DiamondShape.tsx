@@ -48,21 +48,44 @@ const DiamondShape = ({ track }: { track: Track }): JSX.Element => {
     } as React.CSSProperties;
     return (
         <>
-            <path fill={theme.secondary} d="M105.6,247L10,151.4c-12.6-12.6-12.6-33.2,0-45.8L105.6,10c12.6-12.6,33.2-12.6,45.8,0l95.6,95.6
-	c12.6,12.6,12.6,33.2,0,45.8L151.4,247C138.8,259.7,118.3,259.7,105.6,247z"/>
             <g>
-                <circle cx="199.2" cy="59" r="30" />
-                <circle cx="57.8" cy="200.5" r="30" />
-                <circle cx="57.8" cy="59" r="30" />
-                <circle cx="199.2" cy="200.5" r="30" />
+                <circle fill={theme.secondary} cx="199.2" cy="57.8" r="30" />
+                <circle fill={theme.secondary} cx="57.8" cy="199.2" r="30" />
+                <circle fill={theme.secondary} cx="57.8" cy="57.8" r="30" />
+                <circle fill={theme.secondary} cx="199.2" cy="199.2" r="30" />
             </g>
-            <circle cx="128.5" cy="129.8" r="65" />
+            <path fill={theme.secondary} d="M247,105.6L151.4,10c-12.6-12.6-33.2-12.6-45.8,0L10,105.6c-12.6,12.6-12.6,33.2,0,45.8l95.6,95.6
+	c12.6,12.6,33.2,12.6,45.8,0l95.6-95.6C259.7,138.8,259.7,118.3,247,105.6z M128.5,194.8c-35.9,0-65-29.1-65-65
+	c0-35.9,29.1-65,65-65c35.9,0,65,29.1,65,65C193.5,165.7,164.4,194.8,128.5,194.8z"/>
+            <circle fill={theme.secondary} cx="128.5" cy="128.5" r="40" />
         </>
     );
 };
 
 
 export default DiamondShape;
+// <!-- Generator: Adobe Illustrator 23.0.2, SVG Export Plug-In  -->
+// <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="257px"
+// 	 height="257px" viewBox="0 0 257 257" style="enable-background:new 0 0 257 257;" xml:space="preserve">
+// <style type="text/css">
+// 	.st0{fill:#FFFFFF;stroke:#000000;stroke-miterlimit:10;}
+// </style>
+// <defs>
+// </defs>
+// <g>
+// 	<circle class="st0" cx="199.2" cy="57.8" r="30"/>
+// 	<circle class="st0" cx="57.8" cy="199.2" r="30"/>
+// 	<circle class="st0" cx="57.8" cy="57.8" r="30"/>
+// 	<circle class="st0" cx="199.2" cy="199.2" r="30"/>
+// </g>
+// <path class="st0" d="M247,105.6L151.4,10c-12.6-12.6-33.2-12.6-45.8,0L10,105.6c-12.6,12.6-12.6,33.2,0,45.8l95.6,95.6
+// 	c12.6,12.6,33.2,12.6,45.8,0l95.6-95.6C259.7,138.8,259.7,118.3,247,105.6z M128.5,194.8c-35.9,0-65-29.1-65-65
+// 	c0-35.9,29.1-65,65-65c35.9,0,65,29.1,65,65C193.5,165.7,164.4,194.8,128.5,194.8z"/>
+// <circle class="st0" cx="128.5" cy="128.5" r="40"/>
+// </svg>
+
+
+
 //TRIANGLE
 // <!-- Generator: Adobe Illustrator 23.0.2, SVG Export Plug-In  -->
 // <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="257px"

@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8" />
-  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+  <link rel="icon" href="%PUBLIC_URL%/MANIFEST_ICON.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#000000" />
   <meta name="description" content="Remixing the Recital" />
@@ -148,14 +148,22 @@
       z-index: 300;
     }
 
+    iframe {
+      display: none;
+    }
+
     #top-right {
       position: absolute;
       right: 0;
       top: 0;
       width: max(10vw, 50px);
       height: max(5vw, 30px);
-      background-color: red;
-      z-index: 10;
+      /* background-color: red; */
+      z-index: 100000;
+    }
+
+    #about-modal {
+      z-index: 1000,
     }
   </style>
   <noscript>You need to enable JavaScript to run this app.</noscript>

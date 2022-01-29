@@ -27,9 +27,9 @@ const AudioDataContainer = ({
   ]);
   const [audioData, setAudioData] = useState<AnalyserNode>();
   const nodeRef = useRef<AnalyserNode>(null);
-  useEffect(() => {
-    console.log(tracks);
-  }, [tracks]);
+  // useEffect(() => {
+  //   console.log(tracks);
+  // }, [tracks]);
   const audioContextRef = useRef<AudioContext>(null);
   // useEffect(() => {
   //   audioContextRef.current = new AudioContext();

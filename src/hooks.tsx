@@ -204,6 +204,7 @@ export function usePlaylist(): UsePlaylistProps {
     setCurrentTrack(track.title);
     setIsPlayingAction(true);
     setIsPlaying(true)
+
   };
 
   const pauseTrack = (track: Track) => {
@@ -359,7 +360,7 @@ interface UseQueryProps {
 
 export const useQuery = (): UseQueryProps => {
   const isLg = useMediaQuery({ query: '(min-width: 1200px)' })
-  const isMd = useMediaQuery({ query: '(max-width: 996px)' })
+  const isMd = useMediaQuery({ query: '(min-width: 996px)' })
   const isSm = useMediaQuery({ query: '(max-width: 768px)' })
   const isXs = useMediaQuery({ query: '(max-width: 480px)' })
   const isXxs = useMediaQuery({ query: '(min-width: 0px)' })
@@ -722,3 +723,38 @@ export function useElementSize<T extends HTMLElement = HTMLDivElement>(): [
 //   });
 //   return ref.current;
 // }
+
+interface UseMetronomeProps {
+
+
+}
+
+export function useMetronome(bpmStart: number, onBeat: (beat: number) => void) {
+
+  const [bpm, setBpm] = useState(bpmStart);
+  const [isStarted, setIsStarted] = useState(true);
+  const [measure, setMeasure] = useState(4);
+  const [beat, setBeat] = useState(1);
+
+  useEffect(() => {
+    if (isStarted) {
+      const interval = setInterval(() => {
+        setBeat((beat) => {
+          if (beat % measure === 0) {
+            // bar1.play();
+            return 1;
+          } else {
+            // bar2.play();
+            return beat + 1;
+          }
+        });
+      }, (60 / bpm) * 1000);
+      return () => clearInterval(interval);
+    }
+  }, [bpm, measure, isStarted]);
+
+  useEffect(() => {
+    onBeat(beat)
+  }, [beat])
+
+}

@@ -38,7 +38,7 @@ const BigText = ({
           // borderLeft: "1px solid black",
           // width: "max-content",
           // fontFamily: theme.primaryFont,
-          fontSize: 50,
+          fontSize: theme.bigTextFont,
           // fontSize: theme.bigFont,
           alignItems: "center",
           display: "flex",

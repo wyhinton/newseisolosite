@@ -67,12 +67,6 @@ const Time = ({
       const interval = setInterval(
         () => {
           //TODO: OPTIMZE INTERVALS
-          // console.log(aRef);
-          // console.log(aRef.current.currentTime);
-          console.log(currentTrack);
-          console.log(el);
-          // setCurrentTime(el.currentTime);
-          console.log(aRef.current);
           if (aRef.current && isPlaying) {
             setCurrentTime(aRef.current.currentTime);
           }
@@ -97,7 +91,7 @@ const Time = ({
 
   }, [currentTrack.title, isPlaying]);
 
-  const { isMd } = useQuery()
+  const { isMd, isSm } = useQuery()
 
   return (
     <div
@@ -114,7 +108,7 @@ const Time = ({
         height: "100%",
         justifyContent: "center",
         alignItems: "center",
-        display: isMd ? "none" : "flex",
+        display: isSm ? "none" : "flex",
         margin: "auto",
         // backgroundColor: isPlaying ? "green" : theme.primaryDark,
       }}

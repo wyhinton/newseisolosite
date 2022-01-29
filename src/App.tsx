@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import Testing from "./pages/Testing";
 import { StoreProvider } from "easy-peasy";
 import homeStore from "./stores/homeStore";
+import dawStore from "@components/DAW/state/dawStore"
 import FXAADemoPage from "./pages/FXAADemoPage";
 import DAWPage from "./pages/DAWPage";
 
@@ -20,9 +21,12 @@ const App = (): JSX.Element => {
       <StoreProvider store={homeStore}>
         <Route path="/" exact component={Home} />
       </StoreProvider>
+
       <Route path="/testing" component={Testing} />
       <Route path="/fxaa" component={FXAADemoPage} />
-      <Route path="/daw" component={DAWPage} />
+      <StoreProvider store={homeStore}>
+        <Route path="/daw" component={DAWPage} />
+      </StoreProvider>
     </Router>
   );
 };

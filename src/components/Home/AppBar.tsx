@@ -38,7 +38,9 @@ const AppBar = ({ }: {}): JSX.Element => {
             style={{
                 position: "absolute",
                 zIndex: 10000,
-                top: "100%",
+                // top: "100%",
+                // bottom: 0,
+                bottom: "0",
                 left: "0%",
                 // bottom: "0%",
                 // width: "fit-content",
@@ -47,21 +49,24 @@ const AppBar = ({ }: {}): JSX.Element => {
                 backgroundColor: theme.primaryDark,
                 borderBottom: "1px solid black",
                 width: "100vw",
-                transform: "translate(0%, -100%)",
+
+                // transform: "translate(0%, 50%)",
                 // zIndex: 1,
-                fontSize: theme.widgetFontSize,
+                fontSize: theme.titleFont,
+                // fontSize: theme.widgetFontSize,
                 overflow: "visible",
                 justifyContent: "space-between",
+                // border: `1px solid blue`,
             }}
         >
 
-            <FlexRow style={{ paddingLeft: theme.padding }} >
+            <FlexRow justifyContent="flex-start">
 
                 <TrackTitle />
                 <MediaControls />
-
+                <Time />
             </FlexRow>
-            <Time />
+
         </FlexRow>
     )
 }
@@ -81,11 +86,18 @@ const TrackTitle = ({ }: {}): JSX.Element => {
     return (
 
         <motion.div style={{
+            justifyContent: "center",
+            alignItems: "center",
             whiteSpace: "nowrap",
             textDecoration: "underline",
             width: "fit-content",
             margin: "auto",
             color: theme.white,
+            // backgroundColor: "red",
+            height: "100%",
+            display: "flex",
+            paddingLeft: theme.padding,
+            paddingRight: theme.padding,
         }}
             onClick={(e) => {
                 if (infoDisplayMode == undefined) {
@@ -102,7 +114,9 @@ const TrackTitle = ({ }: {}): JSX.Element => {
                 }
             }}
         >
-            {innerText}
+            <div style={{ height: "fit-content" }}>
+                {innerText}
+            </div>
         </motion.div>
     )
 }

@@ -22,14 +22,14 @@ import appConfig from "@static/appConfig";
 import AboutButton from "@components/Home/AboutButton";
 import TopBar from "@components/Home/TopBar";
 import ViolinWidget from "@components/Home/Grid/GridWidgets/ViolinWidget";
-import WaveformWidget from "@components/Home/Grid/GridWidgets/WaveformWidget";
+import WaveformView from "@components/Home/InfoPopup/WaveformView";
 import Nav from "@components/Home/Nav/Nav";
 import MediaControls from "@components/Home/Nav/MediaControls";
 import InfoPopup from "@components/Home/InfoPopup";
 import AppBar from "@components/Home/AppBar";
 import { AudioAnalyser } from "three";
 import AudioDataContainer from "@components/Home/Player/EQ/AudioDataContainer";
-import NewAna from "@components/Home/InfoPopup/NewAna";
+import ChromaticWidget from "@components/Home/InfoPopup/UILayer/ChromaticWidget";
 export type HomeMode = "player" | "notes" | "about";
 
 const Home = (): JSX.Element => {
@@ -64,13 +64,18 @@ const Home = (): JSX.Element => {
       <div
         id="violin-widget-container"
         style={{
-          height: "100%",
-          width: "50%",
+          height: "100vh",
+          // height: "100%",
+          width: "90vmin",
+          // width: "50%",
           position: "absolute",
           top: "0%",
+          // top: "0%",
           right: "0%",
-          zIndex: infoDisplayMode !== undefined ? -1 : 10,
-          // border: "1px solid red",
+          zIndex: infoDisplayMode !== undefined ? -1 : 0,
+          // zIndex: infoDisplayMode !== undefined ? -1 : 10,
+          border: "1px solid red",
+
         }}
       >
         <ViolinWidget track={currentTrack} />

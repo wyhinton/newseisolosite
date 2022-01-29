@@ -33,8 +33,10 @@ const RemixesWidget = (): JSX.Element => {
         break;
       case ("Revolving Melody"):
         // viewBox="0 0 221 221"
-        el = <MirrorShape track={t} />
-        vb = "0 0 200 200";
+        el = <DiamondShape track={t} />
+        // el = <MirrorShape track={t} />
+        // vb = "0 0 200 200";
+        vb = "0 0 257 257";
         break;
       default:
         // viewBox="0 0 257 231.2"
@@ -102,7 +104,7 @@ const TrackText = ({ track }: { track: Track }): JSX.Element => {
         width: "100%",
         height: "10%",
         position: "relative",
-        top: "50%",
+        top: "0%",
         left: "50%",
         transform: "translate(-50%,-50%)",
         textAlign: "left",
@@ -114,12 +116,13 @@ const TrackText = ({ track }: { track: Track }): JSX.Element => {
         justifyContent: "center",
         // fontSize: theme.mediumFont,
         fontSize: theme.widgetFontSize,
+
         // backgroundColor: theme.secondary,
         color: theme.primaryDark,
         // color: "black",
       }}
     >
-      <div
+      {/* <div
         style={{
           // zIndex: 0,
           width: "1%",
@@ -141,7 +144,7 @@ const TrackText = ({ track }: { track: Track }): JSX.Element => {
         }}
       >
 
-      </div>
+      </div> */}
       {track.artist}
     </div>
   );

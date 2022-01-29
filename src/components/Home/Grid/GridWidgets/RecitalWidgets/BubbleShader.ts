@@ -94,7 +94,7 @@ const BubbleShader = Shaders.create({
           vec3 col2 = vec3(0.);
           float dist = 0.;
           
-            
+          int q = activeInd;
           for	(int i = 0; i < 3; i++){
               float extraAdd = 0.;
               vec2 testPos = vec2(z*third*ratio, y);

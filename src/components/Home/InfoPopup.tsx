@@ -3,19 +3,14 @@ import React, {
     useEffect,
 } from "react";
 import theme from "@static/theme";
-import { usePlaylist } from "@hooks";
+import { usePlaylist, useQuery } from "@hooks";
 import { motion, Variants } from "framer-motion";
 import { Track } from "@interfaces/Track";
 import FlexRow from "@components/UI/FlexRow";
-import FlexColumn from "@components/UI/FlexColumn";
-import { ThemeConsumer } from "evergreen-ui";
-import { Layout, Layouts, Responsive, WidthProvider } from "react-grid-layout";
-import GenericGrid from "@components/UI/GenericGrid";
-import LineTo from 'react-lineto';
-import zIndex from "@material-ui/core/styles/zIndex";
-import WaveformWidget from "./Grid/GridWidgets/WaveformWidget";
-import NewAna from "./InfoPopup/NewAna";
-import UILayer from "./InfoPopup/UILayer";
+import { Layout, Responsive, WidthProvider } from "react-grid-layout";
+import WaveformView from "./InfoPopup/WaveformView";
+import UILayer from "./InfoPopup/UILayer/UILayer";
+import CloseInfoPopupButton from "./InfoPopup/CloseInfoPopupButton";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -72,22 +67,6 @@ const InfoPopup = () => {
     };
 
 
-    const variantsbio: Variants = {
-        hidden: { opacity: 0, y: "-10vh", pointerEvents: "none" },
-
-        visible: {
-            y: "0vh",
-            opacity: 1,
-            pointerEvents: "all",
-            transition: {
-                ease: "circOut",
-                duration: duration,
-                // delay: .5,
-                repeatType: "reverse",
-            },
-        },
-    };
-
     const variantsGrid: Variants = {
         hidden: { opacity: 0, x: 0, pointerEvents: "none", y: theme.appBarHeight },
         visible: {
@@ -103,16 +82,22 @@ const InfoPopup = () => {
         },
     };
 
+    const { isMd, isLg, isSm } = useQuery()
+
+    useEffect(() => {
+        console.log(isMd)
+        console.log(isLg)
 
 
+    }, [isMd, isLg])
     return (
         <>
-            <CloseButton />
+            <CloseInfoPopupButton />
             <UILayer />
             <motion.div
                 initial={false}
                 variants={variantsGrid}
-                animate={infoDisplayMode == undefined ? "hidden" : "visible"}
+                animate={infoDisplayMode == undefined || isSm ? "hidden" : "visible"}
                 style={{
                     pointerEvents: "all",
                     // border: `1px solid ${theme.secondary}`,
@@ -123,18 +108,19 @@ const InfoPopup = () => {
                     padding: "1em",
                     overflow: "visible",
                     width: "100vw",
-                    height: middleheight,
+                    height: isSm ? "0vh" : middleheight,
                     // top: "20%",
                     bottom: addVh(theme.appBarHeight, bottomHeight),
                     zIndex: 110,
                     // backgroundColor: "red",
-                    backgroundColor: theme.primaryDark,
+                    backgroundColor: isMd ? theme.primaryDark : "red",
+                    // backgroundColor: theme.primaryDark,
 
                 }}>
-                <WaveformWidget />
-                {/* <TextDisplay track={currentTrack} /> */}
-            </motion.div>
+                <WaveformView />
 
+            </motion.div>
+            {/* {about} */}
             <motion.div
                 initial={false}
                 variants={variantsAbout}
@@ -146,11 +132,13 @@ const InfoPopup = () => {
                     zIndex: 10,
                     position: "absolute",
                     bottom: theme.appBarHeight,
-                    padding: "1em",
+                    // padding: "1em",
                     overflow: "visible",
                     width: "100vw",
-                    height: bottomHeight,
+                    height: isMd ? bottomHeight : "93vh",
+                    // height: bottomHeight,
                     backgroundColor: "yellow",
+                    border: "1px solid red",
                 }}>
                 <TextDisplay track={currentTrack} />
             </motion.div>
@@ -165,49 +153,34 @@ const InfoPopup = () => {
 export default InfoPopup
 
 const TextDisplay = ({ track }: { track: Track }): JSX.Element => {
-    const { bio, about } = track
+    const { about } = track
 
-    // const baseBlock = {
+    const { isSm, isMd, isLg } = useQuery()
 
-    // }
-    const layoutv2: Layout[] = [
-        // { i: "about", x: 6, y: 5, w: 3, h: 6 },
-        { i: "artist-image", x: 8, y: 0, w: 4, h: 5, static: false },
-        { i: "about", x: 9, y: 0, w: 2, h: 5, static: true },
-        // { i: "bio", x: 0, y: 6, w: 1, h: 1, static: true },
-        // { i: "bio", x: 0, y: 6, w: 4, h: 2, static: true },
-    ];
-
-    const layouts = {
-        lg: layoutv2,
-        sm: layoutv2,
-    }
 
     return (
-        <>
-
-            <FlexRow style={{
-                position: "absolute",
+        <div
+            id="artist+section-container"
+            style={{
+                display: "flex",
+                flexDirection: isSm ? "column" : "row",
+                justifyContent: "space-around",
+                // position: "absolute",
                 bottom: 0,
                 left: 0,
                 width: "100vw",
                 height: "100%", backgroundColor: "yellow"
             }}>
 
-                <ArtistImage key="artist-image" track={track} />
-                <Section key="about" className="aboutClass" text={about} header="About" />
-            </FlexRow>
-            <div className={"empty"}
-                style={{ position: "absolute", bottom: 0, left: "50%", width: 100, height: 100 }}
-            ></div>
-            {/* <LineTo from="aboutClass" to="empty" zIndex={1000} /> */}
-        </>
+            <ArtistImage key="artist-image" track={track} />
+            <Section key="about" className="aboutClass" text={about} header="About" />
+        </div>
     )
 }
 
 
 const ArtistImage = ({ track }: { track: Track }): JSX.Element => {
-
+    const { isSm, isMd, isLg } = useQuery()
     const [vs, setVs] = useState(undefined)
     useEffect(() => {
         //   console.log(myVal)
@@ -219,10 +192,11 @@ const ArtistImage = ({ track }: { track: Track }): JSX.Element => {
 
 
     return (
-        <div id="artist-image-contaienr" style={{ width: "30%", height: "100%" }}>
+        // <div id="artist-image-contaienr" style={{ width: "30%", height: isSm ? "50%" : "100%" }}>
+        <div id="artist-image-contaienr" style={{ width: isSm ? "100%" : "30%", height: isSm ? "50%" : "100%" }}>
             {track.category === "remix" && <img style={{ width: "100%", height: "100%", objectFit: "cover" }} src={track.visual} />}
 
-            <video controls={true} id="recital_video" style={{ display: track.category == "recital" ? "block" : "block", width: "100%", height: "100%", objectFit: "cover" }} src={track.visual}>
+            <video id="recital-video" controls={true} id="recital_video" style={{ display: track.category == "recital" ? "block" : "none", width: "100%", height: "100%", objectFit: "cover" }} src={track.visual}>
                 {/* <video id="recital_video" style={{ display: track.category == "recital" ? "block" : "none", width: "100%", height: "100%", objectFit: "cover" }} src={track.visual}> */}
                 <source type={"video/mp4"} src={vs} />
             </video>
@@ -230,51 +204,31 @@ const ArtistImage = ({ track }: { track: Track }): JSX.Element => {
     )
 }
 const Section = ({ header, text, className }: { header: string, text: string, className?: string }): JSX.Element => {
+    const { isSm, isMd, isLg } = useQuery()
+
     return (
-        <FlexRow style={{ color: "black", height: "100%", width: "100%", padding: 0 }} className={className}>
-            {header !== "" && <h1 style={{ fontSize: theme.bigFont, color: "black", paddingRight: "1em" }}>{header}</h1>}
+        <div style={{
+            display: "flex",
+            flexDirection: isSm ? "column" : "row",
+            // position: "absolute",
+            bottom: 0,
+            left: 0,
+            width: "100vw",
+            height: "100%",
+            // height: "100%",
+            backgroundColor: "yellow",
+            fontSize: theme.paragraphSize,
+        }}>
+
+            {/* <FlexRow style={{ color: "black", height: "100%", width: "100%", padding: 0 }} className={className}> */}
+            {header !== "" && <h1 style={{ fontSize: theme.bigFont, margin: 0, color: "black", paddingRight: "1em" }}>{header}</h1>}
             <div style={{ paddingRight: "1em", alignItems: "center", display: "flex", justifyContent: "center", color: "black" }}>
                 {text}
             </div>
-        </FlexRow>
-    )
+            {/* </FlexRow> */}
+        </div>)
 }
 
-const CloseButton = ({ }: {}): JSX.Element => {
-    // const { infoDisplayMode, currentTrack } = usePlaylist()
-    const { setInfoDisplayMode, infoDisplayMode } = usePlaylist()
-    const closeSize = 100;
-
-    return (
-        <div
-            onMouseUp={(e) => {
-                console.log("HIT CLOSE BUTTON");
-                setInfoDisplayMode(undefined)
-            }}
-            style={{
-                display: infoDisplayMode !== undefined ? "block" : "none",
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: closeSize,
-                height: closeSize,
-                // backgroundColor: "red",
-                zIndex: 1000,
-                // backgroundColor: "red",
-                // backgroundColor: "red",
-            }}
-        >
-            <svg viewBox="0 0 79.3 77.6" style={{
-                width: "100%",
-                height: "100%"
-            }}>
-                <path fill="black" d="M75.9,60L53.8,37.9l20.4-20.4c3.9-3.9,3.9-10.2,0-14.1S63.9-0.5,60,3.4L39.6,23.8L19.3,3.4
-	C15.4-0.5,9-0.5,5.1,3.4c-3.9,3.9-3.9,10.2,0,14.1l20.4,20.4L3.4,60c-3.9,3.9-3.9,10.2,0,14.1c3.9,3.9,10.2,3.9,14.1,0l22.1-22.1
- 	l22.1,22.1c3.9,3.9,10.2,3.9,14.1,0C79.8,70.2,79.8,63.9,75.9,60z"/>
-            </svg>
-        </div >
-    )
-}
 
 
 // <!-- Generator: Adobe Illustrator 23.0.2, SVG Export Plug-In  -->

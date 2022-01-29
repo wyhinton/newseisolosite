@@ -2,18 +2,44 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "paths": {
-      "@pages": ["./pages/*"],
-      "@UI":["./components/UI/*"],
-      "@store/*": ["./stores/*"],
-      "@model/*": ["./model/*"],
-      "@hooks": ["./hooks.tsx"],
-      "@enums": ["./enums.ts"],
-      "@classes/*": ["./classes/*"],
-      "@components/*": ["./components/*"],
-      "@static/*": ["./static/*"],
-      "@lib/*": ["./lib/*"],
-      "@css/*": ["./css/*"],
-      "@interfaces/*": ["./interfaces/*"],
+      "@dawhooks": [./
+      ]
+      "@pages": [
+        "./pages/*"
+      ],
+      "@UI": [
+        "./components/UI/*"
+      ],
+      "@store/*": [
+        "./stores/*"
+      ],
+      "@model/*": [
+        "./model/*"
+      ],
+      "@hooks": [
+        "./hooks.tsx"
+      ],
+      "@enums": [
+        "./enums.ts"
+      ],
+      "@classes/*": [
+        "./classes/*"
+      ],
+      "@components/*": [
+        "./components/*"
+      ],
+      "@static/*": [
+        "./static/*"
+      ],
+      "@lib/*": [
+        "./lib/*"
+      ],
+      "@css/*": [
+        "./css/*"
+      ],
+      "@interfaces/*": [
+        "./interfaces/*"
+      ],
       "@my-react-select": [
         "../node_modules/react-select",
         "../node_modules/@types/react-select"
@@ -22,7 +48,9 @@
         "../node_modules/react-select/*",
         "../node_modules/@types/react-select"
       ],
-      "@utils": ["./utils.ts"]
+      "@utils": [
+        "./utils.ts"
+      ]
     }
   }
 }

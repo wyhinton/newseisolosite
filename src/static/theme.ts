@@ -16,6 +16,7 @@ export interface Theme {
   primaryFont: string;
   titleFontFamily: string;
   bigFont: string;
+  bigTextFont: string;
   mediumFont: string;
   titleFont: string;
   logoFont: string;
@@ -23,6 +24,7 @@ export interface Theme {
   widgetFontSize: string;
   white: string;
   aboutBarHeight: string;
+  paragraphSize: string;
 }
 
 const primaryDarkGL = [75, 75, 75].map(v => v / 255);
@@ -57,19 +59,28 @@ const theme = {
   // titleFontFamily: "Hoover",
   // titleFontFamily: "Aber-Mono",
   primaryFont: "OTR type",
-  widgetFontSize: "min(10vh, 30px)",
+  // widgetFontSize: "clamp(, 20px)",
+  // widgetFontSize: "min(10vh, 20px)",
+  widgetFontSize: "3vmin",
   // primaryFont: "Nunito",
   // primaryFont: "NeueMetana-Bold",
   // primaryFont: "Aber-Mono",
-  titleFont: "3vw",
+  // titleFont: "clamp(3vw, 14px, 8vw)",
+  titleFont: "3vmin",
+
   // bigFont: "6.5vw",
   bigFont: "min(10.5vh, 100px)",
+  // bigTextFont: "min(40px, 41vh)",
+  bigTextFont: "6vmin",
   white: "#FFFFFF",
   mediumFont: "1.5vw",
   logoFont: "Pexel",
-  navHeight: "max(5vw, 30px)",
+  // navHeight: "7vh",
+  navHeight: "7vmin",
+  // navHeight: "max(5vw, 30px)",
   scale: "calc( 0.5333333333px + 0.4666666667 * ( 100vh - 480px ) / 420 )",
-  appBarHeight: "7vh",
+  appBarHeight: "7vmin",
+  paragraphSize: "max(3vmin, 20px)",
 };
 
 export default theme;

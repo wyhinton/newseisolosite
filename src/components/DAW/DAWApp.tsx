@@ -9,7 +9,19 @@ const defaultLayout: Layout[] = [
     { i: "c", x: 2, y: 3, w: 1, h: 1, static: false },
 ];
 
+const makeTracks = (count: number) => {
+    const range = Array.from(Array(count).keys());
+    const height = 2;
+    const width = 12;
+    return range.map((r, i) => {
+        return { i: `track_${i}`, y: i * 2, w: 12, h: height, static: true }
+    })
+}
+
 const DAWApp = ({ }: {}): JSX.Element => {
+
+    const tracks = makeTracks(4);
+
 
 
     return (
@@ -30,14 +42,15 @@ const DAWApp = ({ }: {}): JSX.Element => {
                 }}
             >
                 <DAWGridLayout layout={[...defaultLayout]}>
-                    <Block key={"a"} />
-                    <Block key={"b"} />
-                    <Block key={"c"} />
+
                 </DAWGridLayout>
             </div>
         </section>
     );
 }
+
+
+
 
 const Block = ({ }: {}): JSX.Element => {
 
@@ -46,7 +59,8 @@ const Block = ({ }: {}): JSX.Element => {
     }
     return (
         <div style={{
-            backgroundColor: "blue", width: "100%",
+            backgroundColor: "blue",
+            width: "100%",
             height: "100%"
         }}>
 

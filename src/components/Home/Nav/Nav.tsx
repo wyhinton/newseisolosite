@@ -56,14 +56,15 @@ const TopBar = (): JSX.Element => {
                 // backgroundColor: theme.secondary,
                 backgroundColor: theme.primaryDark,
                 // fontSize: 100,
-                fontSize: 30,
+                // fontSize: 30,
+                fontSize: theme.titleFont,
                 // transform: "translate(-50%, 0%)",
                 // fontStyle: "ca"
                 textTransform: "uppercase",
                 // fontSize: theme.titleFont,
                 WebkitTextStroke: `1px solid ${theme.secondary}`,
                 zIndex: 100,
-                height: 30,
+                height: theme.navHeight,
 
                 // backgroundColor: theme.secondary,
             }}

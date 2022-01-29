@@ -57,7 +57,7 @@ export const layoutSm = modifyBase([
   { i: "oneRecitalText", x: 0, y: 3, w: 12, h: 2, static: s },
   { i: "threeRemixes", x: 0, y: 0, w: 12, h: 2, static: s },
   { i: "recitalTracks", x: 0, y: 2, w: 12, h: 3, static: s },
-  { i: "remixes", x: 0, y: 3, w: 12, h: 4, static: s },
+  { i: "remixes", x: 0, y: 3, w: 12, h: 6, static: s },
 ])
 
 

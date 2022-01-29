@@ -1,4 +1,4 @@
-import { useApp, useToggle } from "@hooks";
+import { useApp, useQuery, useToggle } from "@hooks";
 import theme from "@static/theme";
 import { motion } from "framer-motion";
 import React, { useState, useEffect } from "react";
@@ -7,7 +7,7 @@ import ReactDOM from "react-dom";
 const AboutButton = (): JSX.Element => {
   //   const [visible, setVisible] = useState(false)
   const [visible, toggle] = useToggle(false);
-
+  const { isSm } = useQuery()
   return ReactDOM.createPortal(
     <motion.div
       whileHover={
@@ -16,24 +16,18 @@ const AboutButton = (): JSX.Element => {
         }
       }
       style={{
-
-        // width: "100%",
         borderRadius: "40px",
-        // background
         border: `1px solid ${theme.secondary}`,
         height: "5vh",
-        // backgroundColor: "red",
         textAlign: "center",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        // borderRadius: "50%",s
-        // margin: "auto",
         margin: "1vh",
-        // zIndex: 10000,
-
-        // backgroundColor: theme.secondary,
+        color: isSm ? "black" : "white",
+        fontSize: theme.widgetFontSize,
+        backgroundColor: isSm ? theme.secondary : "",
       }}
       onClick={(e) => {
         toggle();

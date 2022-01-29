@@ -41,6 +41,36 @@ const ChromaticShader = Shaders.create({
     return distance(uv.y-.5, sin(uv.x*float(index+1)*2.*pi)*.49*amp) < w ? 1. : 0.;
   }
 
+  float pattern(vec2 point, float radius, float cellSize) {
+    float c = 4.0 * radius * cellSize;
+    // half
+    float h = c / 2.0;  
+    point = mod(point + h, c) - h;
+    return length(point) - radius;
+  }
+
+  
+  vec3 dots(vec2 p){
+    p = mat2(0.707, -0.707, 0.707, 0.707) * p;
+    float radius = 0.003;
+    float dist = pattern(p, radius, 1.5);
+    vec3 dotcolor = vec3(1.);
+    // vec3 dotcolor = vec3(0.95, 0.9, 0.8);
+    vec3 bg = vec3(0.);
+    // vec3 bg = bgColor;
+    // vec3 bg = vec3(0.5, 0.8, 0.75);
+ 
+    float sharpness = 100.;
+	float circ = radius * sharpness - dist * sharpness;
+    
+    float alpha = clamp(circ, 0.0, 1.0);
+   
+    vec3 color = mix(bg, dotcolor, alpha);
+    return color;
+
+}
+
+
   void main () {
 
       // fragColor = vec4(
@@ -49,15 +79,18 @@ const ChromaticShader = Shaders.create({
       //   array[4] + array[5],
       //   1.0);
 
-        fragColor = vec4(audio[1]/300.);
+        // fragColor = vec4(audio[1]/300.);
 
         vec2 p = uv;// <0, 1>
         p.x+=u_time*.0003;
             // vec2 uv = fragCoord.xy / u_resolution.xy;
         vec3 baseCol = vec3(0.);
-        
+    
+
+
         float mask_ = 0.;
         vec3 bufCol = baseCol;
+        vec3 dots = dots(uv);
         
         float z = 0.;
         for (int i = 0; i < Lines; ++i)
@@ -66,11 +99,14 @@ const ChromaticShader = Shaders.create({
             bufCol = mix(bufCol, indexCol(i), mask_);
             z+= mask_;
         }
-        
-        vec3 mixCol = mix(bgColor, vec3(1.),  bufCol.x);
-        fragColor = vec4(bufCol, 1.);
-        fragColor = vec4(bufCol.x);
-        fragColor = vec4(mixCol, 1.);
+        // baseCol += dots(uv);
+        // baseCol += dots(uv);
+        baseCol += mix(bgColor, vec3(1.),  bufCol.x);
+        baseCol += dots;
+    
+        // fragColor = vec4(bufCol, 1.);
+        // fragColor = vec4(bufCol.x);
+        fragColor = vec4(baseCol, 1.);
         // fragColor = vec4(bgColor, 1.);
         // fragColor = vec4(sin(u_time));
     }

@@ -14,22 +14,23 @@ const MediaControls = (): JSX.Element => {
 
     return (
         <FlexRow style={{
-            position: "absolute",
-            top: 0,
+            // position: "absolute",
+            // top: 0,
             left: isMd ? "88%" : "50%",
             // right: isMd?
             // width: "100px",
             // paddingLeft: ".5em",
             height: "100%",
-            margin: "auto",
+            // margin: "auto",
             // border: "1px solid red",
             zIndex: 10,
             color: "black",
             // marginLeft: "1em",
             padding: ".5em",
+            justifyContent: "space-around",
             // backgroundColor: theme.secondary,
 
-            transform: isMd ? "translate(-50%, 0%)" : ""
+            // transform: isMd ? "translate(-50%, 0%)" : ""
 
 
         }
@@ -49,7 +50,7 @@ export default MediaControls;
 const IconWrapper = ({ children, viewBox, onClick }: { children: JSX.Element | JSX.Element[], viewBox: string, onClick?: () => void }): JSX.Element => {
     return (
         <div style={{
-            width: 50,
+            width: "6vmin",
             height: "100%",
             display: "flex",
         }}

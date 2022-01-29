@@ -3,6 +3,7 @@ import Connection from "./Connection";
 export type TrackCategory = "remix" | "recital" | "none";
 
 export interface Track {
+  id: string;
   artist: string;
   title: string;
   src: string;
@@ -18,4 +19,6 @@ export interface Track {
   startTime?: number;
   bio?: string;
   duration?: number;
+  bpm?: number;
+  origin?: string;
 }

@@ -14,6 +14,7 @@ const MediaControls = (): JSX.Element => {
 
     return (
         <FlexRow style={{
+            width: "min-content",
             // position: "absolute",
             // top: 0,
             left: isMd ? "88%" : "50%",

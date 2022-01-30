@@ -24,7 +24,7 @@ const App = (): JSX.Element => {
 
       <Route path="/testing" component={Testing} />
       <Route path="/fxaa" component={FXAADemoPage} />
-      <StoreProvider store={homeStore}>
+      <StoreProvider store={dawStore}>
         <Route path="/daw" component={DAWPage} />
       </StoreProvider>
     </Router>

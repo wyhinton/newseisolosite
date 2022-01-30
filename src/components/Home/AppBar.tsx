@@ -37,6 +37,7 @@ const AppBar = ({ }: {}): JSX.Element => {
             // }}
             style={{
                 position: "absolute",
+                // position: "fixed",
                 zIndex: 10000,
                 // top: "100%",
                 // bottom: 0,

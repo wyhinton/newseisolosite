@@ -196,7 +196,7 @@ const ArtistImage = ({ track }: { track: Track }): JSX.Element => {
         <div id="artist-image-contaienr" style={{ width: isSm ? "100%" : "30%", height: isSm ? "50%" : "100%" }}>
             {track.category === "remix" && <img style={{ width: "100%", height: "100%", objectFit: "cover" }} src={track.visual} />}
 
-            <video id="recital-video" controls={true} id="recital_video" style={{ display: track.category == "recital" ? "block" : "none", width: "100%", height: "100%", objectFit: "cover" }} src={track.visual}>
+            <video id="recital-video" controls={true} style={{ display: track.category == "recital" ? "block" : "none", width: "100%", height: "100%", objectFit: "cover" }} src={track.visual}>
                 {/* <video id="recital_video" style={{ display: track.category == "recital" ? "block" : "none", width: "100%", height: "100%", objectFit: "cover" }} src={track.visual}> */}
                 <source type={"video/mp4"} src={vs} />
             </video>

@@ -1,3 +1,4 @@
+import theme from '@static/theme';
 import React, { useState, useEffect, useMemo } from 'react';
 import { Layout } from 'react-grid-layout';
 import DAWGridLayout from './DAWGridLayout';
@@ -27,7 +28,9 @@ const DAWApp = ({ }: {}): JSX.Element => {
     return (
         <section style={{
             width: "100vw",
-            height: "100vh", backgroundColor: "red",
+            height: "100vh",
+            // backgroundColor: "red",
+            backgroundColor: theme.primary,
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
@@ -55,7 +58,7 @@ const DAWApp = ({ }: {}): JSX.Element => {
 const Block = ({ }: {}): JSX.Element => {
 
     const dbgStyle = {
-        backgroundColor: "red",
+        // backgroundColor: "red",
     }
     return (
         <div style={{

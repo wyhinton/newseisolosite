@@ -1,8 +1,8 @@
-import dawModel from "./dawMod";
+import dawMod from "./dawMod";
 import { createStore, action } from "easy-peasy";
 import logger from "redux-logger";
 
-const dawStore = createStore(dawModel, {
+const dawStore = createStore(dawMod, {
     name: "homeStore",
     devTools: process.env.NODE_ENV === "development",
     middleware: [

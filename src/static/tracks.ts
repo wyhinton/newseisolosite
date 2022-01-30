@@ -56,6 +56,17 @@ const contourAbout =
 //random sampel when click 
 //effects on violin when playing
 //
+//FULL TITLES OF PIECES
+//TODO: THANKS TO DREW ATZ FOR MIXING AND MASTER THE VIOLIN RECITAL
+//TODO: THANKS TO VICTOR LEPRI FOR EDITING VIDEOS
+//TODO: ADD YEAR OF BLRUBS
+//TODO: TRIM PACIFIC YEW BIO
+//TODO: ADD OUR BIOS
+//TODO: FX WHEN VIOLIN PLAYS
+//TODO: NAV FOR GETTING TO ABOUT SCREEN
+//TODO: FIX THE CONTOUR ABOUT
+
+
 
 const tracks: Track[] = [
   {
@@ -143,7 +154,7 @@ const tracks: Track[] = [
     ],
     category: "recital",
     duration: bachLength,
-    origin: "Eisenach, Thuringia"
+    origin: "Eisenach, Germany"
   },
   {
     id: `Recital Part #002`,
@@ -163,12 +174,15 @@ const tracks: Track[] = [
     ],
     category: "recital",
     duration: bartokLength,
-    origin: "Nagyszentmiklós, King of Hungary",
+    origin: "Nagyszentmiklós, Kingdom of Hungary",
   },
   {
     id: `Recital Part #003`,
     artist: "Vivek Menon",
     title: "Ysaé",
+    //COMPOSER: ____ Ysae
+    //PIECE: NAME OF PIECE
+    //DATE WRITTEN?
     src: ysayeVideo,
     about: lorem,
     visualType: "video",
@@ -188,3 +202,6 @@ const tracks: Track[] = [
 ];
 
 export default tracks;
+
+
+// The way i approached the track was finding a melodic section of one of the pieces to build around to create a full piece that plays with repetition as a vehicle of composition while also facilitating space for improvisation. I chose the melodia movement of the Bartok piece because the balance of dissonance/harmony in that particular one stood out to me. I used delay and looping to kind of simulate the idea of an ensemble playing the section i chose and play with the intersection of production/affectation and composing in the traditional sense and then worked from there.

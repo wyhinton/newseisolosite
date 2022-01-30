@@ -6,6 +6,7 @@ import "@css/react-grid-layout.scss";
 import "@css/react-resizable.css";
 import { borderRadius } from 'ui-box';
 import theme from '@static/theme';
+import { useDaw } from '@dawhooks';
 // const samples = 
 
 const layout = [
@@ -48,10 +49,12 @@ const DAWGridLayout = ({ children, layout }: { children?: JSX.Element | JSX.Elem
     //         }),
     //     [layout]
     // );
+    const trackHeight = 4;
+    const blockHeight = 4;
 
     const makeTracks = (count: number) => {
         const range = Array.from(Array(count).keys());
-        const height = 2;
+        const height = trackHeight;
         const width = 12;
         return range.map((r, i) => {
             return { i: `track_${i}`, x: 0, y: i * 2, w: width, h: height, static: true }
@@ -60,18 +63,19 @@ const DAWGridLayout = ({ children, layout }: { children?: JSX.Element | JSX.Elem
 
     const makeBlocks = (count: number) => {
         const range = Array.from(Array(count).keys());
-        const height = 2;
+        const height = trackHeight;
         const width = 2;
         return range.map((r, i) => {
             return { i: `track_${i}`, x: 0, y: i * 2, w: width, h: height, static: false }
         })
     }
 
-    const
+    // const
 
     const tracks = makeTracks(4);
     const blocks = makeBlocks(3);
 
+    const { setGridState } = useDaw()
 
     return (
         <GridLayout
@@ -84,14 +88,21 @@ const DAWGridLayout = ({ children, layout }: { children?: JSX.Element | JSX.Elem
             preventCollision={true}
             className="layout"
             margin={[0, 0]}
+            onLayoutChange={(layout) => {
+                setGridState(layout)
+            }}
             cols={12} rowHeight={30} width={1200}>
             {/* {wrappedWidgets} */}
+            <div data-grid={{ i: "stepper", x: 0, y: 0, width: 12, height: 4, static: true }}>
+                <Stepper />
+            </div>
             {blocks.map((t, i) => {
                 return (
                     <div
                         style={{
                             height: "100%",
                             width: "100%",
+                            zIndex: 1,
                         }}
                         data-grid={t}
                         key={`block_${i}`}>
@@ -121,10 +132,29 @@ const DAWGridLayout = ({ children, layout }: { children?: JSX.Element | JSX.Elem
     );
 }
 
-const Track = ({ }: {}): JSX.Element => {
+const Stepper = ({ }: {}): JSX.Element => {
     return (
         <div
             style={{
+                height: "100%",
+                width: "100%",
+                backgroundColor: "red",
+            }}>
+
+        </div>
+    )
+}
+const Track = ({ }: {}): JSX.Element => {
+    // background-size: 40px 40px;
+    // background-image:
+    //   linear-gradient(to right, grey 1px, transparent 1px),
+    //   linear-gradient(to bottom, grey 1px, transparent 1px);
+    return (
+        <div
+            style={{
+                backgroundSize: "40px 40px",
+                backgroundImage: "linear-gradient(to right, grey 1px, transparent 1px)",
+
                 // backgroundColor: "yellow",
                 border: "1px solid blue",
                 height: "100%",

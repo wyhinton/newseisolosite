@@ -13,27 +13,12 @@ import { Layout, Layouts } from "react-grid-layout";
 import tracks from "@static/tracks";
 // import { Track } from "@interfaces/Track";
 import { recitalLayout, remixLayout } from "@static/gridLayouts";
+import DawTrack from "@interfaces/DawTrack";
 
 export type HomeLayout = "about" | "remix" | "recital" | "projectInfo";
 export type SSAppMode = "intro" | "view" | "create" | "projectInfo";
 export type InfoDisplayMode = "notes" | "image" | "bio" | undefined;
 
-// interface Track{
-//     id: t
-// }
-
-
-interface DawElement {
-    id: string
-}
-
-interface DawTrack extends DawElement {
-    clips: Clip[];
-}
-
-interface Clip extends DawElement {
-    sample: string;
-}
 
 const range = Array.from(Array(4).keys());
 const intialTracks: DawTrack[] = range.map((r, i) => {
@@ -45,6 +30,8 @@ const intialTracks: DawTrack[] = range.map((r, i) => {
 
 export interface DawModel {
     tracks: DawTrack[],
+    layout: Layout[],
+    setLayout: Action<DawModel, Layout[]>
     // appMode: SSAppMode;
     // setAppMode: Action<DawModel, SSAppMode>;
     // infoDisplayMode: InfoDisplayMode;
@@ -59,8 +46,12 @@ export interface DawModel {
     // // currentLayoutName: Computed<HomeModel, string>;
     // setCurrentLayout: Action<DawModel, HomeLayout>;
 }
-const dawModel: DawModel = {
+const dawMod: DawModel = {
     tracks: intialTracks,
+    layout: [],
+    setLayout: action((state, mode) => {
+        state.layout = mode;
+    }),
     // appMode: "intro",
     // setAppMode: action((state, mode) => {
     //     state.appMode = mode;
@@ -103,4 +94,4 @@ const dawModel: DawModel = {
     // }),
 };
 
-export default dawModel;
+export default dawMod;

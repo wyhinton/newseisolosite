@@ -20,7 +20,7 @@ import {
   useProgress,
 } from "@react-three/drei";
 import { GLTF as GLTFThree } from "three/examples/jsm/loaders/GLTFLoader";
-import { usePlaylist, useTrackCategory } from "@hooks";
+import { usePlaylist, useTrackCategory, useWindowSize } from "@hooks";
 import { Track } from "@interfaces/Track";
 import { useSpring } from "framer-motion";
 import ViolinWidgetEffects from "./ViolinWidget/ViolinWidgetEffects";
@@ -100,10 +100,16 @@ const Violin = ({ track }: { track: Track }) => {
 
 // Lights
 const ViolinWidget = ({ track }: { track: Track }): JSX.Element => {
+
+  const { width, height } = useWindowSize();
+
+  const zoom = Math.min(width, height) * .05;
+
   return (
     <Suspense fallback={<Loader />}>
       <Canvas className="canvas">
-        <OrthographicCamera makeDefault zoom={15.1} position={[0, 0, 20]} />
+        <OrthographicCamera makeDefault zoom={zoom} position={[0, 0, 20]} />
+        {/* <OrthographicCamera makeDefault zoom={15.1} position={[0, 0, 20]} /> */}
         <OrbitControls />
         {/* <Sphere /> */}
         <Violin track={track} />

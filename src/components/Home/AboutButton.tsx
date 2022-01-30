@@ -7,6 +7,8 @@ import ReactDOM from "react-dom";
 const AboutButton = (): JSX.Element => {
   //   const [visible, setVisible] = useState(false)
   const [visible, toggle] = useToggle(false);
+  const { setAppMode } = useApp();
+
   const { isSm } = useQuery()
   return ReactDOM.createPortal(
     <motion.div
@@ -31,6 +33,7 @@ const AboutButton = (): JSX.Element => {
       }}
       onClick={(e) => {
         toggle();
+        setAppMode("projectInfo")
         console.log("clicked about");
       }}
     >
